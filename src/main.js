@@ -1,29 +1,25 @@
-/*!
+import Vue from 'vue'
+import App from './App.vue'
+import Routes from './routes.js'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-=========================================================
-* Vue Argon Design System - v1.1.0
-=========================================================
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+Vue.use(IconsPlugin)
+//Step 1 -- Import and use VueRouter
+import VueRouter from 'vue-router'
 
-* Product Page: https://www.creative-tim.com/product/argon-design-system
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-design-system/blob/master/LICENSE.md)
+Vue.use(VueRouter)
+Vue.config.productionTip = false
+//Step 3 - Register Routes
+const myRouter = new VueRouter({
+  routes: Routes,
+  mode: 'history'
+});
 
-* Coded by www.creative-tim.com
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import Argon from "./plugins/argon-kit";
-import './registerServiceWorker'
-
-Vue.config.productionTip = false;
-Vue.use(Argon);
 new Vue({
-  router,
-  render: h => h(App)
-}).$mount("#app");
+  render: h => h(App),
+  router: myRouter
+}).$mount('#app')
