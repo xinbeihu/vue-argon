@@ -15,7 +15,7 @@
       <div class="container">
         <card shadow class="card-profile mt--300" no-body>
           <div class="px-4">
-            <div class="row justify-content-center">
+            <div class="row justify-content-left">
               <div class="col-lg-3 order-lg-2">
                 <div class="card-profile-image">
                   <a href="#">
@@ -23,66 +23,195 @@
                   </a>
                 </div>
               </div>
-              <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
-                <div class="card-profile-actions py-4 mt-lg-0">
-                  <base-button type="info" size="sm" class="mr-4">Connect</base-button>
-                  <base-button type="default" size="sm" class="float-right">Message</base-button>
-                </div>
-              </div>
-              <div class="col-lg-4 order-lg-1">
-                <div class="card-profile-stats d-flex justify-content-center">
-                  <div>
-                    <span class="heading">22</span>
-                    <span class="description">Friends</span>
-                  </div>
-                  <div>
-                    <span class="heading">10</span>
-                    <span class="description">Photos</span>
-                  </div>
-                  <div>
-                    <span class="heading">89</span>
-                    <span class="description">Comments</span>
+            </div>
+            <div class="container ct-example-row">
+              <div class="row justify-content-md-center">
+                <div class="col col-lg-3"></div>
+                <div class="col col-md-auto">
+                  <div class="text-left mt-5" v-for="(value, user) in userInfo" :key="user">
+                    <h3 class="text-left">{{value.Name}}</h3>
+                    {{user}} · {{value.Mobile}}
+                    <p>{{value.Faculty}} - {{value.Major}}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="text-center mt-5" v-for="(value, user) in userInfo" :key="user">
-              <h3>{{value.Name}}</h3>
-              <div class="h6 font-weight-300">
-                <i class="ni location_pin mr-2"></i>
-                {{user}} · {{value.Mobile}}
-              </div>
-              <div class="h6 mt-4">
-                <i class="ni business_briefcase-24 mr-2"></i>
-                {{value.Faculty}} - {{value.Major}}
-              </div>
-              <div>
-                <i class="ni education_hat mr-2"></i>National University of Singapore
-              </div>
+
+            <div class="mt-5 text-center" v-for="(value, user) in userInfo" :key="user">
+              <p>{{value.Intro}}</p>
             </div>
-            <div
-              class="mt-3 py-5 border-top text-center"
-              v-for="(value, user) in userInfo"
-              :key="user"
-            >
-              <div class="row justify-content-center">
-                <div class="col-lg-9">
-                  <h3>Introduction</h3>
-                  <p>{{value.Intro}}</p>
-                </div>
-              </div>
+            <div>
+              <base-button
+                outline
+                type="default"
+                size="sm"
+                icon="ni ni-atom"
+                @click="modals.modal1 = true"
+              ></base-button>
             </div>
+
             <div
               class="mt-5 py-5 border-top text-center"
               v-for="(value, user) in userInfo"
               :key="user"
             >
               <div class="row justify-content-center">
-                <div class="col-lg-9">
-                  <p>Modules Taken</p>
-                  <ul>
-                    <li v-for="item in items" :key="item.message">{{ item.message }}</li>
+                <div class="col-lg-5">
+                  <h3 class="display-4">Modules Taken</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value, item) in value['Past Modules']" :key="item">
+                      <h5 class="text-left">
+                        {{item}}
+                        <small class="text-muted">{{ value['Module Name']}}</small>
+                        <p>
+                          <small class="text-muted !text-right">Grade: {{ value.Grade }}</small>
+                        </p>
+                      </h5>
+                    </li>
                   </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
+                </div>
+                <div class="col-lg-5">
+                  <h3 class="display-4">Current Modules</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value, item) in value['Current Modules']" :key="item">
+                      <h5 class="text-left">
+                        {{item}}
+                        <p>
+                          <small class="text-muted">{{ value}}</small>
+                        </p>
+                      </h5>
+                    </li>
+                  </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-1 py-5 border-top text-center"
+              v-for="(value, user) in userInfo"
+              :key="user"
+            >
+              <div class="row justify-content-center">
+                <div class="col-lg-5">
+                  <h3 class="display-4">Skills</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value,item) in value['Skills']" :key="item">
+                      <base-progress
+                        striped="True"
+                        type="success"
+                        v-bind:value="value"
+                        v-bind:label="item"
+                      ></base-progress>
+                    </li>
+                  </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
+                </div>
+                <div class="col-lg-5">
+                  <h3 class="display-4">Interests</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value,item) in value['Interests']" :key="item">
+                      <base-progress
+                        striped="True"
+                        type="primary"
+                        v-bind:value="value"
+                        v-bind:label="item"
+                      ></base-progress>
+                    </li>
+                  </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-5 py-5 border-top text-center"
+              v-for="(value, user) in userInfo"
+              :key="user"
+            >
+              <div class="row justify-content-center">
+                <div class="col-lg-10">
+                  <h3 class="display-4">Past Projects</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value, item) in value['Past Projects']" :key="item">
+                      <h5 class="text-left">
+                        {{item}}
+                        <br />
+                        <small
+                          class="text-muted"
+                        >{{ value['Module Name'] }} - {{ value['Project Name'] }}</small>
+                        <br />
+                        <ul>
+                          <li>
+                            <small>Team Members:{{value['Team Members']}}</small>
+                          </li>
+                          <li>
+                            <small>Project Description: {{ value['Description'] }}</small>
+                          </li>
+                        </ul>
+                      </h5>
+                    </li>
+                  </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-1 py-5 border-top text-center"
+              v-for="(value, user) in userInfo"
+              :key="user"
+            >
+              <div class="row justify-content-center">
+                <div class="col-lg-5">
+                  <h3 class="display-4">Awards</h3>
+                  <br />
+                  <ul class="list-unstyled">
+                    <li v-for="(value,item) in value['Awards']" :key="item">{{item}} - {{value}}</li>
+                  </ul>
+                  <base-button
+                    outline
+                    type="default"
+                    size="sm"
+                    icon="ni ni-atom"
+                    @click="modals.modal1 = true"
+                  ></base-button>
                 </div>
               </div>
             </div>
@@ -94,12 +223,17 @@
 </template>
 <script>
 import database from "../firebase.js";
+import Modal from "../components/Modal.vue";
 export default {
   name: "App",
+  components: Modal,
   data() {
     return {
       userInfo: {},
-      curruser: "Victor Cheong"
+      curruser: "Victor Cheong",
+      modals: {
+        modal1: false
+      }
     };
   },
   methods: {
