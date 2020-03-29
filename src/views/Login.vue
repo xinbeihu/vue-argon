@@ -19,40 +19,30 @@
                           class="border-0">
                         <template>
                             <div class="text-muted text-center mb-3">
-                                <small>Sign in with</small>
+                                <small>Sign In to Manage Your Project Now!</small>
                             </div>
-                            <div class="btn-wrapper text-center">
-                                <base-button type="neutral">
-                                    <img slot="icon" src="img/icons/common/github.svg">
-                                    Github
-                                </base-button>
-
-                                <base-button type="neutral">
-                                    <img slot="icon" src="img/icons/common/google.svg">
-                                    Google
-                                </base-button>
-                            </div>
+                    
                         </template>
                         <template>
-                            <div class="text-center text-muted mb-4">
-                                <small>Or sign in with credentials</small>
-                            </div>
+                            
                             <form role="form">
                                 <base-input alternative
                                             class="mb-3"
                                             placeholder="Email"
-                                            addon-left-icon="ni ni-email-83">
+                                            addon-left-icon="ni ni-email-83"
+                                            v-model="email">
                                 </base-input>
                                 <base-input alternative
                                             type="password"
                                             placeholder="Password"
-                                            addon-left-icon="ni ni-lock-circle-open">
+                                            addon-left-icon="ni ni-lock-circle-open"
+                                            v-model="password">
                                 </base-input>
                                 <base-checkbox>
                                     Remember me
                                 </base-checkbox>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4">Sign In</base-button>
+                                    <base-button type="primary" class="my-4" @click="login">Sign In</base-button>
                                 </div>
                             </form>
                         </template>
@@ -75,7 +65,24 @@
     </section>
 </template>
 <script>
-export default {};
+import firebase from 'firebase';
+export default {
+  name:'login',
+  data(){
+    return{
+        email:"",
+        password:""
+        }
+  },
+  methods:{
+    login:  function () {
+          firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
+            alert("Signed in Successfully!")
+          )
+          
+        }
+  }
+}
 </script>
 <style>
 </style>
