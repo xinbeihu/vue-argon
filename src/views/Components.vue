@@ -1,15 +1,15 @@
 <template>
   <div>
-    <Projects></Projects>
+    <Login></Login>
   </div>
 </template>
 <script>
-import Projects from "./Projects";
+import Login from "./Login";
 
 export default {
   name: "components",
   components: {
-    Projects
+    Login
   }
 };
 </script>
