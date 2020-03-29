@@ -7,6 +7,8 @@ import Landing from "./views/Landing.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Profile from "./views/Profile.vue";
+import ProjMates from "./views/ProjMates.vue";
+import Projects from "./views/Projects.vue";
 
 Vue.use(Router);
 
@@ -55,6 +57,23 @@ export default new Router({
       components: {
         header: AppHeader,
         default: Profile,
+        footer: AppFooter
+      }
+    },
+    {
+      path:"/projmates",
+      name:"projmates",
+      components : {
+        header: AppHeader,
+        default: ProjMates
+      }
+    },
+    {
+      path:"/projects",
+      name:"projects",
+      components: {
+        header: AppHeader,
+        default: Projects,
         footer: AppFooter
       }
     }
