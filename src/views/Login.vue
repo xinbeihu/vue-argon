@@ -21,8 +21,10 @@
                             <div class="text-muted text-center mb-3">
                                 <small>Sign In to Manage Your Project Now!</small>
                             </div>
-                    
+                      
                         </template>
+                        <br>
+                        
                         <template>
                             
                             <form role="form">
@@ -38,9 +40,7 @@
                                             addon-left-icon="ni ni-lock-circle-open"
                                             v-model="password">
                                 </base-input>
-                                <base-checkbox>
-                                    Remember me
-                                </base-checkbox>
+
                                 <div class="text-center">
                                     <base-button type="primary" class="my-4" @click="login">Sign In</base-button>
                                 </div>
@@ -50,12 +50,12 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <a href="#" class="text-light">
-                                <small>Forgot password?</small>
+                                <small></small>
                             </a>
                         </div>
                         <div class="col-6 text-right">
                             <a href="#" class="text-light">
-                                <small>Create new account</small>
+                                <small>Forgot password?</small>
                             </a>
                         </div>
                     </div>
