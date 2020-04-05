@@ -24,7 +24,7 @@
                       
                         </template>
                         <br>
-                        
+
                         <template>
                             
                             <form role="form">
@@ -54,9 +54,9 @@
                             </a>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="#" class="text-light">
+                            <base-button href="#" class="text-light" @click="resetpassword">
                                 <small>Forgot password?</small>
-                            </a>
+                            </base-button>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,18 @@ export default {
             alert("Signed in Successfully!")
           )
           
+        },
+    resetpassword: function(){
+        var auth = firebase.auth();
+        var emailAddress = this.email;
+        if (this.email==""){
+            alert("Please key in your email!")
+        } else {
+            auth.sendPasswordResetEmail(emailAddress).then(
+                alert("Email of resetting password has been sent. Please check your email!")
+            )
         }
+    }
   }
 }
 </script>
