@@ -31,7 +31,7 @@
                     <base-button
                       type="default"
                       size="sm"
-                      icon="ni ni-settings-gear-65"
+                      icon="fa fa-pencil"
                       @click="modals.modal1 = true"
                     ></base-button>
                   </h3>
@@ -62,11 +62,15 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Skills</strong>
+                        <strong>
+                          Skills
+                          <slot></slot>
+                        </strong>
+
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
@@ -86,11 +90,14 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Interests</strong>
+                        <strong>
+                          Interests
+                          <slot></slot>
+                        </strong>
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
@@ -121,11 +128,14 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Modules Taken</strong>
+                        <strong>
+                          Modules Taken
+                          <slot></slot>
+                        </strong>
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
@@ -137,27 +147,28 @@
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Past Modules']" :key="item">
                           <h5 class="text-left">
-                            {{item}}
-                            <small class="text-muted !text-right">Grade: {{ value.Grade }}</small>
+                            {{item}}&nbsp;
+                            <small
+                              class="text-muted !text-right"
+                            >Grade: &nbsp;{{ value.Grade }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                              style="font-size:15px"
+                              v-b-modal.editSubModal
+                              v-on:click="editSubTask(details, subtask)"
+                            ></i>
+                            <i
+                              v-on:click="deleteSubTask(list.subTaskID)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
 
                             <p>
                               <small class="text-muted">{{ value['Module Name']}}</small>
                             </p>
-                            <td style="width:90px" class="tab">
-                              <i
-                                class="fa fa-pencil-square-o"
-                                aria-hidden="true"
-                                style="font-size:15px"
-                                v-b-modal.editSubModal
-                                v-on:click="editSubTask(details, subtask)"
-                              ></i>
-                              <i
-                                v-on:click="deleteSubTask(list.subTaskID)"
-                                class="fa fa-trash"
-                                aria-hidden="true"
-                                style="padding-left:40px;color:rgb(136, 43, 43);font-size:16px"
-                              ></i>
-                            </td>
                           </h5>
                         </li>
                       </ul>
@@ -167,11 +178,11 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Current Modules</strong>
+                        <strong>Current Modules&nbsp;</strong>
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
@@ -181,7 +192,20 @@
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Current Modules']" :key="item">
                           <h5 class="text-left">
-                            {{item}}
+                            {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                              style="font-size:15px"
+                              v-b-modal.editSubModal
+                              v-on:click="editSubTask(details, subtask)"
+                            ></i>
+                            <i
+                              v-on:click="deleteSubTask(list.subTaskID)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
                             <p>
                               <small class="text-muted">{{ value}}</small>
                             </p>
@@ -204,11 +228,11 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Past Projects</strong>
+                        <strong>Past Projects&nbsp;</strong>
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
@@ -220,7 +244,20 @@
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Past Projects']" :key="item">
                           <h5 class="text-left">
-                            {{item}}
+                            {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                              style="font-size:15px"
+                              v-b-modal.editSubModal
+                              v-on:click="editSubTask(details, subtask)"
+                            ></i>
+                            <i
+                              v-on:click="deleteSubTask(list.subTaskID)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
                             <br />
                             <small
                               class="text-muted"
@@ -230,8 +267,11 @@
                               <li>
                                 <small>
                                   Team Members:
-                                  <br />
-                                  <span v-for="a in value['Team Members']" :key="a">
+                                  <span
+                                    class="text-muted"
+                                    v-for="a in value['Team Members']"
+                                    :key="a"
+                                  >
                                     {{a}}
                                     <slot></slot>
                                   </span>
@@ -240,8 +280,9 @@
                               <li>
                                 <small>
                                   Project Description:
-                                  <br />
-                                  {{ value['Description'] }}
+                                  <span
+                                    class="text-muted"
+                                  >{{ value['Description'] }}</span>
                                 </small>
                               </li>
                             </ul>
@@ -254,11 +295,11 @@
                   <div class="col col-lg-6">
                     <div class="row">
                       <h4>
-                        <strong>Awards</strong>
+                        <strong>Awards&nbsp;</strong>
                         <base-button
                           type="default"
                           size="sm"
-                          icon="ni ni-settings-gear-65"
+                          icon="fa fa-plus"
                           @click="modals.modal1 = true"
                         ></base-button>
 
