@@ -71,11 +71,19 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.skillModal
                         ></base-button>
 
                         <br />
                       </h4>
+
+                      <b-modal id="skillModal" ref="modal" title="Add New Skill" @ok="submitSkill">
+                        <form ref="form">
+                          <b-form-group label="Skill">
+                            <b-form-input id="skill-input" v-model="inputSkill"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
 
                     <div class="row">
@@ -98,11 +106,23 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.interestModal
                         ></base-button>
 
                         <br />
                       </h4>
+                      <b-modal
+                        id="interestModal"
+                        ref="modal"
+                        title="Add New Interest"
+                        @ok="submitInterest"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Interest">
+                            <b-form-input id="interest-input" v-model="inputInterest"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
 
                     <div class="row">
@@ -111,7 +131,7 @@
                         type="secondary"
                         v-for="(value,item) in value['Interests']"
                         :key="item"
-                      >{{item}}</base-button>
+                      >{{value}}</base-button>
                     </div>
                   </div>
                 </div>
@@ -324,6 +344,7 @@
 </template>
 <script>
 import database from "../firebase.js";
+import firebase from "firebase";
 import Modal from "../components/Modal.vue";
 export default {
   name: "App",
@@ -332,16 +353,16 @@ export default {
     return {
       userInfo: {},
       curruser: "Victor Cheong",
-      modals: {
-        modal1: false
-      }
+      inputSkill: "",
+      inputInterest: "",
+      currID: "vcjw97@gmail.com"
     };
   },
   methods: {
     fetchData: function() {
       let temp = {};
       let me = this.curruser;
-      console.log(2);
+      let tempid = "";
       //Get all the items from DB
       database.collection("User Info").onSnapshot(currentUser => {
         currentUser.forEach(function(user) {
@@ -352,6 +373,36 @@ export default {
         });
         this.userInfo = temp;
       });
+    },
+    submitSkill: function() {
+      let newSkill = this.inputSkill;
+      let currUser = this.currID;
+      if (this.inputSkill == "") {
+        alert("Please enter a skill");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({
+            Skills: firebase.firestore.FieldValue.arrayUnion(newSkill)
+          });
+        this.inputSkill = "";
+      }
+    },
+    submitInterest: function() {
+      let newInterest = this.inputInterest;
+      let currUser = this.currID;
+      if (this.inputInterest == "") {
+        alert("Please enter an interest");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({
+            Interests: firebase.firestore.FieldValue.arrayUnion(newInterest)
+          });
+        this.inputInterest = "";
+      }
     }
   },
   created() {
