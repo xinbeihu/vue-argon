@@ -256,7 +256,7 @@
                                     >{{subtask}}</a>
                                   </span>
                                 </td>
-                                <td style="width:90px" class="tab">
+                                <td style="width:90px" class="taskbutton">
                                   <i
                                     class="fa fa-pencil-square-o"
                                     aria-hidden="true"
@@ -268,7 +268,7 @@
                                     v-on:click="deleteSubTask(list.subTaskID)"
                                     class="fa fa-trash"
                                     aria-hidden="true"
-                                    style="padding-left:40px;color:rgb(136, 43, 43);font-size:16px"
+                                    style="padding-left:40px;width:10px;color:rgb(136, 43, 43);font-size:16px"
                                   ></i>
                                 </td>
                               </tr>
@@ -431,19 +431,6 @@ export default {
           });
         }
       }
-      /* if (b.completed && !(a.completed)) {
-          return -1
-        } else if (a.completed && !(b.completed)) {
-          return 1
-        } else { //Neither completed or both completed
-          adate = new Date(a.date)
-          bdate = new Date(b.date)
-          if (adate < bdate) { // a should come first if adate < bdate
-            return -1
-          } else {
-            return 1
-          }
-        } */
       myTasks = myTasks.sort((a, b) => {
         if (
           Object.values(b)[0]["completed"] &&
@@ -501,6 +488,25 @@ export default {
     },
     chooseTask: function(task) {
       this.selectedTask = task;
+      let currModule = "";
+      database
+        .collection("Modules")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(doc => {
+            for (let group in doc.data()) {
+              if (group != "noGroup") {
+                let assignments = doc.data()[group]["Assignments"];
+                for (let assignment in assignments) {
+                  if (assignment == task) {
+                    currModule = doc.id;
+                  }
+                }
+              }
+            }
+          });
+          this.selectedModule = currModule;
+        });
     },
     isTaskComplete: function(taskID) {
       let completed = false;
@@ -885,7 +891,9 @@ export default {
       let newSubTask = this.inputSubtask;
       let currMember = this.selectedMember;
       let group = this.groups["groupName"][currModule];
-      if (this.selectedTask == "") {
+      if (this.selectedModule == "") {
+        alert("Please choose the relevant module");
+      } else if (this.selectedTask == "") {
         alert("Please choose the relevant task");
       } else if (this.inputSubtask == "") {
         alert("Please enter the sub-task title");
@@ -1020,6 +1028,16 @@ export default {
     fetchTasks: function() {
       let tasks = {};
       let myGroups = { members: {}, groupName: {} };
+      var user = firebase.auth().currentUser;
+      var emailVerified = user.email;
+      database.collection("User Info").onSnapshot(user => {
+        user.forEach(function(currUser) {
+          if (currUser.id == emailVerified) {
+            tempName = currUser.data()["Name"];
+          }
+        });
+        this.user = tempName;
+      });
       let currUser = this.user;
       database.collection("Modules").onSnapshot(myModules => {
         myModules.forEach(function(module) {
