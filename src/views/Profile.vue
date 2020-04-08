@@ -156,11 +156,29 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.pastModModal
                         ></base-button>
 
                         <br />
                       </h4>
+                      <b-modal
+                        id="pastModModal"
+                        ref="modal"
+                        title="Add New Past Module"
+                        @ok="submitPastMod"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module Code">
+                            <b-form-input id="project-module" v-model="inputPastModCode"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Name">
+                            <b-form-input id="project-module-name" v-model="inputPastModName"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Grade">
+                            <b-form-input id="project-module-name" v-model="inputPastModGrade"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
 
                     <div class="row">
@@ -203,11 +221,26 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.currModModal
                         ></base-button>
 
                         <br />
                       </h4>
+                      <b-modal
+                        id="currModModal"
+                        ref="modal"
+                        title="Add New Current Module"
+                        @ok="submitCurrMod"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module Code">
+                            <b-form-input id="project-module" v-model="inputCurrModCode"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Name">
+                            <b-form-input id="project-module-name" v-model="inputCurrModName"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                       <br />
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Current Modules']" :key="item">
@@ -253,11 +286,32 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.projectModal
                         ></base-button>
 
                         <br />
                       </h4>
+                      <b-modal
+                        id="projectModal"
+                        ref="modal"
+                        title="Add New Project"
+                        @ok="submitProject"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module Code">
+                            <b-form-input id="project-module" v-model="inputProjMod"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Name">
+                            <b-form-input id="project-module-name" v-model="inputProjModName"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Project Name">
+                            <b-form-input id="project-name" v-model="inputProjName"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Project Description">
+                            <b-form-input id="project-desc" v-model="inputProjDesc"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
 
                     <div class="row">
@@ -320,16 +374,29 @@
                           type="default"
                           size="sm"
                           icon="fa fa-plus"
-                          @click="modals.modal1 = true"
+                          v-b-modal.awardModal
                         ></base-button>
 
                         <br />
                       </h4>
+                      <b-modal id="awardModal" ref="modal" title="Add New Award" @ok="submitAward">
+                        <form ref="form">
+                          <b-form-group label="Award">
+                            <b-form-input id="award-input" v-model="inputAward"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Description">
+                            <b-form-input id="award-description" v-model="inputAwardDescription"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
                     <div class="row">
                       <br />
-                      <ul class="list-unstyled">
-                        <li v-for="(value,item) in value['Awards']" :key="item">{{item}} - {{value}}</li>
+                      <ul class="list text-left">
+                        <li v-for="(value,item) in value['Awards']" :key="item">
+                          {{item}} -
+                          <span class="text-muted">{{value}}</span>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -355,7 +422,18 @@ export default {
       curruser: "Victor Cheong",
       inputSkill: "",
       inputInterest: "",
-      currID: "vcjw97@gmail.com"
+      currID: "vcjw97@gmail.com",
+      inputAward: "",
+      inputAwardDescription: "",
+      inputProjDesc: "",
+      inputProjMod: "",
+      inputProjModName: "",
+      inputProjName: "",
+      inputCurrModCode: "",
+      inputCurrModName: "",
+      inputPastModCode: "",
+      inputPastModGrade: "",
+      inputPastModName: ""
     };
   },
   methods: {
@@ -402,6 +480,91 @@ export default {
             Interests: firebase.firestore.FieldValue.arrayUnion(newInterest)
           });
         this.inputInterest = "";
+      }
+    },
+    submitAward: function() {
+      let newAward = this.inputAward;
+      let newAwardDesc = this.inputAwardDescription;
+      let currUser = this.currID;
+      if (this.inputAward == "") {
+        alert("Please enter an award");
+      } else if (this.inputAwardDesc == "") {
+        alert("Please enter description");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({
+            ["Awards." + newAward]: newAwardDesc
+          });
+        this.inputAward = "";
+        this.inputAwardDescription = "";
+      }
+    },
+    submitProject: function() {
+      let newProjMod = this.inputProjMod;
+      let newProjModName = this.inputProjModName;
+      let newProjName = this.inputProjName;
+      let newProjDesc = this.inputProjDesc;
+      let currUser = this.currID;
+      if (this.inputProjMod == "") {
+        alert("Please enter module code");
+      } else if (this.inputProjModName == "") {
+        alert("Please enter module name");
+      } else if (this.inputProjName == "") {
+        alert("Please enter project name");
+      } else if (this.inputProjDesc == "") {
+        alert("Please enter Project Description");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({});
+        this.inputAward = "";
+        this.inputAwardDescription = "";
+      }
+    },
+    submitCurrMod: function() {
+      let newCurrModCode = this.inputCurrModCode;
+      let newCurrModName = this.inputCurrModName;
+      let currUser = this.currID;
+      if (this.inputCurrModCode == "") {
+        alert("Please enter module code");
+      } else if (this.inputCurrModName == "") {
+        alert("Please enter module name");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({
+            ["Current Modules." + newCurrModCode]: newCurrModName
+          });
+        this.inputCurrModCode = "";
+        this.inputCurrModName = "";
+      }
+    },
+    submitPastMod: function() {
+      let newPastModCode = this.inputPastModCode;
+      let newPastModName = this.inputPastModName;
+      let newPastModGrade = this.inputPastModGrade;
+      let currUser = this.currID;
+      if (this.inputPastModCode == "") {
+        alert("Please enter module code");
+      } else if (this.inputPastModName == "") {
+        alert("Please enter module name");
+      } else if (this.inputPastModGrade == "") {
+        alert("Please enter module grade");
+      } else {
+        database
+          .collection("User Info")
+          .doc(currUser)
+          .update({
+            ["Past Modules." + newPastModCode + ".Grade"]: newPastModGrade,
+            ["Past Modules." + newPastModCode + ".Module Name"]: newPastModName
+          });
+        this.inputPastModCode = "";
+        this.inputPastModName = "";
+        this.inputPastModGrade = "";
       }
     }
   },
