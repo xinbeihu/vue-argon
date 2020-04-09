@@ -66,6 +66,7 @@
 </template>
 <script>
 import firebase from 'firebase';
+import router from '../router';
 export default {
   name:'login',
   data(){
@@ -76,8 +77,10 @@ export default {
   },
   methods:{
     login:  function () {
-          firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
-            alert("Signed in Successfully!")
+        firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
+            alert("Signed in Successfully!")).then(
+            // alert("Signed in Successfully!")
+            router.push({ name: "profile" })
           )
           
         },
