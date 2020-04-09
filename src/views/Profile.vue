@@ -189,21 +189,21 @@
                             <small
                               class="text-muted !text-right"
                             >Grade: &nbsp;{{ value.Grade }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
-
-                            <i
-                              class="fa fa-pencil-square-o"
-                              aria-hidden="true"
-                              style="font-size:15px"
-                              v-b-modal.editSubModal
-                              v-on:click="editSubTask(details, subtask)"
-                            ></i>
-                            <i
-                              v-on:click="deleteSubTask(list.subTaskID)"
-                              class="fa fa-trash"
-                              aria-hidden="true"
-                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
-                            ></i>
-
+                            <span class="text-right">
+                              <i
+                                class="fa fa-pencil-square-o"
+                                aria-hidden="true"
+                                style="font-size:15px"
+                                v-b-modal.editSubModal
+                                v-on:click="editSubTask(details, subtask)"
+                              ></i>
+                              <i
+                                v-on:click="deletePastModule(item)"
+                                class="fa fa-trash"
+                                aria-hidden="true"
+                                style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                              ></i>
+                            </span>
                             <p>
                               <small class="text-muted">{{ value['Module Name']}}</small>
                             </p>
@@ -254,7 +254,7 @@
                               v-on:click="editSubTask(details, subtask)"
                             ></i>
                             <i
-                              v-on:click="deleteSubTask(list.subTaskID)"
+                              v-on:click="deleteCurrModule(item)"
                               class="fa fa-trash"
                               aria-hidden="true"
                               style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
@@ -327,7 +327,7 @@
                               v-on:click="editSubTask(details, subtask)"
                             ></i>
                             <i
-                              v-on:click="deleteSubTask(list.subTaskID)"
+                              v-on:click="deleteProject(item)"
                               class="fa fa-trash"
                               aria-hidden="true"
                               style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
@@ -566,6 +566,33 @@ export default {
         this.inputPastModName = "";
         this.inputPastModGrade = "";
       }
+    },
+    deleteCurrModule: function(ModCode) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Current Modules." + ModCode]: firebase.firestore.FieldValue.delete()
+        });
+    },
+    deletePastModule: function(ModCode) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Past Modules." + ModCode]: firebase.firestore.FieldValue.delete()
+        });
+    },
+    deleteProject: function(ModCode) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Past Projects." + ModCode]: firebase.firestore.FieldValue.delete()
+        });
     }
   },
   created() {
