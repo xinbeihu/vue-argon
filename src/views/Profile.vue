@@ -184,12 +184,13 @@
                     <div class="row">
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Past Modules']" :key="item">
-                          <h5 class="text-left">
+                          <h5 style="text-align:left;">
                             {{item}}&nbsp;
                             <small
                               class="text-muted !text-right"
-                            >Grade: &nbsp;{{ value.Grade }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
-                            <span class="text-right">
+                            >Grade: &nbsp;{{ value.Grade }}</small>
+                            <span style="float:right;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <i
                                 class="fa fa-pencil-square-o"
                                 aria-hidden="true"
@@ -245,20 +246,23 @@
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Current Modules']" :key="item">
                           <h5 class="text-left">
-                            {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i
-                              class="fa fa-pencil-square-o"
-                              aria-hidden="true"
-                              style="font-size:15px"
-                              v-b-modal.editSubModal
-                              v-on:click="editSubTask(details, subtask)"
-                            ></i>
-                            <i
-                              v-on:click="deleteCurrModule(item)"
-                              class="fa fa-trash"
-                              aria-hidden="true"
-                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
-                            ></i>
+                            {{item}}
+                            <span style="float:right;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <i
+                                class="fa fa-pencil-square-o"
+                                aria-hidden="true"
+                                style="font-size:15px"
+                                v-b-modal.editSubModal
+                                v-on:click="editSubTask(details, subtask)"
+                              ></i>
+                              <i
+                                v-on:click="deleteCurrModule(item)"
+                                class="fa fa-trash"
+                                aria-hidden="true"
+                                style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                              ></i>
+                            </span>
                             <p>
                               <small class="text-muted">{{ value}}</small>
                             </p>
@@ -318,20 +322,23 @@
                       <ul class="list-unstyled">
                         <li v-for="(value, item) in value['Past Projects']" :key="item">
                           <h5 class="text-left">
-                            {{item}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <i
-                              class="fa fa-pencil-square-o"
-                              aria-hidden="true"
-                              style="font-size:15px"
-                              v-b-modal.editSubModal
-                              v-on:click="editSubTask(details, subtask)"
-                            ></i>
-                            <i
-                              v-on:click="deleteProject(item)"
-                              class="fa fa-trash"
-                              aria-hidden="true"
-                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
-                            ></i>
+                            {{item}}
+                            <span style="float:right;">
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              <i
+                                class="fa fa-pencil-square-o"
+                                aria-hidden="true"
+                                style="font-size:15px"
+                                v-b-modal.editSubModal
+                                v-on:click="editSubTask(details, subtask)"
+                              ></i>
+                              <i
+                                v-on:click="deleteProject(item)"
+                                class="fa fa-trash"
+                                aria-hidden="true"
+                                style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                              ></i>
+                            </span>
                             <br />
                             <small
                               class="text-muted"
@@ -396,6 +403,22 @@
                         <li v-for="(value,item) in value['Awards']" :key="item">
                           {{item}} -
                           <span class="text-muted">{{value}}</span>
+                          <span style="float:right;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                              style="font-size:15px"
+                              v-b-modal.editSubModal
+                              v-on:click="editSubTask(details, subtask)"
+                            ></i>
+                            <i
+                              v-on:click="deleteAward(item)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
+                          </span>
                         </li>
                       </ul>
                     </div>
@@ -592,6 +615,15 @@ export default {
         .doc(currUser)
         .update({
           ["Past Projects." + ModCode]: firebase.firestore.FieldValue.delete()
+        });
+    },
+    deleteAward: function(award) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Awards." + award]: firebase.firestore.FieldValue.delete()
         });
     }
   },
