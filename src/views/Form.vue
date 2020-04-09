@@ -20,28 +20,31 @@
                         
                         <template>
                             <div class="text-center text-muted mb-4">
-                                <small>Sign Up an Account to Manage Your Project!</small>
+                                <small>We need more information from you!</small>
                             </div>
                             <form role="form">
                                 <base-input alternative
                                             class="mb-3"
-                                            placeholder="Email"
-                                            addon-left-icon="ni ni-email-83"
-                                            v-model="email">
+                                            placeholder="Name"
+                                            v-model="name">
                                 </base-input>
                                 <base-input alternative
-                                            type="password"
-                                            placeholder="Password"
-                                            addon-left-icon="ni ni-lock-circle-open"
-                                            v-model="password">
+                                            class="mb-3"
+                                            placeholder="Faculty"
+                                            v-model="faculty">
                                 </base-input>
-                                <base-checkbox>
-                                    <span>I agree with the
-                                        <a href="#">Privacy Policy</a>
-                                    </span>
-                                </base-checkbox>
+                                <base-input alternative
+                                            class="mb-3"
+                                            placeholder="Major"
+                                            v-model="major">
+                                </base-input>
+                                <base-input alternative
+                                            class="mb-3"
+                                            placeholder="Contact No"
+                                            v-model="phone">
+                                </base-input>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4" @click="signup">Create account</base-button>
+                                    <base-button type="primary" class="my-4" @click="update">Go to Profile</base-button>
                                 </div>
                             </form>
                         </template>
@@ -69,8 +72,6 @@ export default {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
   .then(function() {
     alert('You have created an account');
-  }).then(function() {
-    router.push({ name: "form" });
   });
         }
   }
