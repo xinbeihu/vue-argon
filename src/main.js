@@ -24,6 +24,14 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+// Register Charts globally
+import BarChart from './views/BarChart.vue'
+import LineChart from './views/LineChart.vue'
+import PieChart from './views/PieChart.vue'
+Vue.component("BarChart", BarChart)
+Vue.component("LineChart", LineChart)
+Vue.component("PieChart", PieChart)
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 

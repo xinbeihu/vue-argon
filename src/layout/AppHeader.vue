@@ -52,6 +52,7 @@
                         <i class="ni ni-collection d-lg-none"></i>
                         <span class="nav-link-inner--text">Examples</span>
                     </a>
+                    <router-link to='/Dashboard' class="dropdown-item">Dashboard</router-link>
                     <router-link to="/landing" class="dropdown-item">Landing</router-link>
                     <router-link to="/profile" class="dropdown-item">Profile</router-link>
                     <router-link to="/login" class="dropdown-item">Login</router-link>

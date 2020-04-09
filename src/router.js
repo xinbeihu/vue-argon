@@ -9,6 +9,7 @@ import Register from "./views/Register.vue";
 import Profile from "./views/Profile.vue";
 import ProjMates from "./views/ProjMates.vue";
 import Projects from "./views/Projects.vue";
+import Dashboard from "./views/Dashboard.vue"
 
 Vue.use(Router);
 
@@ -76,7 +77,17 @@ export default new Router({
         default: Projects,
         footer: AppFooter
       }
+    },
+    {
+      path:"/dashboard",
+      name:"dashboard",
+      components: {
+        header: AppHeader,
+        default: Dashboard,
+        footer: AppFooter
+      }
     }
+
   ],
   scrollBehavior: to => {
     if (to.hash) {
