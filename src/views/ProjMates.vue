@@ -50,7 +50,7 @@
       </tr>
     </table>
     <div>
-        <div style="left: 250px; position:absolute; border-color: grey; border-radius: 2px; border-width: thin; padding: 20px 20px 20px 20px;
+        <div style="left: 5%; position:absolute; border-color: grey; border-radius: 2px; border-width: thin; padding: 20px 20px 20px 20px;
         box-shadow: 1px 0.5px 1px 2.5px grey;">
           <h5>Looking for:</h5>
           <ul style="text-align: justify; list-style-type:none">
@@ -63,7 +63,7 @@
             <li><a href="#" v-on:click='currPage = "Join Existing Groups";updateGroups()' style="text-decoration:none"><span><i class="fa fa-angle-double-right" aria-hidden="true"></i>Existing Groups</span></a></li>
           </ul>
         </div>
-        <div style="position: absolute; right: 300px; text-align: left; border-color: grey; border-radius: 2px; border-width: thin; padding: 20px 20px 20px 20px;
+        <div style="position: absolute; right: 5%; text-align: left; border-color: grey; border-radius: 2px; border-width: thin; padding: 20px 20px 20px 20px;
         box-shadow: 1px 0.5px 1px 2.5px grey;">
           <div v-show='currPage== "Students not in any group"' style="padding-right: 120px;">
             <h1>Students with No Group:</h1>
