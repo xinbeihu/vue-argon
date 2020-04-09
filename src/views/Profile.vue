@@ -32,9 +32,34 @@
                       type="default"
                       size="sm"
                       icon="fa fa-pencil"
-                      @click="modals.modal1 = true"
+                      v-b-modal.profileModal
+                      v-on:click="getProfile"
                     ></base-button>
                   </h3>
+                  <b-modal
+                    id="profileModal"
+                    ref="modal"
+                    title="Edit Personal Information"
+                    @ok="editProfile"
+                  >
+                    <form ref="form">
+                      <b-form-group label="Name">
+                        <b-form-input id="project-module" v-model="editName"></b-form-input>
+                      </b-form-group>
+                      <b-form-group label="Mobile Number">
+                        <b-form-input id="project-module-name" v-model="editMobileNumber"></b-form-input>
+                      </b-form-group>
+                      <b-form-group label="Faculty">
+                        <b-form-input id="project-module-name" v-model="editFaculty"></b-form-input>
+                      </b-form-group>
+                      <b-form-group label="Major">
+                        <b-form-input id="project-module-name" v-model="editMajor"></b-form-input>
+                      </b-form-group>
+                      <b-form-group label="Self Introduction">
+                        <b-form-input id="project-module-name" v-model="editSelfIntro"></b-form-input>
+                      </b-form-group>
+                    </form>
+                  </b-modal>
                   {{user}} · {{value.Mobile}}
                   <p>{{value.Faculty}} - {{value.Major}}</p>
                   <hr />
@@ -456,7 +481,12 @@ export default {
       inputCurrModName: "",
       inputPastModCode: "",
       inputPastModGrade: "",
-      inputPastModName: ""
+      inputPastModName: "",
+      editName: "",
+      editSelfIntro: "",
+      editFaculty: "",
+      editMajor: "",
+      editMobileNumber: ""
     };
   },
   methods: {
@@ -475,6 +505,13 @@ export default {
         this.userInfo = temp;
       });
     },
+    getProfile: function() {
+      let name = this.userInfo[this.currID]["Name"];
+      console.log(name);
+      console.log(this.userInfo);
+      this.editName = name;
+    },
+    editProfile: function() {},
     submitSkill: function() {
       let newSkill = this.inputSkill;
       let currUser = this.currID;
