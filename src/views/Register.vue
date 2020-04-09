@@ -69,7 +69,9 @@ export default {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
   .then(function() {
     alert('You have created an account');
-  }).then(function() {
+  })
+
+  .then(function() {
     router.push({ name: "form" });
   });
         }

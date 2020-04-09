@@ -25,6 +25,7 @@
                             <form role="form">
                                 <base-input alternative
                                             class="mb-3"
+                                            type="text"
                                             placeholder="Name"
                                             v-model="name">
                                 </base-input>
@@ -44,7 +45,7 @@
                                             v-model="phone">
                                 </base-input>
                                 <div class="text-center">
-                                    <base-button type="primary" class="my-4" @click="update">Go to Profile</base-button>
+                                    <base-button type="primary" class="my-4" @click="create">Go to Profile</base-button>
                                 </div>
                             </form>
                         </template>
@@ -57,21 +58,36 @@
 <script>
 import firebase from 'firebase';
 import router from '../router';
+import database from "../firebase.js";
 
 export default {
   name:"signup",
   data(){
     return{
-          email:'',
-          password:''
+          name:'',
+          faculty:'',
+          major:'',
+          phone:''
     }
   },
   methods:{
-    signup:  function () {
-          //Save item to database
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+    create:  function () {
+        //create a new doc
+        var email=firebase.auth().currentUser.email;
+        database.collection("User Info").doc(email).set({
+        Name: this.name,
+        Major: this.major,
+        'Mobile Number': this.phone,
+        Faculty: this.faculty,
+        Awards:{},
+        'Current Modules':{},
+        Interests:[],
+        Skills:[],
+        'Past Projects':{},
+        'Past Modules':{}
+    })
   .then(function() {
-    alert('You have created an account');
+    router.push({ name: "profile" });
   });
         }
   }
