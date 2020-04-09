@@ -79,7 +79,7 @@ export default {
   methods:{
     login:  function () {
           firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
-            // alert("Signed in Successfully!")
+            alert("Signed in Successfully!"),
             router.push({ name: "profile" })
           )
           
