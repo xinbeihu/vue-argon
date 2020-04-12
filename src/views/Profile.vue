@@ -826,12 +826,15 @@ export default {
                 newProjMod +
                 ".Team Members"]: newProjMembers
               });
-            this.inputProjMod = "";
-            this.inputProjName = "";
-            this.inputProjDesc = "";
-            this.inputProjModName = "";
-            this.teamMembers = [];
+          })
+          .catch(error => {
+            alert("Please enter the correct module code in upper case");
           });
+        this.inputProjMod = "";
+        this.inputProjName = "";
+        this.inputProjDesc = "";
+        this.inputProjModName = "";
+        this.teamMembers = [];
       }
     },
     submitCurrMod: function() {
@@ -855,8 +858,11 @@ export default {
               .update({
                 ["Current Modules." + newCurrModCode]: newCurrModName
               });
-            this.inputCurrModCode = "";
+          })
+          .catch(error => {
+            alert("Please enter the correct module code in upper case");
           });
+        this.inputCurrModCode = "";
       }
     },
 
@@ -887,9 +893,12 @@ export default {
                 newPastModCode +
                 ".Module Name"]: newPastModName
               });
-            this.inputPastModCode = "";
-            this.inputPastModGrade = "";
+          })
+          .catch(error => {
+            alert("Please enter the correct module code in upper case");
           });
+        this.inputPastModCode = "";
+        this.inputPastModGrade = "";
       }
     },
 
