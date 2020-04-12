@@ -47,7 +47,7 @@
                         <b-form-input id="project-module" v-model="editName"></b-form-input>
                       </b-form-group>
                       <b-form-group label="Mobile Number">
-                        <b-form-input id="project-module-name" v-model="editMobileNumber"></b-form-input>
+                        <b-form-input id="project-module-name" v-model="editMobile"></b-form-input>
                       </b-form-group>
                       <b-form-group label="Faculty">
                         <b-form-input id="project-module-name" v-model="editFaculty"></b-form-input>
@@ -56,11 +56,11 @@
                         <b-form-input id="project-module-name" v-model="editMajor"></b-form-input>
                       </b-form-group>
                       <b-form-group label="Self Introduction">
-                        <b-form-input id="project-module-name" v-model="editSelfIntro"></b-form-input>
+                        <b-form-input id="project-module-name" v-model="editIntro"></b-form-input>
                       </b-form-group>
                     </form>
                   </b-modal>
-                  {{user}} · {{value.Mobile}}
+                  {{user}} · {{value['Mobile Number']}}
                   <p>{{value.Faculty}} - {{value.Major}}</p>
                   <hr />
                 </div>
@@ -95,19 +95,38 @@
                         <base-button
                           type="default"
                           size="sm"
-                          icon="fa fa-plus"
-                          v-b-modal.skillModal
+                          icon="fa fa-pencil"
+                          v-b-modal.skillsModal
                         ></base-button>
 
                         <br />
                       </h4>
 
-                      <b-modal id="skillModal" ref="modal" title="Add New Skill" @ok="submitSkill">
+                      <b-modal id="skillsModal" ref="modal" title="Edit Skills">
+                        <li
+                          size="sm"
+                          type="secondary"
+                          v-for="(value,item) in value['Skills']"
+                          :key="item"
+                        >
+                          {{value}}
+                          <span style="float:right;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i
+                              v-on:click="deleteSkill(value)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
+                          </span>
+                        </li>
+                        <br />
                         <form ref="form">
-                          <b-form-group label="Skill">
+                          <b-form-group label="Add New Skill">
                             <b-form-input id="skill-input" v-model="inputSkill"></b-form-input>
                           </b-form-group>
                         </form>
+                        <base-button type="success" size="sm" v-on:click="submitSkill">Add</base-button>
                       </b-modal>
                     </div>
 
@@ -130,23 +149,37 @@
                         <base-button
                           type="default"
                           size="sm"
-                          icon="fa fa-plus"
+                          icon="fa fa-pencil"
                           v-b-modal.interestModal
                         ></base-button>
 
                         <br />
                       </h4>
-                      <b-modal
-                        id="interestModal"
-                        ref="modal"
-                        title="Add New Interest"
-                        @ok="submitInterest"
-                      >
+                      <b-modal id="interestModal" ref="modal" title="Edit Interests">
+                        <li
+                          size="sm"
+                          type="secondary"
+                          v-for="(value,item) in value['Interests']"
+                          :key="item"
+                        >
+                          {{value}}
+                          <span style="float:right;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i
+                              v-on:click="deleteInterest(value)"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                            ></i>
+                          </span>
+                        </li>
+                        <br />
                         <form ref="form">
-                          <b-form-group label="Interest">
+                          <b-form-group label="Add New Interest">
                             <b-form-input id="interest-input" v-model="inputInterest"></b-form-input>
                           </b-form-group>
                         </form>
+                        <base-button type="success" size="sm" v-on:click="submitInterest">Add</base-button>
                       </b-modal>
                     </div>
 
@@ -194,11 +227,9 @@
                       >
                         <form ref="form">
                           <b-form-group label="Module Code">
-                            <b-form-input id="project-module" v-model="inputPastModCode"></b-form-input>
+                            <b-form-input id="project-module" v-model.lazy="inputPastModCode"></b-form-input>
                           </b-form-group>
-                          <b-form-group label="Module Name">
-                            <b-form-input id="project-module-name" v-model="inputPastModName"></b-form-input>
-                          </b-form-group>
+
                           <b-form-group label="Module Grade">
                             <b-form-input id="project-module-name" v-model="inputPastModGrade"></b-form-input>
                           </b-form-group>
@@ -220,8 +251,8 @@
                                 class="fa fa-pencil-square-o"
                                 aria-hidden="true"
                                 style="font-size:15px"
-                                v-b-modal.editSubModal
-                                v-on:click="editSubTask(details, subtask)"
+                                v-b-modal.editPastModModal
+                                v-on:click="getPastModule(item, value)"
                               ></i>
                               <i
                                 v-on:click="deletePastModule(item)"
@@ -236,6 +267,32 @@
                           </h5>
                         </li>
                       </ul>
+                      <b-modal
+                        id="editPastModModal"
+                        ref="modal"
+                        title="Edit Past Module"
+                        @ok="editPastModule"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module Code">
+                            <b-form-input
+                              disabled="True"
+                              id="project-module"
+                              v-model="editPastModCode"
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Name">
+                            <b-form-input
+                              disabled="True"
+                              id="project-module-name"
+                              v-model="editPastModName"
+                            ></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Module Grade">
+                            <b-form-input id="project-module-name" v-model="editPastModGrade"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
                   </div>
 
@@ -262,9 +319,6 @@
                           <b-form-group label="Module Code">
                             <b-form-input id="project-module" v-model="inputCurrModCode"></b-form-input>
                           </b-form-group>
-                          <b-form-group label="Module Name">
-                            <b-form-input id="project-module-name" v-model="inputCurrModName"></b-form-input>
-                          </b-form-group>
                         </form>
                       </b-modal>
                       <br />
@@ -274,13 +328,6 @@
                             {{item}}
                             <span style="float:right;">
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <i
-                                class="fa fa-pencil-square-o"
-                                aria-hidden="true"
-                                style="font-size:15px"
-                                v-b-modal.editSubModal
-                                v-on:click="editSubTask(details, subtask)"
-                              ></i>
                               <i
                                 v-on:click="deleteCurrModule(item)"
                                 class="fa fa-trash"
@@ -330,14 +377,33 @@
                           <b-form-group label="Module Code">
                             <b-form-input id="project-module" v-model="inputProjMod"></b-form-input>
                           </b-form-group>
-                          <b-form-group label="Module Name">
-                            <b-form-input id="project-module-name" v-model="inputProjModName"></b-form-input>
-                          </b-form-group>
                           <b-form-group label="Project Name">
                             <b-form-input id="project-name" v-model="inputProjName"></b-form-input>
                           </b-form-group>
                           <b-form-group label="Project Description">
                             <b-form-input id="project-desc" v-model="inputProjDesc"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Team Members">
+                            <ul>
+                              <li v-for="(member, index) in teamMembers" :key="index">
+                                {{member}}
+                                <i
+                                  @click="deleteMember(member)"
+                                  class="fa fa-trash"
+                                  aria-hidden="true"
+                                  style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                                ></i>
+                              </li>
+                            </ul>
+
+                            <b-form-input id="project-name" v-model="newTeamMember"></b-form-input>
+                            <br />
+                            <base-button
+                              type="success"
+                              size="sm"
+                              icon="fa fa-plus"
+                              v-on:click="addTeamMember"
+                            >Add Team Member</base-button>
                           </b-form-group>
                         </form>
                       </b-modal>
@@ -354,8 +420,8 @@
                                 class="fa fa-pencil-square-o"
                                 aria-hidden="true"
                                 style="font-size:15px"
-                                v-b-modal.editSubModal
-                                v-on:click="editSubTask(details, subtask)"
+                                v-b-modal.editProjectModal
+                                v-on:click="getProject(item,value)"
                               ></i>
                               <i
                                 v-on:click="deleteProject(item)"
@@ -395,6 +461,46 @@
                           </h5>
                         </li>
                       </ul>
+                      <b-modal
+                        id="editProjectModal"
+                        ref="modal"
+                        title="Edit Project"
+                        @ok="editProject"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module Code">
+                            <b-form-input disabled="True" id="project-module" v-model="editProjMod"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Project Name">
+                            <b-form-input id="project-name" v-model="editProjName"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Project Description">
+                            <b-form-input id="project-desc" v-model="editProjDesc"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Team Members">
+                            <ul>
+                              <li v-for="(member, index) in editTeamMembers" :key="index">
+                                {{member}}
+                                <i
+                                  @click="editdeleteMember(member)"
+                                  class="fa fa-trash"
+                                  aria-hidden="true"
+                                  style="padding-left:10px;color:rgb(136, 43, 43);font-size:16px"
+                                ></i>
+                              </li>
+                            </ul>
+
+                            <b-form-input id="project-name" v-model="newTeamMember"></b-form-input>
+                            <br />
+                            <base-button
+                              type="success"
+                              size="sm"
+                              icon="fa fa-plus"
+                              v-on:click="editaddTeamMember"
+                            >Add Team Member</base-button>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
                   </div>
 
@@ -434,8 +540,8 @@
                               class="fa fa-pencil-square-o"
                               aria-hidden="true"
                               style="font-size:15px"
-                              v-b-modal.editSubModal
-                              v-on:click="editSubTask(details, subtask)"
+                              v-b-modal.editAward
+                              v-on:click="getAward(item, value)"
                             ></i>
                             <i
                               v-on:click="deleteAward(item)"
@@ -446,6 +552,16 @@
                           </span>
                         </li>
                       </ul>
+                      <b-modal id="editAward" ref="modal" title="Edit Award" @ok="editNewAward">
+                        <form ref="form">
+                          <b-form-group label="Award">
+                            <b-form-input id="award-input" v-model="editAward"></b-form-input>
+                          </b-form-group>
+                          <b-form-group label="Description">
+                            <b-form-input id="award-description" v-model="editAwardDescription"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
                     </div>
                   </div>
                 </div>
@@ -458,6 +574,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 import database from "../firebase.js";
 import firebase from "firebase";
 import Modal from "../components/Modal.vue";
@@ -473,22 +590,38 @@ export default {
       currID: "vcjw97@gmail.com",
       inputAward: "",
       inputAwardDescription: "",
+      editAward: "",
+      editAwardDescription: "",
+      editAwardCopy: "",
+      editAwardDescriptionCopy: "",
       inputProjDesc: "",
       inputProjMod: "",
       inputProjModName: "",
       inputProjName: "",
+      teamMembers: [],
+      editProjDesc: "",
+      editProjMod: "",
+      editProjModName: "",
+      editProjName: "",
+      editTeamMembers: [],
+      newTeamMember: "",
       inputCurrModCode: "",
       inputCurrModName: "",
       inputPastModCode: "",
       inputPastModGrade: "",
       inputPastModName: "",
+      editPastModCode: "",
+      editPastModGrade: "",
+      editPastModName: "",
       editName: "",
-      editSelfIntro: "",
+      editIntro: "",
       editFaculty: "",
       editMajor: "",
-      editMobileNumber: ""
+      editMobile: "",
+      editAwardName: ""
     };
   },
+
   methods: {
     fetchData: function() {
       let temp = {};
@@ -505,13 +638,108 @@ export default {
         this.userInfo = temp;
       });
     },
+    getProject: function(item, value) {
+      this.editProjMod = item;
+      this.editProjDesc = value["Description"];
+      this.editProjModName = value["Module Name"];
+      this.editProjName = value["Project Name"];
+      this.editTeamMembers = value["Team Members"];
+    },
+    editProject: function() {
+      let mod = this.editProjMod;
+      let projdesc = this.editProjDesc;
+      let modname = this.editProjModName;
+      let projname = this.editProjName;
+      let team = this.editTeamMembers;
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Past Projects." + mod + ".Description"]: projdesc,
+          ["Past Projects." + mod + ".Module Name"]: modname,
+          ["Past Projects." + mod + ".Project Name"]: projname,
+          ["Past Projects." + mod + ".Team Members"]: team
+        });
+    },
+    addTeamMember: function() {
+      this.teamMembers.push(this.newTeamMember);
+      this.newTeamMember = "";
+    },
+    editaddTeamMember: function() {
+      this.editTeamMembers.push(this.newTeamMember);
+      this.newTeamMember = "";
+    },
+    deleteMember: function(member) {
+      this.teamMembers.splice(this.teamMembers.indexOf(member), 1);
+    },
+    editdeleteMember: function(member) {
+      this.editTeamMembers.splice(this.editTeamMembers.indexOf(member), 1);
+    },
     getProfile: function() {
       let name = this.userInfo[this.currID]["Name"];
-      console.log(name);
-      console.log(this.userInfo);
+      let mobile = this.userInfo[this.currID]["Mobile Number"];
+      let faculty = this.userInfo[this.currID]["Faculty"];
+      let major = this.userInfo[this.currID]["Major"];
+      let intro = this.userInfo[this.currID]["Intro"];
       this.editName = name;
+      this.editMobile = mobile;
+      this.editFaculty = faculty;
+      this.editMajor = major;
+      this.editIntro = intro;
     },
-    editProfile: function() {},
+    editProfile: function() {
+      let name = this.editName;
+      let mobile = this.editMobile;
+      let faculty = this.editFaculty;
+      let major = this.editMajor;
+      let intro = this.editIntro;
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          Name: name,
+          "Mobile Number": mobile,
+          Faculty: faculty,
+          Major: major,
+          Intro: intro
+        });
+    },
+    getPastModule: function(item, value) {
+      this.editPastModCode = item;
+      this.editPastModGrade = value.Grade;
+      this.editPastModName = value["Module Name"];
+    },
+    editPastModule: function() {
+      let editPModCode = this.editPastModCode;
+      let editPModGrade = this.editPastModGrade;
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Past Modules." + editPModCode + ".Grade"]: editPModGrade
+        });
+    },
+    deleteSkill: function(value) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          Skills: firebase.firestore.FieldValue.arrayRemove(value)
+        });
+    },
+    deleteInterest: function(value) {
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          Interests: firebase.firestore.FieldValue.arrayRemove(value)
+        });
+    },
     submitSkill: function() {
       let newSkill = this.inputSkill;
       let currUser = this.currID;
@@ -562,71 +790,109 @@ export default {
       }
     },
     submitProject: function() {
-      let newProjMod = this.inputProjMod;
-      let newProjModName = this.inputProjModName;
-      let newProjName = this.inputProjName;
-      let newProjDesc = this.inputProjDesc;
-      let currUser = this.currID;
       if (this.inputProjMod == "") {
         alert("Please enter module code");
-      } else if (this.inputProjModName == "") {
-        alert("Please enter module name");
       } else if (this.inputProjName == "") {
         alert("Please enter project name");
       } else if (this.inputProjDesc == "") {
-        alert("Please enter Project Description");
+        alert("Please enter project description");
+      } else if (this.teamMembers.length == 0) {
+        alert("Please enter team members");
       } else {
-        database
-          .collection("User Info")
-          .doc(currUser)
-          .update({});
-        this.inputAward = "";
-        this.inputAwardDescription = "";
+        axios
+          .get(
+            "https://api.nusmods.com/v2/2019-2020/modules/" +
+              this.inputProjMod +
+              ".json"
+          )
+          .then(response => {
+            this.inputProjModName = response.data.title;
+            let newProjMod = this.inputProjMod;
+            let newProjName = this.inputProjName;
+            let newProjDesc = this.inputProjDesc;
+            let newProjModName = this.inputProjModName;
+            let newProjMembers = this.teamMembers;
+            let currUser = this.currID;
+            database
+              .collection("User Info")
+              .doc(currUser)
+              .update({
+                ["Past Projects." + newProjMod + ".Description"]: newProjDesc,
+                ["Past Projects." +
+                newProjMod +
+                ".Module Name"]: newProjModName,
+                ["Past Projects." + newProjMod + ".Project Name"]: newProjName,
+                ["Past Projects." +
+                newProjMod +
+                ".Team Members"]: newProjMembers
+              });
+            this.inputProjMod = "";
+            this.inputProjName = "";
+            this.inputProjDesc = "";
+            this.inputProjModName = "";
+            this.teamMembers = [];
+          });
       }
     },
     submitCurrMod: function() {
-      let newCurrModCode = this.inputCurrModCode;
-      let newCurrModName = this.inputCurrModName;
-      let currUser = this.currID;
       if (this.inputCurrModCode == "") {
         alert("Please enter module code");
-      } else if (this.inputCurrModName == "") {
-        alert("Please enter module name");
       } else {
-        database
-          .collection("User Info")
-          .doc(currUser)
-          .update({
-            ["Current Modules." + newCurrModCode]: newCurrModName
+        axios
+          .get(
+            "https://api.nusmods.com/v2/2019-2020/modules/" +
+              this.inputCurrModCode +
+              ".json"
+          )
+          .then(response => {
+            this.inputCurrModName = response.data.title;
+            let newCurrModCode = this.inputCurrModCode;
+            let newCurrModName = this.inputCurrModName;
+            let currUser = this.currID;
+            database
+              .collection("User Info")
+              .doc(currUser)
+              .update({
+                ["Current Modules." + newCurrModCode]: newCurrModName
+              });
+            this.inputCurrModCode = "";
           });
-        this.inputCurrModCode = "";
-        this.inputCurrModName = "";
       }
     },
+
     submitPastMod: function() {
-      let newPastModCode = this.inputPastModCode;
-      let newPastModName = this.inputPastModName;
-      let newPastModGrade = this.inputPastModGrade;
-      let currUser = this.currID;
       if (this.inputPastModCode == "") {
         alert("Please enter module code");
-      } else if (this.inputPastModName == "") {
-        alert("Please enter module name");
       } else if (this.inputPastModGrade == "") {
         alert("Please enter module grade");
       } else {
-        database
-          .collection("User Info")
-          .doc(currUser)
-          .update({
-            ["Past Modules." + newPastModCode + ".Grade"]: newPastModGrade,
-            ["Past Modules." + newPastModCode + ".Module Name"]: newPastModName
+        axios
+          .get(
+            "https://api.nusmods.com/v2/2019-2020/modules/" +
+              this.inputPastModCode +
+              ".json"
+          )
+          .then(response => {
+            this.inputPastModName = response.data.title;
+            let newPastModCode = this.inputPastModCode;
+            let newPastModGrade = this.inputPastModGrade;
+            let newPastModName = this.inputPastModName;
+            let currUser = this.currID;
+            database
+              .collection("User Info")
+              .doc(currUser)
+              .update({
+                ["Past Modules." + newPastModCode + ".Grade"]: newPastModGrade,
+                ["Past Modules." +
+                newPastModCode +
+                ".Module Name"]: newPastModName
+              });
+            this.inputPastModCode = "";
+            this.inputPastModGrade = "";
           });
-        this.inputPastModCode = "";
-        this.inputPastModName = "";
-        this.inputPastModGrade = "";
       }
     },
+
     deleteCurrModule: function(ModCode) {
       let currUser = this.currID;
       database
@@ -662,6 +928,25 @@ export default {
         .update({
           ["Awards." + award]: firebase.firestore.FieldValue.delete()
         });
+    },
+    editNewAward: function() {
+      let award = this.editAwardCopy;
+      let awardNew = this.editAward;
+      let descNew = this.editAwardDescription;
+      let currUser = this.currID;
+      database
+        .collection("User Info")
+        .doc(currUser)
+        .update({
+          ["Awards." + award]: firebase.firestore.FieldValue.delete(),
+          ["Awards." + awardNew]: descNew
+        });
+    },
+    getAward: function(item, value) {
+      this.editAward = item;
+      this.editAwardDescription = value;
+      this.editAwardCopy = item;
+      this.editAwardDescriptionCopy = value;
     }
   },
   created() {
