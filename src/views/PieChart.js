@@ -66,7 +66,7 @@ export default {
                   } else {
                     membercontribution[member] = 1;
                   }
-                  console.log(membercontribution)
+                  //console.log(membercontribution)
                 }
               }
             }

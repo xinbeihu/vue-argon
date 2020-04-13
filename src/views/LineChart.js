@@ -10,17 +10,26 @@ export default {
         groups:"",
         datacollection: {
             labels: [],
-            datasets: [{ 
+            datasets: [
+              { 
                 data: [],
-                label: "Number of tasks completed",
+                label: "",
                 borderColor: "#3e95cd",
                 fill: false
-            }]
+              }
+          ]
         },
         options: {
             title: {
               display: true,
               //text: 'My Contribution'
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
             },
             responsive: true,
             maintainAspectRatio: false
@@ -29,11 +38,31 @@ export default {
   },
 
   methods: {
+    getMonth: function(timestamp) {
+      let monthNumber = timestamp.toDate().getMonth();
+      let months = {
+        "0": "Jan",
+        "1": "Feb",
+        "2": "Mar",
+        "3": "Apr",
+        "4": "May",
+        "5": "Jun",
+        "6": "Jul",
+        "7": "Aug",
+        "8": "Sep",
+        "9": "Oct",
+        "10": "Nov",
+        "11": "Dec"
+      };
+      let month = months[monthNumber];
+      return month;
+    },
+
     fetchTasks: function() {
       let currUser = this.user;
       let tasks = {};
       let myGroups = { members: {}, groupName: {} };
-      let membercontribution = {};
+      let time = {};
 
       database.collection("Modules").onSnapshot(myModules => {
         myModules.forEach(function(module) {
@@ -53,30 +82,33 @@ export default {
         });
         this.taskList = tasks;
         this.groups = myGroups;
+        // console.log(this.taskList)
+        // console.log(this.groups)
 
-        let member = "";
+        let selectedModule = "";
+        let numOfModules = Object.keys(tasks).length;
+        let month = "";
         let num = "";
+        let count = 0;
         for (let module in tasks) {
+          selectedModule = module;
           for (let task in tasks[module]){
-            for (let assignment in tasks[module][task]) {
-              if (assignment == "subTasks") {
-                for (let subTask in tasks[module][task][assignment]) {
-                  member = tasks[module][task][assignment][subTask]["member"];
-                  if (member in membercontribution) {
-                    num = membercontribution[member];
-                    membercontribution[member] = num + 1;
-                  } else {
-                    membercontribution[member] = 1;
-                  }
-                  console.log(membercontribution)
-                }
+            month = this.getMonth(tasks[module][task]["deadline"]);
+            if (tasks[module][task]["completed"] == true) {
+              if (month in time) {
+                num = time[month];
+                time[month] = num + 1;
+              } else {
+                time[month] = 1;
               }
-            }
+            } 
           }
-        }
-        for (member in membercontribution){
-          this.datacollection.labels.push(member);
-          this.datacollection.datasets[0].data.push(membercontribution[member]);
+          for (month in time){
+            this.datacollection.labels.push(month);
+            this.datacollection.datasets[count].data.push(time[month]);
+            this.datacollection.datasets[count].label = selectedModule;
+          }
+          count++;
         }
         this.renderChart(this.datacollection, this.options)
       });

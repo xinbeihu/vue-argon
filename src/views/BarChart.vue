@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <h1>Tasks For Each Month</h1>
+    <h3>Tasks For Each Month</h3>
     <chart></chart>
   </div>
 </template>
@@ -16,4 +16,9 @@ export default {
 </script>
 
 <style>
+#chart{
+  text-align: center;
+  align-content: center;
+  margin: auto;
+}
 </style>

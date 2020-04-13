@@ -12,7 +12,8 @@ export default {
         labels: [],
         datasets: [{
             label: "Number of Tasks",
-            data: []
+            data: [],
+            backgroundColor:"#8e5ea2"
         }]
       },
       options: {
@@ -21,6 +22,13 @@ export default {
           display: true,
           // text: 'Number of Tasks for Each Month'
         },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
         responsive: true,
         maintainAspectRatio: false
       }
@@ -28,6 +36,26 @@ export default {
   },
 
   methods: {
+    getMonth: function(timestamp) {
+      let monthNumber = timestamp.toDate().getMonth();
+      let months = {
+        "0": "Jan",
+        "1": "Feb",
+        "2": "Mar",
+        "3": "Apr",
+        "4": "May",
+        "5": "Jun",
+        "6": "Jul",
+        "7": "Aug",
+        "8": "Sep",
+        "9": "Oct",
+        "10": "Nov",
+        "11": "Dec"
+      };
+      let month = months[monthNumber];
+      return month;
+    },
+
     fetchTasks: function() {
       let currUser = this.user;
       let tasks = {};
@@ -57,7 +85,8 @@ export default {
         let num = "";
         for (let module in tasks) {
           for (let task in tasks[module]){
-            month = tasks[module][task]["deadline"].toDate().getMonth();
+            month = this.getMonth(tasks[module][task]["deadline"]);
+            //console.log(tasks[module][task]["deadline"].toDate())
             //console.log(month)
             if (month in time) {
               num = time[month];
