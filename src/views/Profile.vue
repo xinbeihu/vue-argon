@@ -29,7 +29,7 @@
                   <h3 class="text-left">
                     {{value.Name}}
                     <base-button
-                      type="default"
+                      type="secondary"
                       size="sm"
                       icon="fa fa-pencil"
                       v-b-modal.profileModal
@@ -62,7 +62,6 @@
                   </b-modal>
                   {{user}} · {{value['Mobile Number']}}
                   <p>{{value.Faculty}} - {{value.Major}}</p>
-                  <hr />
                 </div>
               </div>
             </div>
@@ -93,7 +92,7 @@
                         </strong>
 
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-pencil"
                           v-b-modal.skillsModal
@@ -133,7 +132,7 @@
                     <div class="row">
                       <base-button
                         size="sm"
-                        type="secondary"
+                        type="primary"
                         v-for="(value,item) in value['Skills']"
                         :key="item"
                       >{{value}}</base-button>
@@ -147,7 +146,7 @@
                           <slot></slot>
                         </strong>
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-pencil"
                           v-b-modal.interestModal
@@ -164,7 +163,7 @@
                         >
                           {{value}}
                           <span style="float:right;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <i
                               v-on:click="deleteInterest(value)"
                               class="fa fa-trash"
@@ -186,7 +185,7 @@
                     <div class="row">
                       <base-button
                         size="sm"
-                        type="secondary"
+                        type="primary"
                         v-for="(value,item) in value['Interests']"
                         :key="item"
                       >{{value}}</base-button>
@@ -211,7 +210,7 @@
                           <slot></slot>
                         </strong>
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-plus"
                           v-b-modal.pastModModal
@@ -246,7 +245,7 @@
                               class="text-muted !text-right"
                             >Grade: &nbsp;{{ value.Grade }}</small>
                             <span style="float:right;">
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <i
                                 class="fa fa-pencil-square-o"
                                 aria-hidden="true"
@@ -301,7 +300,7 @@
                       <h4>
                         <strong>Current Modules&nbsp;</strong>
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-plus"
                           v-b-modal.currModModal
@@ -327,7 +326,7 @@
                           <h5 class="text-left">
                             {{item}}
                             <span style="float:right;">
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <i
                                 v-on:click="deleteCurrModule(item)"
                                 class="fa fa-trash"
@@ -359,7 +358,7 @@
                       <h4>
                         <strong>Past Projects&nbsp;</strong>
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-plus"
                           v-b-modal.projectModal
@@ -415,7 +414,6 @@
                           <h5 class="text-left">
                             {{item}}
                             <span style="float:right;">
-                              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <i
                                 class="fa fa-pencil-square-o"
                                 aria-hidden="true"
@@ -509,7 +507,7 @@
                       <h4>
                         <strong>Awards&nbsp;</strong>
                         <base-button
-                          type="default"
+                          type="secondary"
                           size="sm"
                           icon="fa fa-plus"
                           v-b-modal.awardModal
@@ -535,7 +533,7 @@
                           {{item}} -
                           <span class="text-muted">{{value}}</span>
                           <span style="float:right;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <i
                               class="fa fa-pencil-square-o"
                               aria-hidden="true"

@@ -455,15 +455,15 @@ export default {
         this.good = "This group name is available";
         this.bad = "";
       }
-  },
+    },
 
-  changeText : function() {
-    if(this.loadText == "Load More") {
-      this.loadText = "Load Less";
-    } else {
-      this.loadText = "Load More";
-    }
-  },
+    changeText : function() {
+      if(this.loadText == "Load More") {
+        this.loadText = "Load Less";
+      } else {
+        this.loadText = "Load More";
+      }
+    },
 
     addFriend: function() {
       if(this.newGroup.currGroup.indexOf("" + this.friend) > -1) {
@@ -495,191 +495,192 @@ export default {
       } else {
         this.newGroup.members[index] = "None";
       }
-  },
+    },
 
-  checkSkill: function() {
-    if(this.skill == '') {
-      alert("Please enter at least 1 character.");
-    }else if(this.newGroup.newSkill.indexOf(this.skill) == -1) {
-      this.hasNewSkill = true;
-      this.newGroup.newSkill.push(this.skill);
-    } else {
-      this.hasNewSkill = false;
-    }
-  },
+    checkSkill: function() {
+      if(this.skill == '') {
+        alert("Please enter at least 1 character.");
+      }else if(this.newGroup.newSkill.indexOf(this.skill) == -1) {
+        this.hasNewSkill = true;
+        this.newGroup.newSkill.push(this.skill);
+      } else {
+        this.hasNewSkill = false;
+      }
+    },
 
-  addGroup: function() {  
-    if(this.newGroup.groupName == '') {
-      alert("Please fill in a group name.");
-    } else if(this.newGroup.comment.length == 0) {
-      alert("Please write a comment for your group.");
-    } else if(this.newGroup.size < 1) {
-      alert("Please enter a valid group size.");
-    } else if(this.newGroup.size == 1) {
-      alert("Group size should be at least 2");
-    } else if (this.newGroupFormed[this.module]) {
-      alert("You have already created a group for this module.");
-    }else {
-      for(var i = 0; i < this.newGroup.skills.length; i++) {
-        if(this.newGroup.skills[i].length == 0) {
-          alert("Please choose at least 1 option for team mate " + (i + 1));
-          return;
+    addGroup: function() {  
+      if(this.newGroup.groupName == '') {
+        alert("Please fill in a group name.");
+      } else if(this.newGroup.comment.length == 0) {
+        alert("Please write a comment for your group.");
+      } else if(this.newGroup.size < 1) {
+        alert("Please enter a valid group size.");
+      } else if(this.newGroup.size == 1) {
+        alert("Group size should be at least 2");
+      } else if (this.newGroupFormed[this.module]) {
+        alert("You have already created a group for this module.");
+      }else {
+        for(var i = 0; i < this.newGroup.skills.length; i++) {
+          if(this.newGroup.skills[i].length == 0) {
+            alert("Please choose at least 1 option for team mate " + (i + 1));
+            return;
+          }
+        }
+        alert("Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."); 
+        var newGroupFormat = {};
+        newGroupFormat[this.newGroup.groupName] = {'Group Members':this.newGroup['currGroup'], 'MaxSize': this.newGroup['size'], 'Vacancies':{}, 'Comment':this.newGroup.comment};
+        var counter = 1;
+        for(i = 0; i < this.newGroup['members'].length; i++) {
+          if(Number.isInteger((counter - 1) / 2)) {
+            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+          }
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = false;
+          if(this.newGroup['members'][i].indexOf(',') > -1) {
+            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = this.newGroup['members'][i].split(",");
+          } else {
+            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = [this.newGroup['members'][i]];
+          }
+          counter += 1;
+        }
+        for(i = 0; i < this.newGroup['currGroup'].length; i++) {
+          if(Number.isInteger((counter - 1) / 2)) {
+            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+          }
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = true;
+          counter += 1
+        }
+        this.newGroupFormed[this.module] = true;
+        this.newGroups[this.newGroup.groupName] = this.newGroup;
+        database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
+        this.newGroup = {module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
+        memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]};
+      }
+    },
+    addMember: function() {
+      var add = this.newGroup.size - this.newGroup.currGroup.length;
+      this.newGroup.memberStatus = ['true'];
+      this.newGroup.skills = [[]];
+      for(var i = 1; i < add; i++) {
+        this.newGroup.memberStatus.push('false');
+        this.newGroup.skills.push([]);
+      }
+    },
+    checkCurr: function() {
+      var index = this.newGroup.currMember - 1;
+      this.newGroup.memberStatus[index] = 'true';
+      for(var i = 0; i < this.newGroup.memberStatus.length; i++) {
+        if(i != index) {
+          this.newGroup.memberStatus[i] = 'false';
         }
       }
-      alert("Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."); 
-      var newGroupFormat = {};
-      newGroupFormat[this.newGroup.groupName] = {'Group Members':this.newGroup['currGroup'], 'MaxSize': this.newGroup['size'], 'Vacancies':{}, 'Comment':this.newGroup.comment};
-      var counter = 1;
-      for(i = 0; i < this.newGroup['members'].length; i++) {
-        if(Number.isInteger((counter - 1) / 2)) {
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
-        }
-        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
-        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = false;
-        if(this.newGroup['members'][i].indexOf(',') > -1) {
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = this.newGroup['members'][i].split(",");
-        } else {
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = [this.newGroup['members'][i]];
-        }
-        counter += 1;
-      }
-      for(i = 0; i < this.newGroup['currGroup'].length; i++) {
-        if(Number.isInteger((counter - 1) / 2)) {
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
-        }
-        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
-        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = true;
-        counter += 1
-      }
-      this.newGroupFormed[this.module] = true;
-      this.newGroups[this.newGroup.groupName] = this.newGroup;
-      database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
-      this.newGroup = {module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
-      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]};
-    }
-  },
-  addMember: function() {
-    var add = this.newGroup.size - this.newGroup.currGroup.length;
-    this.newGroup.memberStatus = ['true'];
-    this.newGroup.skills = [[]];
-    for(var i = 1; i < add; i++) {
-      this.newGroup.memberStatus.push('false');
-      this.newGroup.skills.push([]);
-    }
-  },
-  checkCurr: function() {
-    var index = this.newGroup.currMember - 1;
-    this.newGroup.memberStatus[index] = 'true';
-    for(var i = 0; i < this.newGroup.memberStatus.length; i++) {
-      if(i != index) {
-        this.newGroup.memberStatus[i] = 'false';
-      }
-    }
-  },
-  join: function(teamName, person) {
-    var temp = {}
-    for(var mod in this.modules) {
-      if(this.module == mod) {
-        for(var group in this.modules[mod]) {
-          if(group == teamName) {
-            temp[teamName] = this.modules[mod][group];
-            break;
+    },
+    join: function(teamName, person) {
+      var temp = {}
+      for(var mod in this.modules) {
+        if(this.module == mod) {
+          for(var group in this.modules[mod]) {
+            if(group == teamName) {
+              temp[teamName] = this.modules[mod][group];
+              break;
+            }
           }
         }
       }
-    }
-    temp[teamName]['Group Members'].push('You');
-    for(var index in temp[teamName]['Vacancies']) {
-      for(var mem in temp[teamName]['Vacancies'][index]) {
-        if('FilledOrNot' in temp[teamName]['Vacancies'][index][mem] && mem == person) {
-          temp[teamName]['Vacancies'][index][mem]['FilledOrNot'] = true
-          break
-        }
-      }
-    }
-    database.collection("Modules").doc(this.module).set(temp, {merge: true})
-  },
-  leave: function(teamName, person) {
-    var temp = {}
-    for(var mod in this.modules) {
-      if(this.module == mod) {
-        for(var group in this.modules[mod]) {
-          if(group == teamName) {
-            temp[teamName] = this.modules[mod][group];
-            break;
+      temp[teamName]['Group Members'].push('You');
+      for(var index in temp[teamName]['Vacancies']) {
+        for(var mem in temp[teamName]['Vacancies'][index]) {
+          if('FilledOrNot' in temp[teamName]['Vacancies'][index][mem] && mem == person) {
+            temp[teamName]['Vacancies'][index][mem]['FilledOrNot'] = true
+            break
           }
         }
       }
-    }
-    temp[teamName]['Group Members'].pop();
-    for(var index in temp[teamName]['Vacancies']) {
-      for(var mem in temp[teamName]['Vacancies'][index]) {
-        if('FilledOrNot' in temp[teamName]['Vacancies'][index][mem] && mem == person) {
-          temp[teamName]['Vacancies'][index][mem]['FilledOrNot'] = false
-          break
+      database.collection("Modules").doc(this.module).set(temp, {merge: true})
+    },
+    leave: function(teamName, person) {
+      var temp = {}
+      for(var mod in this.modules) {
+        if(this.module == mod) {
+          for(var group in this.modules[mod]) {
+            if(group == teamName) {
+              temp[teamName] = this.modules[mod][group];
+              break;
+            }
+          }
         }
       }
-    }
-    database.collection("Modules").doc(this.module).set(temp, {merge: true})
-  },
-  fetchData: function() {
-    let temp = {}
-      //Get all the items from DB
-      database.collection('Modules').onSnapshot(myModules => {
-        myModules.forEach(function(module) {
-          temp[module.id] = module.data()
+      temp[teamName]['Group Members'].pop();
+      for(var index in temp[teamName]['Vacancies']) {
+        for(var mem in temp[teamName]['Vacancies'][index]) {
+          if('FilledOrNot' in temp[teamName]['Vacancies'][index][mem] && mem == person) {
+            temp[teamName]['Vacancies'][index][mem]['FilledOrNot'] = false
+            break
+          }
+        }
+      }
+      database.collection("Modules").doc(this.module).set(temp, {merge: true})
+    },
+    fetchData: function() {
+      let temp = {}
+        //Get all the items from DB
+        database.collection('Modules').onSnapshot(myModules => {
+          myModules.forEach(function(module) {
+            temp[module.id] = module.data()
+          })
+          this.modules = temp;
         })
-        this.modules = temp;
+
+      let temp1 = []
+      let tempName = ''
+      var user = firebase.auth().currentUser;
+      var emailVerified = user.email;
+      database.collection('User Info').onSnapshot(user => {
+        user.forEach(function(currUser) {
+          if(currUser.id == emailVerified) {
+            temp1 = currUser.data()['Skills']
+            tempName = currUser.data()['Name']
+          }
+        })
+        this.currName = tempName
+        this.my_skills = temp1;
       })
 
-    let temp1 = []
-    let tempName = ''
-    var user = firebase.auth().currentUser;
-    var emailVerified = user.email;
-    database.collection('User Info').onSnapshot(user => {
-      user.forEach(function(currUser) {
-        if(currUser.id == emailVerified) {
-          temp1 = currUser.data()['Skills']
-          tempName = currUser.data()['Name']
-        }
-      })
-      this.currName = tempName
-      this.my_skills = temp1;
-    })
-
-  },
-  updateGroups: function() {
-    this.newGroups = {}
-    for(let mod in this.modules) {
-      if(this.module == mod) {
-        this.noGroup = this.modules[mod]['NoGroup']
-        for(var group in this.modules[mod]) {
-          if('Group Members' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') > -1) {
-            this.newGroups[group] = this.modules[mod][group];  
+    },
+    updateGroups: function() {
+      this.newGroups = {}
+      for(let mod in this.modules) {
+        if(this.module == mod) {
+          this.noGroup = this.modules[mod]['NoGroup']
+          for(var group in this.modules[mod]) {
+            if('Group Members' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') > -1) {
+              this.newGroups[group] = this.modules[mod][group];  
+            }
           }
         }
       }
-    }
-    this.currGroups = {}
-    for(let mod in this.modules) {
-      if(this.module == mod) {
-        for(group in this.modules[mod]) {
-          if('Vacancies' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') == -1) {
-            this.currGroups[group] = this.modules[mod][group];  
-            this.my_compatibility[group] = {};
-            for(var vacancy in this.modules[mod][group]['Vacancies']) {
-              for(var member in this.modules[mod][group]['Vacancies'][vacancy]) {
-                if(!this.modules[mod][group]['Vacancies'][vacancy][member]['FilledOrNot']) {
-                  var tot = 0;
-                  var match = 0;
-                  for(var i = 0; i < this.modules[mod][group]['Vacancies'][vacancy][member]['Skills Required'].length; i++) {
-                    tot += 1;
-                    if(this.my_skills.indexOf(this.modules[mod][group]['Vacancies'][vacancy][member]['Skills Required'][i]) > -1) {
-                      match += 1;
+      this.currGroups = {}
+      for(let mod in this.modules) {
+        if(this.module == mod) {
+          for(group in this.modules[mod]) {
+            if('Vacancies' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') == -1) {
+              this.currGroups[group] = this.modules[mod][group];  
+              this.my_compatibility[group] = {};
+              for(var vacancy in this.modules[mod][group]['Vacancies']) {
+                for(var member in this.modules[mod][group]['Vacancies'][vacancy]) {
+                  if(!this.modules[mod][group]['Vacancies'][vacancy][member]['FilledOrNot']) {
+                    var tot = 0;
+                    var match = 0;
+                    for(var i = 0; i < this.modules[mod][group]['Vacancies'][vacancy][member]['Skills Required'].length; i++) {
+                      tot += 1;
+                      if(this.my_skills.indexOf(this.modules[mod][group]['Vacancies'][vacancy][member]['Skills Required'][i]) > -1) {
+                        match += 1;
+                      }
                     }
+                    var compat = parseFloat(match / tot * 100 + "").toFixed(2);
+                    this.my_compatibility[group][member] = compat;
                   }
-                  var compat = parseFloat(match / tot * 100 + "").toFixed(2);
-                  this.my_compatibility[group][member] = compat;
                 }
               }
             }
@@ -687,7 +688,6 @@ export default {
         }
       }
     }
-  }
 },
 created() {
   this.fetchData();

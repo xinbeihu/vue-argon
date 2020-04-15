@@ -1,392 +1,397 @@
 <template>
 <div>
-  <div>
-    <head>
-      <title>Projects List</title>
-    </head>
-    <link
-      href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-      rel="stylesheet"
-    />
-  </div>
-  <!--   <section class="section-profile-cover section-shaped my-0">
-    <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </section>-->
-  <section class="section section-skew">
-    <div class="container" style="width:1000px">
-      <card class="border-0" shadow body-classes="py-5">
-        <div class="container" style="width:fit-content">
-          <card class="border-0" shadow body-classes="py-5">
-            <div class="px-4">
-              <div class="row justify-content-center">
-                <h4 style="padding:20px">
-                  <span
-                    class="text-primary text-uppercase"
-                    style="padding-right:20px"
-                  >Tasks / Deadlines</span>
-                  <b-button style="font-size:15px" v-b-modal.taskModal>Add Task</b-button>
-                </h4>
+  <head>
+    <title>Projects List</title>
+  </head>
+  <link
+    href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+    rel="stylesheet"
+  />
 
-                <b-modal id="taskModal" ref="modal" title="Add New Task" @ok="submitTask">
-                  <form ref="form">
-                    <b-form-group label="Module">
-                      <b-form-select v-model="selectedModule" class="mb-3">
-                        <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
-                        <b-form-select-option
-                          v-for="(items,module) in taskList"
-                          v-bind:key="module"
-                          :value="module"
-                        >{{module}}</b-form-select-option>
-                      </b-form-select>
-                    </b-form-group>
-                    <b-form-group label="Due Date">
-                      <b-form-datepicker v-model="deadline" :min="new Date()" locale="en"></b-form-datepicker>
-                    </b-form-group>
-                    <b-form-group label="Task">
-                      <b-form-input id="task-input" v-model="inputTask"></b-form-input>
-                    </b-form-group>
-                  </form>
-                </b-modal>
+  <div class="profile-page">
+    <section class="section-profile-cover section-shaped my-0">
+      <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
 
-                <div class="container">
-                  <div class="row justify-content-center">
-                    <div style="background-color:lightpink;padding:10px;width:800px">
-                      <select v-model="selectedModule">
-                        <option>All Modules</option>
-                        <option v-for="(items,module) in taskList" v-bind:key="module">{{module}}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row justify-content-center">
-                    <table style="width:800px">
-                      <tr v-for="(details,key) in displayTasks" v-bind:key="key">
-                        <td
-                          style="width:150px;font-size:15px"
-                          class="timeline datebutton"
-                        >{{fetchDate(Object.values(details)[0]["deadline"])}}</td>
-                        <td class="taskbutton">
-                          <i
-                            v-on:click="toggleTask(Object.values(details)[0]['TaskID'])"
-                            v-show="Object.values(details)[0]['completed']== false"
-                            class="fa fa-circle-thin"
-                            style="color:rgb(170, 169, 169);vertical-align: middle;padding-right:15px"
-                          ></i>
-                          <i
-                            class="fa fa-check-circle"
-                            style="color:rgb(129, 194, 129);vertical-align: middle;padding-right:15px"
-                            v-show="Object.values(details)[0]['completed']"
-                            v-on:click="toggleTask(Object.values(details)[0]['TaskID'])"
-                          ></i>
-                          <span
-                            :class="{todoDone:Object.values(details)[0]['completed']}"
-                            v-on:click="chooseTask( Object.keys(details)[0])"
-                          >
-                            <a
-                              style="color:gray;padding-left:10px"
-                              href="#delegation"
-                            >{{ Object.keys(details)[0]}}</a>
-                            <br />
-                          </span>
-
-                          <i
-                            style="font-size: 14px;padding-left:38px"
-                          >{{showDaysLeft(Object.values(details)[0]["deadline"])}}</i>
-                        </td>
-                        <td style="width:90px" class="taskbutton">
-                          <i
-                            class="fa fa-pencil-square-o"
-                            aria-hidden="true"
-                            style="font-size:15px"
-                            v-b-modal.editModal
-                            v-on:click="editTask(Object.values(details)[0],  Object.keys(details)[0])"
-                          ></i>
-                          <i
-                            v-on:click="deleteTask(Object.values(details)[0]['TaskID'])"
-                            class="fa fa-trash"
-                            aria-hidden="true"
-                            style="padding-left:40px;color:rgb(136, 43, 43)"
-                          ></i>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </card>
-          <!-- Task Edit Modal-->
-          <b-modal id="editModal" ref="modal" title="Edit Task" @ok="submitEdit()">
-            <form ref="form">
-              <b-form-group label="Due Date">
-                <b-form-datepicker v-model="editDate" :min="new Date()" locale="en"></b-form-datepicker>
-              </b-form-group>
-              <b-form-group label="Task">
-                <b-form-input id="task-edit" v-model="editText"></b-form-input>
-              </b-form-group>
-            </form>
-          </b-modal>
-          <br />
-          <!-- subtasks -->
-          <div class="container" id="delegation">
+    <section class="section section-skew">
+      <div class="container mt--300" style="width:1000px">
+        <card class="border-0" shadow body-classes="py-5">
+          <div class="container" style="width:fit-content">
             <card class="border-0" shadow body-classes="py-5">
               <div class="px-4">
                 <div class="row justify-content-center">
-                  <h4>
+                  <h4 style="padding:20px">
                     <span
                       class="text-primary text-uppercase"
                       style="padding-right:20px"
-                    >Delegate Sub-Tasks</span>
-                    <b-button style="font-size:15px" v-b-modal.subTaskModal>Add Sub-Task</b-button>
+                    >Tasks / Deadlines</span>
+                    <b-button style="font-size:15px" v-b-modal.taskModal>Add Task</b-button>
                   </h4>
 
-                  <span>
-                    <b-modal
-                      id="subTaskModal"
-                      ref="modal"
-                      title="Add New Sub-Task"
-                      @ok="submitSubTask"
-                    >
-                      <form ref="form">
-                        <b-form-group label="Module" style="width:fit-content">
-                          <b-form-select v-model="selectedModule" class="mb-3">
-                            <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
-                            <b-form-select-option
-                              v-for="(items,module) in taskList"
-                              v-bind:key="module"
-                              :value="module"
-                            >{{module}}</b-form-select-option>
-                          </b-form-select>
-                        </b-form-group>
-                        <b-form-group
-                          label="Task"
-                          style="width:fit-content;padding-right:45px;float:left"
-                        >
-                          <b-form-select v-model="selectedTask" class="mb-3">
-                            <b-form-select-option value="All Tasks">Select a Task</b-form-select-option>
-                            <b-form-select-option
-                              v-for="(details, task) in getTasks()"
-                              v-bind:key="details.id"
-                              :value="task"
-                            >{{task}}</b-form-select-option>
-                          </b-form-select>
-                        </b-form-group>
-                        <b-form-group
-                          style="width:fit-content;float:center"
-                          label="Member in Charge"
-                        >
-                          <b-form-select v-model="selectedMember" class="mb-3">
-                            <b-form-select-option value="All Members">Select a Member</b-form-select-option>
-                            <b-form-select-option
-                              v-for="(member, key) in fetchMembers()"
-                              v-bind:key="key"
-                              :value="member"
-                            >{{member}}</b-form-select-option>
-                          </b-form-select>
-                        </b-form-group>
-                        <b-form-group label="Sub-Task Title" style="width:400px">
-                          <b-form-input id="subTask-input" v-model="inputSubtask"></b-form-input>
-                        </b-form-group>
-                      </form>
-                    </b-modal>
-                  </span>
-                  <div class="container" style="padding:20px">
+                  <b-modal id="taskModal" ref="modal" title="Add New Task" @ok="submitTask">
+                    <form ref="form">
+                      <b-form-group label="Module">
+                        <b-form-select v-model="selectedModule" class="mb-3">
+                          <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
+                          <b-form-select-option
+                            v-for="(items,module) in taskList"
+                            v-bind:key="module"
+                            :value="module"
+                          >{{module}}</b-form-select-option>
+                        </b-form-select>
+                      </b-form-group>
+                      <b-form-group label="Due Date">
+                        <b-form-datepicker v-model="deadline" :min="new Date()" locale="en"></b-form-datepicker>
+                      </b-form-group>
+                      <b-form-group label="Task">
+                        <b-form-input id="task-input" v-model="inputTask"></b-form-input>
+                      </b-form-group>
+                    </form>
+                  </b-modal>
+
+                  <div class="container">
                     <div class="row justify-content-center">
-                      <select v-model="selectedMember">
-                        <option>All Members</option>
-                        <option v-for="members in fetchMembers()" v-bind:key="members">{{members}}</option>
-                      </select>
-                      <span style="padding-left:25px">
-                        <select v-model="selectedTask">
-                          <option>All Tasks</option>
-                          <option
-                            v-for="(details, task) in getTasks()"
-                            v-bind:key="details.id"
-                          >{{task}}</option>
+                      <div style="background-color:lightpink;padding:10px;width:800px">
+                        <select v-model="selectedModule">
+                          <option>All Modules</option>
+                          <option v-for="(items,module) in taskList" v-bind:key="module">{{module}}</option>
                         </select>
-                      </span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <table style="width:800px">
+                        <tr v-for="(details,key) in displayTasks" v-bind:key="key">
+                          <td
+                            style="width:150px;font-size:15px"
+                            class="timeline datebutton"
+                          >{{fetchDate(Object.values(details)[0]["deadline"])}}</td>
+                          <td class="taskbutton">
+                            <i
+                              v-on:click="toggleTask(Object.values(details)[0]['TaskID'])"
+                              v-show="Object.values(details)[0]['completed']== false"
+                              class="fa fa-circle-thin"
+                              style="color:rgb(170, 169, 169);vertical-align: middle;padding-right:15px"
+                            ></i>
+                            <i
+                              class="fa fa-check-circle"
+                              style="color:rgb(129, 194, 129);vertical-align: middle;padding-right:15px"
+                              v-show="Object.values(details)[0]['completed']"
+                              v-on:click="toggleTask(Object.values(details)[0]['TaskID'])"
+                            ></i>
+                            <span
+                              :class="{todoDone:Object.values(details)[0]['completed']}"
+                              v-on:click="chooseTask( Object.keys(details)[0])"
+                            >
+                              <a
+                                style="color:gray;padding-left:10px"
+                                href="#delegation"
+                              >{{ Object.keys(details)[0]}}</a>
+                              <br />
+                            </span>
+
+                            <i
+                              style="font-size: 14px;padding-left:38px"
+                            >{{showDaysLeft(Object.values(details)[0]["deadline"])}}</i>
+                          </td>
+                          <td style="width:90px" class="taskbutton">
+                            <i
+                              class="fa fa-pencil-square-o"
+                              aria-hidden="true"
+                              style="font-size:15px"
+                              v-b-modal.editModal
+                              v-on:click="editTask(Object.values(details)[0],  Object.keys(details)[0])"
+                            ></i>
+                            <i
+                              v-on:click="deleteTask(Object.values(details)[0]['TaskID'])"
+                              class="fa fa-trash"
+                              aria-hidden="true"
+                              style="padding-left:40px;color:rgb(136, 43, 43)"
+                            ></i>
+                          </td>
+                        </tr>
+                      </table>
                     </div>
                   </div>
-                  <div>
-                    <table style="width:800px">
-                      <thead>
-                        <tr>
-                          <th>Member</th>
-                          <th>Sub-Tasks</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(details, member) in fetchSubTasks()" v-bind:key="member">
-                          <td style="width:100px">{{member}}</td>
-
-                          <td>
-                            <table style="width:700px">
-                              <tr
-                                class="tab"
-                                v-for="(list, subtask) in details"
-                                v-bind:key="subtask"
-                              >
-                                <td>
-                                  <i
-                                    v-on:click="toggleSubTask(list.subTaskID)"
-                                    v-show="list.completed == false"
-                                    class="fa fa-circle-thin"
-                                    style="color:rgb(170, 169, 169);vertical-align: middle;padding-right:15px"
-                                  ></i>
-                                  <i
-                                    class="fa fa-check-circle"
-                                    style="color:rgb(129, 194, 129);vertical-align: middle;padding-right:15px"
-                                    v-show="list.completed"
-                                    v-on:click="toggleSubTask(list.subTaskID)"
-                                  ></i>
-                                  <span
-                                    :class="{todoDone:list.completed}"
-                                    v-on:click="chooseSubTask(subtask)"
-                                  >
-                                    <a
-                                      style="color:gray;padding-left:10px"
-                                      href="#comments"
-                                    >{{subtask}}</a>
-                                  </span>
-                                </td>
-                                <td style="width:90px" class="taskbutton">
-                                  <i
-                                    class="fa fa-pencil-square-o"
-                                    aria-hidden="true"
-                                    style="font-size:15px"
-                                    v-b-modal.editSubModal
-                                    v-on:click="editSubTask(details, subtask)"
-                                  ></i>
-                                  <i
-                                    v-on:click="deleteSubTask(list.subTaskID)"
-                                    class="fa fa-trash"
-                                    aria-hidden="true"
-                                    style="padding-left:40px;width:10px;color:rgb(136, 43, 43);font-size:16px"
-                                  ></i>
-                                </td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
                 </div>
               </div>
             </card>
-          </div>
-          <!-- Task Edit Modal-->
-          <b-modal id="editSubModal" ref="modal" title="Edit Sub-Task" @ok="submitSubEdit()">
-            <form ref="form">
-              <b-form-group style="width:fit-content;float:center" label="Member in Charge">
-                <b-form-select v-model="editMember" class="mb-3">
-                  <b-form-select-option value="All Members">Select a Member</b-form-select-option>
-                  <b-form-select-option
-                    v-for="(member, key) in fetchMembers()"
-                    v-bind:key="key"
-                    :value="member"
-                  >{{member}}</b-form-select-option>
-                </b-form-select>
-              </b-form-group>
-              <b-form-group label="Sub-Task">
-                <b-form-input id="subtask-edit" v-model="editSubText"></b-form-input>
-              </b-form-group>
-            </form>
-          </b-modal>
-          <br />
-          <!--Comments -->
-          <div class="container">
-            <card class="border-0" shadow body-classes="py-5">
-              <div class="px-4">
-                <div class="container">
+            <!-- Task Edit Modal-->
+            <b-modal id="editModal" ref="modal" title="Edit Task" @ok="submitEdit()">
+              <form ref="form">
+                <b-form-group label="Due Date">
+                  <b-form-datepicker v-model="editDate" :min="new Date()" locale="en"></b-form-datepicker>
+                </b-form-group>
+                <b-form-group label="Task">
+                  <b-form-input id="task-edit" v-model="editText"></b-form-input>
+                </b-form-group>
+              </form>
+            </b-modal>
+            <br />
+            <!-- subtasks -->
+            <div class="container" id="delegation">
+              <card class="border-0" shadow body-classes="py-5">
+                <div class="px-4">
                   <div class="row justify-content-center">
                     <h4>
-                      <span class="text-primary text-uppercase" style="padding-right:20px">Comments</span>
-                      <b-button style="font-size:15px" v-b-modal.commentModal>Add Comment</b-button>
+                      <span
+                        class="text-primary text-uppercase"
+                        style="padding-right:20px"
+                      >Delegate Sub-Tasks</span>
+                      <b-button style="font-size:15px" v-b-modal.subTaskModal>Add Sub-Task</b-button>
                     </h4>
 
-                    <b-modal
-                      id="commentModal"
-                      ref="modal"
-                      title="Add New Comment"
-                      @ok="submitComment"
-                    >
-                      <form ref="form">
-                        <b-form-group label="Sub-Task">
-                          <b-form-select v-model="selectedSubtask" class="mb-3">
-                            <b-form-select-option value="All Sub-Tasks">Select a Sub-Task</b-form-select-option>
-                            <b-form-select-option
-                              v-for="(details, subTask) in getSubTasks()"
-                              v-bind:key="details.subTaskID"
-                              :value="subTask"
-                            >{{subTask}}</b-form-select-option>
-                          </b-form-select>
-                        </b-form-group>
-                        <b-form-group label="Comment">
-                          <b-form-input id="comment-input" v-model="inputComment"></b-form-input>
-                        </b-form-group>
-                      </form>
-                    </b-modal>
-                  </div>
-                  <div class="row justify-content-center" style="padding:20px">
-                    <select v-model="selectedSubtask">
-                      <option>All Sub-Tasks</option>
-                      <option
-                        v-for="(details, subtask) in getSubTasks()"
-                        v-bind:key="details.subTaskID"
-                      >{{subtask}}</option>
-                    </select>
-                  </div>
+                    <span>
+                      <b-modal
+                        id="subTaskModal"
+                        ref="modal"
+                        title="Add New Sub-Task"
+                        @ok="submitSubTask"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Module" style="width:fit-content">
+                            <b-form-select v-model="selectedModule" class="mb-3">
+                              <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
+                              <b-form-select-option
+                                v-for="(items,module) in taskList"
+                                v-bind:key="module"
+                                :value="module"
+                              >{{module}}</b-form-select-option>
+                            </b-form-select>
+                          </b-form-group>
+                          <b-form-group
+                            label="Task"
+                            style="width:fit-content;padding-right:45px;float:left"
+                          >
+                            <b-form-select v-model="selectedTask" class="mb-3">
+                              <b-form-select-option value="All Tasks">Select a Task</b-form-select-option>
+                              <b-form-select-option
+                                v-for="(details, task) in getTasks()"
+                                v-bind:key="details.id"
+                                :value="task"
+                              >{{task}}</b-form-select-option>
+                            </b-form-select>
+                          </b-form-group>
+                          <b-form-group
+                            style="width:fit-content;float:center"
+                            label="Member in Charge"
+                          >
+                            <b-form-select v-model="selectedMember" class="mb-3">
+                              <b-form-select-option value="All Members">Select a Member</b-form-select-option>
+                              <b-form-select-option
+                                v-for="(member, key) in fetchMembers()"
+                                v-bind:key="key"
+                                :value="member"
+                              >{{member}}</b-form-select-option>
+                            </b-form-select>
+                          </b-form-group>
+                          <b-form-group label="Sub-Task Title" style="width:400px">
+                            <b-form-input id="subTask-input" v-model="inputSubtask"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
+                    </span>
+                    <div class="container" style="padding:20px">
+                      <div class="row justify-content-center">
+                        <select v-model="selectedMember">
+                          <option>All Members</option>
+                          <option v-for="members in fetchMembers()" v-bind:key="members">{{members}}</option>
+                        </select>
+                        <span style="padding-left:25px">
+                          <select v-model="selectedTask">
+                            <option>All Tasks</option>
+                            <option
+                              v-for="(details, task) in getTasks()"
+                              v-bind:key="details.id"
+                            >{{task}}</option>
+                          </select>
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <table style="width:800px">
+                        <thead>
+                          <tr>
+                            <th>Member</th>
+                            <th>Sub-Tasks</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(details, member) in fetchSubTasks()" v-bind:key="member">
+                            <td style="width:100px">{{member}}</td>
 
-                  <div class="row justify-content-center">
-                    <table style="width:800px">
-                      <thead>
-                        <tr>
-                          <th style>Sub-Task</th>
-                          <th>Comments</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(list, subtask) in fetchComments()" v-bind:key="subtask">
-                          <td style="width:200px">{{subtask}}</td>
-                          <td>
-                            <table style="width:600px">
-                              <tr
-                                class="tab"
-                                v-for="commentid in Object.keys(list['comments'])  "
-                                v-bind:key="commentid"
-                              >
-                                <td>{{list['comments'][commentid] }}</td>
-                                <td style="width:90px" class="taskbutton">
-                                  <i
-                                    v-on:click="deleteComment(commentid)"
-                                    class="fa fa-trash"
-                                    aria-hidden="true"
-                                    style="padding-left:40px;color:rgb(136, 43, 43)"
-                                  ></i>
-                                </td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                            <td>
+                              <table style="width:700px">
+                                <tr
+                                  class="tab"
+                                  v-for="(list, subtask) in details"
+                                  v-bind:key="subtask"
+                                >
+                                  <td>
+                                    <i
+                                      v-on:click="toggleSubTask(list.subTaskID)"
+                                      v-show="list.completed == false"
+                                      class="fa fa-circle-thin"
+                                      style="color:rgb(170, 169, 169);vertical-align: middle;padding-right:15px"
+                                    ></i>
+                                    <i
+                                      class="fa fa-check-circle"
+                                      style="color:rgb(129, 194, 129);vertical-align: middle;padding-right:15px"
+                                      v-show="list.completed"
+                                      v-on:click="toggleSubTask(list.subTaskID)"
+                                    ></i>
+                                    <span
+                                      :class="{todoDone:list.completed}"
+                                      v-on:click="chooseSubTask(subtask)"
+                                    >
+                                      <a
+                                        style="color:gray;padding-left:10px"
+                                        href="#comments"
+                                      >{{subtask}}</a>
+                                    </span>
+                                  </td>
+                                  <td style="width:90px" class="taskbutton">
+                                    <i
+                                      class="fa fa-pencil-square-o"
+                                      aria-hidden="true"
+                                      style="font-size:15px"
+                                      v-b-modal.editSubModal
+                                      v-on:click="editSubTask(details, subtask)"
+                                    ></i>
+                                    <i
+                                      v-on:click="deleteSubTask(list.subTaskID)"
+                                      class="fa fa-trash"
+                                      aria-hidden="true"
+                                      style="padding-left:40px;width:10px;color:rgb(136, 43, 43);font-size:16px"
+                                    ></i>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </card>
+              </card>
+            </div>
+            <!-- Task Edit Modal-->
+            <b-modal id="editSubModal" ref="modal" title="Edit Sub-Task" @ok="submitSubEdit()">
+              <form ref="form">
+                <b-form-group style="width:fit-content;float:center" label="Member in Charge">
+                  <b-form-select v-model="editMember" class="mb-3">
+                    <b-form-select-option value="All Members">Select a Member</b-form-select-option>
+                    <b-form-select-option
+                      v-for="(member, key) in fetchMembers()"
+                      v-bind:key="key"
+                      :value="member"
+                    >{{member}}</b-form-select-option>
+                  </b-form-select>
+                </b-form-group>
+                <b-form-group label="Sub-Task">
+                  <b-form-input id="subtask-edit" v-model="editSubText"></b-form-input>
+                </b-form-group>
+              </form>
+            </b-modal>
+            <br />
+            <!--Comments -->
+            <div class="container">
+              <card class="border-0" shadow body-classes="py-5">
+                <div class="px-4">
+                  <div class="container">
+                    <div class="row justify-content-center">
+                      <h4>
+                        <span
+                          class="text-primary text-uppercase"
+                          style="padding-right:20px"
+                        >Comments</span>
+                        <b-button style="font-size:15px" v-b-modal.commentModal>Add Comment</b-button>
+                      </h4>
+
+                      <b-modal
+                        id="commentModal"
+                        ref="modal"
+                        title="Add New Comment"
+                        @ok="submitComment"
+                      >
+                        <form ref="form">
+                          <b-form-group label="Sub-Task">
+                            <b-form-select v-model="selectedSubtask" class="mb-3">
+                              <b-form-select-option value="All Sub-Tasks">Select a Sub-Task</b-form-select-option>
+                              <b-form-select-option
+                                v-for="(details, subTask) in getSubTasks()"
+                                v-bind:key="details.subTaskID"
+                                :value="subTask"
+                              >{{subTask}}</b-form-select-option>
+                            </b-form-select>
+                          </b-form-group>
+                          <b-form-group label="Comment">
+                            <b-form-input id="comment-input" v-model="inputComment"></b-form-input>
+                          </b-form-group>
+                        </form>
+                      </b-modal>
+                    </div>
+                    <div class="row justify-content-center" style="padding:20px">
+                      <select v-model="selectedSubtask">
+                        <option>All Sub-Tasks</option>
+                        <option
+                          v-for="(details, subtask) in getSubTasks()"
+                          v-bind:key="details.subTaskID"
+                        >{{subtask}}</option>
+                      </select>
+                    </div>
+
+                    <div class="row justify-content-center">
+                      <table style="width:800px">
+                        <thead>
+                          <tr>
+                            <th style>Sub-Task</th>
+                            <th>Comments</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(list, subtask) in fetchComments()" v-bind:key="subtask">
+                            <td style="width:200px">{{subtask}}</td>
+                            <td>
+                              <table style="width:600px">
+                                <tr
+                                  class="tab"
+                                  v-for="commentid in Object.keys(list['comments'])  "
+                                  v-bind:key="commentid"
+                                >
+                                  <td>{{list['comments'][commentid] }}</td>
+                                  <td style="width:90px" class="taskbutton">
+                                    <i
+                                      v-on:click="deleteComment(commentid)"
+                                      class="fa fa-trash"
+                                      aria-hidden="true"
+                                      style="padding-left:40px;color:rgb(136, 43, 43)"
+                                    ></i>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </card>
+            </div>
           </div>
-        </div>
-      </card>
-    </div>
-  </section>
+        </card>
+      </div>
+    </section>
+  </div>
 </div>
 </template>
 
