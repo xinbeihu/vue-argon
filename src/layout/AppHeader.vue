@@ -30,8 +30,6 @@
       </ul>
     </base-nav>
   </header>
-=======
-            <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
 </template>
 <script>
 import BaseNav from "@/components/BaseNav";
