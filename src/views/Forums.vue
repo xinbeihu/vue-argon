@@ -2,13 +2,26 @@
     <div>
         <div >
                 <!-- Post Details Content Area -->
-                <div >
+            <div >
+                  <section class="section-profile-cover section-shaped my-0">
+                    <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </section>
                     
-
+              <section class="section section-skew">
+                <div class="container">
+                  <card shadow class="card-profile mt--300" no-body>
                     <!-- Comment Area Start -->
-                    <div >
                         <!-- Section Title -->
-                        <h5>Forum for Module</h5>
+                      <div>
+                        <h4><strong>Forum for Module&nbsp;</strong></h4>
                             <form ref="form">
                                 <b-form-group label="Module" style="width:fit-content">
                                     <b-form-select v-model="selectedModule" class="mb-3">
@@ -85,7 +98,6 @@
                     
 
                     <!-- Post A Comment Area -->
-                    <!-- Post A Comment Area -->
                     <div class="post-a-comment-area bg-white mb-30 p-30 box-shadow clearfix">
                         <!-- Section Title -->
                         <div class="section-heading">
@@ -94,8 +106,8 @@
 
                         <!-- Reply Form -->
                         <div class="contact-form-area">
-                            <form action="#" method="post">
-                                <div class="row">
+                            <form >
+                                <div >
                                     <input id="postsection" class="form-control" type="text" v-model="inputpost" placeholder="post here!" cols="30" rows="10">
                                         <button class="btn mag-btn mt-30" v-on:click="addpost" type="button">Submit Post</button>
                                     
@@ -103,6 +115,10 @@
                             </form>
                         </div>
                     </div>
+
+                  </card>
+                </div>
+                  </section>
                 </div>
 
             </div>
@@ -438,127 +454,29 @@ export default {
             "11": "Dec"
           };
           let date = timestamp.toDate();
+          // hours as 2 digits (hh)
+          var hours = ("0" + date.getHours()).slice(-2);
+
+          // minutes as 2 digits (mm)
+          var minutes = ("0" + date.getMinutes()).slice(-2);
+
+          // seconds as 2 digits (ss)
+          var seconds = ("0" + date.getSeconds()).slice(-2);
 
           return (
             date.getDate() +
             "-" +
             months[date.getMonth()] +
             "-" +
-            date.getFullYear()
-
+            date.getFullYear()+
+            "  "+
+            hours+":"+
+            minutes+":"+
+            seconds
             );
           },
 
-        //when the app is created, these 2 methods are called to retrieve info
         
-
-        // addpost: function(){
-        //     if (this.inputtext == '') {
-        //         alert("Invalid entry");
-        //         return
-        //       } else if (this.selectedModule == "Select Module") {
-        //         alert("Please select your module first")
-        //         return
-        //       }else{
-        //           this.groupcounter++; //to add a new post, we start a diff groupid
-        //           for (var comment of this.comments){
-        //             if(comment.modcode == this.selectedModule){
-        //                 this.idcounter++;
-        //                 console.log(this.idcounter);
-        //                 var today = new Date(); //current date and time
-        //                   comment.allcomments.push(
-        //                   {
-        //                       commentid: this.idcounter,
-        //                       userid: "Peppa Pig",
-        //                       content: this.inputtext,
-        //                       reply: 0,
-        //                       date: today,
-        //                       group:this.groupcounter
-        //                   }
-        //               )
-        //               break;
-        //             }
-        //         }
-                
-        //         this.inputtext = "";
-        //         //return false;
-        //       }
-              
-        //       //document.getElementById("postsection").value = "";
-        // },
-
-
-
-        // highlightprev: function(post){
-        //     this.previouspost = post.reply;
-        //     console.log("previous post is");
-        //     console.log(this.previouspost);
-        // },
-
-        // updateprevious: function(post){ 
-        //     var previous = post.commentid;
-        //     console.log("reply function called")
-        //     //this.previouspost = previous;
-        //     //console.log(this.previouspost);
-        //     //var inputhere = prompt("Please enter your comment:", "Enter here");
-        //     if (this.inputhere == '' || this.inputhere=="Enter here") {
-        //         alert("Invalid entry");
-        //         return
-        //     }
-            
-        //         for (var comment of this.comments){
-        //             if(comment.modcode == this.selectedModule){
-        //                 this.idcounter++;
-        //                 console.log(this.idcounter);
-        //                 var today = new Date(); //current date and time
-        //                 var newentry =  {
-        //                     commentid: this.idcounter,
-        //                     userid: "Peppa Pig",
-        //                     content: this.inputhere,
-        //                     reply: previous,
-        //                     date: today,
-        //                     group:post.group
-        //                 } 
-        //                 comment.allcomments.push(
-        //                   newentry
-        //               )
-        //               break;
-        //             }
-        //         }
-        //         this.inputhere=""
-        //         // if(this.inputhere==""){
-        //         //     this.deletecomment(newentry);
-        //         // }
-
-        // },
-
-        // deletecomment: function(post){
-        //     var postID = post.commentid;
-        //     var groupID = post.group;
-        //     console.log("clearing postid is ");
-        //     console.log(postID);
-        //     for(var comment of this.comments){
-        //         if(comment.modcode== this.selectedModule){
-        //             if(post.reply==0){
-        //                 for(var i=0; i<comment.allcomments.length; i++){
-        //                     if(comment.allcomments[i].group==groupID){
-        //                         comment.allcomments.splice(i, 1);
-        //                     }
-        //                 }
-        //             }
-        //             else{
-        //                 for(var j=0; j<comment.allcomments.length; j++){
-        //                     if(comment.allcomments[j].commentid==postID || comment.allcomments[j].reply==postID){
-        //                         postID = comment.allcomments[j].commentid; //update to new postid to find subsequent replies
-        //                         comment.allcomments.splice(j,1);
-                                
-        //                     }
-        //                 }
-        //             }
-                    
-        //         }
-        //     }
-        // },
 
     },
     created(){

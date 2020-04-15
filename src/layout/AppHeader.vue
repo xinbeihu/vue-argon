@@ -8,6 +8,7 @@
                 <router-link to="/register" class="dropdown-item">Register</router-link>
                 <router-link to = '/projects' class = 'dropdown-item'>Manage Projects</router-link>
                 <router-link to = '/projmates' class = 'dropdown-item'>Find Project Group</router-link>
+                <router-link to = '/forums' class = 'dropdown-item'>Forums</router-link>
                 
             </ul>
         </base-nav>

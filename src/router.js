@@ -3,7 +3,7 @@ import Router from "vue-router";
 import AppHeader from "./layout/AppHeader";
 import AppFooter from "./layout/AppFooter";
 import Components from "./views/Components.vue";
-import Landing from "./views/Landing.vue";
+import Forums from "./views/Forums.vue";
 import Login from "./views/Login.vue";
 import Register from "./views/Register.vue";
 import Profile from "./views/Profile.vue";
@@ -24,11 +24,11 @@ export default new Router({
       }
     },
     {
-      path: "/landing",
-      name: "landing",
+      path: "/forums",
+      name: "forums",
       components: {
         header: AppHeader,
-        default: Landing,
+        default: Forums,
         footer: AppFooter
       }
     },
