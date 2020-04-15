@@ -21,8 +21,10 @@
                             <div class="text-muted text-center mb-3">
                                 <small>Sign In to Manage Your Project Now!</small>
                             </div>
-                    
+                      
                         </template>
+                        <br>
+
                         <template>
                             
                             <form role="form">
@@ -38,9 +40,7 @@
                                             addon-left-icon="ni ni-lock-circle-open"
                                             v-model="password">
                                 </base-input>
-                                <base-checkbox>
-                                    Remember me
-                                </base-checkbox>
+
                                 <div class="text-center">
                                     <base-button type="primary" class="my-4" @click="login">Sign In</base-button>
                                 </div>
@@ -50,13 +50,13 @@
                     <div class="row mt-3">
                         <div class="col-6">
                             <a href="#" class="text-light">
-                                <small>Forgot password?</small>
+                                <small></small>
                             </a>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="#" class="text-light">
-                                <small>Create new account</small>
-                            </a>
+                            <base-button href="#" class="text-light" @click="resetpassword">
+                                <small>Forgot password?</small>
+                            </base-button>
                         </div>
                     </div>
                 </div>
@@ -66,6 +66,7 @@
 </template>
 <script>
 import firebase from 'firebase';
+import router from '../router';
 export default {
   name:'login',
   data(){
@@ -76,11 +77,24 @@ export default {
   },
   methods:{
     login:  function () {
-          firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
-            alert("Signed in Successfully!")
+        firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
+            alert("Signed in Successfully!")).then(
+            // alert("Signed in Successfully!")
+            router.push({ name: "profile" })
           )
           
+        },
+    resetpassword: function(){
+        var auth = firebase.auth();
+        var emailAddress = this.email;
+        if (this.email==""){
+            alert("Please key in your email!")
+        } else {
+            auth.sendPasswordResetEmail(emailAddress).then(
+                alert("Email of resetting password has been sent. Please check your email!")
+            )
         }
+    }
   }
 }
 </script>

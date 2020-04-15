@@ -53,7 +53,7 @@
 </template>
 <script>
 import firebase from 'firebase';
-
+import router from '../router';
 
 export default {
   name:"signup",
@@ -69,6 +69,10 @@ export default {
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
   .then(function() {
     alert('You have created an account');
+  })
+
+  .then(function() {
+    router.push({ name: "form" });
   });
         }
   }
@@ -76,3 +80,4 @@ export default {
 </script>
 <style>
 </style>
+
