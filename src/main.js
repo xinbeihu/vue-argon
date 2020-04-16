@@ -22,6 +22,17 @@ import Argon from "./plugins/argon-kit";
 import './registerServiceWorker';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
+// Register Charts globally
+import BarChart from './views/BarChart.vue'
+import LineChart from './views/LineChart.vue'
+import PieChart from './views/PieChart.vue'
+import Doughnut from './views/Doughnut.vue'
+
+Vue.component("BarChart", BarChart)
+Vue.component("LineChart", LineChart)
+Vue.component("PieChart", PieChart)
+Vue.component("Doughnut", Doughnut)
+
 
 Vue.config.productionTip = false;
 Vue.use(Argon);
