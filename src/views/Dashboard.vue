@@ -11,17 +11,23 @@
         <span></span>
       </div>
     </section>
-    <div id="main">
-      <div id="chart">
-        <BarChart></BarChart>
-      </div>
-      <div id="chart">
-        <LineChart></LineChart>
-      </div>
-      <div id="chart">
-        <Doughnut></Doughnut>
-      </div>
-    </div>
+    <section class="section section-skew">
+          <div class="container">
+            <card shadow class="card-profile mt--300" no-body>
+              <div id="main">
+                <div id="chart">
+                  <BarChart></BarChart>
+                </div>
+                <div id="chart">
+                  <LineChart></LineChart>
+                </div>
+                <div id="chart">
+                  <Doughnut></Doughnut>
+                </div>
+              </div>
+            </card>
+          </div>
+    </section>
   </div>
 </template>
 
@@ -36,8 +42,8 @@
   margin: auto;
 }
 #chart {
-  /* height:240px;
-  width:240px;  */
+  height:350px;
+  width:335px;
   border-style: solid;
   border-color: #c9cbcf;
   border-width: 1px;

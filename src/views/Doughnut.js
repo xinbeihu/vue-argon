@@ -22,14 +22,24 @@ export default{
             ]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false
+                // responsive: true,
+                // maintainAspectRatio: false
             }
         }
     },
     methods: {
 
         fetchTasks: function() {
+            var user = firebase.auth().currentUser;
+            var emailVerified = user.email;
+            database.collection("User Info").onSnapshot(user => {
+                user.forEach(function(currUser) {
+                    if (currUser.id == emailVerified) {
+                        tempName = currUser.data()["Name"];
+                    }
+                });
+                this.user = tempName;
+            });
           let currUser = this.user;
           let tasks = {};
           let myGroups = { members: {}, groupName: {} };
@@ -51,6 +61,7 @@ export default{
             });
             this.taskList = tasks;
             this.groups = myGroups;
+            // console.log(myGroups)
     
             // let selectedModule = "";
             let member = "";
