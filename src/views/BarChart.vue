@@ -1,6 +1,6 @@
 <template>
-  <div class="chart">
-    <h4>Tasks For Each Month</h4>
+  <div class="chart" >
+    <h5>Tasks For Each Month</h5>
     <!-- <div id="no-data"> 
       <br>
       <h5>You do not have any task...</h5>
@@ -26,7 +26,7 @@ export default {
   text-align: center;
   align-content: center;
   margin: auto;
-  /* height: 440px;
-  width:440px; */
+  width: 30%;
+  height: 30%;
 }
 </style>
