@@ -1043,6 +1043,7 @@ export default {
           }
         });
         this.user = tempName;
+        console.log("hop");
       });
       let currUser = this.user;
       database.collection("Modules").onSnapshot(myModules => {
