@@ -40,22 +40,23 @@
         <ol>
           <li class="single_comment_area" v-for="post of displayposts()" v-bind:key="post">
             <div class="comment-content d-flex">
-              <!-- Comment Author -->
-              <div class="comment-author">
+              <!-- Author profile pic -->
+              <!-- <div class="comment-author">
                 <img src="img/bg-img/53.jpg" alt="author" />
-              </div>
+              </div> -->
               <!-- Comment Meta -->
               <div class="comment-meta">
                 <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
                 <h6>{{post.email}}</h6>
                 <p>{{post.content}}</p>
                 <div>
-                  <b-button style="font-size:15px" v-b-modal.replypostmodal>Reply to this post</b-button>
+                  <b-button style="font-size:15px" v-b-modal.replypostmodal v-on:click="updatepost(post.id)">Reply to this post</b-button>
+                  {{post.id}}
                   <!-- <button class="like" type = "submit" data-toggle="modal" data-target="#myModal_reply">reply to this post</button> -->
                   <button
                     class="like"
                     v-on:click="deletepost(post.id)"
-                    v-show="post.email=='swsw@u.nus.edu'"
+                    v-show="post.email==currentuser"
                   >Delete</button>
                 </div>
               </div>
@@ -66,7 +67,7 @@
                   title="Add your comment"
                   @ok="addcomment(post.id)"
                 >
-                  <b-form-input id="post.id" v-model="inputcomment"></b-form-input>
+                  <b-form-input id=post.id v-model="inputcomment"></b-form-input>
                 </b-modal>
               </span>
             </div>
@@ -83,14 +84,12 @@
                     <h6>{{comment.email}}</h6>
                     <p>{{comment.content}}</p>
                     <div>
-                      <b-button
-                        style="font-size:15px"
-                        v-b-modal.replycommentmodal
-                      >Reply to this post</b-button>
+                      <b-button style="font-size:15px" v-b-modal.replycommentmodal v-on:click="updatepost(post.id)">Reply to this comment</b-button>
+                      
                       <button
                         class="like"
                         v-on:click="deletecomment(comment.id)"
-                        v-show="comment.email=='swsw@u.nus.edu'"
+                        v-show="comment.email==currentuser"
                       >Delete</button>
                     </div>
                   </div>
@@ -101,7 +100,7 @@
                       title="Add your comment"
                       @ok="addcomment(post.id)"
                     >
-                      <b-form-input id="comment.id" v-model="inputcomment"></b-form-input>
+                      <b-form-input id=comment.id v-model="inputcomment"></b-form-input>
                     </b-modal>
                   </span>
                 </div>
@@ -144,8 +143,8 @@
 </template>
 
 <script>
-//import firebase from "firebase";
-//import "firebase/firestore";
+import firebase from "firebase";
+import "firebase/firestore";
 import database from "../firebase.js";
 import { connect } from "tls";
 import { constants } from "zlib";
@@ -153,9 +152,10 @@ export default {
   name: "home",
   data() {
     return {
-      currentuser: "swsw@u.nus.edu",
+      currentuser: "",
+      username: "",
       selectedModule: "All Modules",
-      previouspost: 0,
+      //previouspost: 0,
       inputpost: "",
       showing: [],
       inputcomment: "",
@@ -164,7 +164,8 @@ export default {
       //idcounter: 4, //keep track of the latest comment id
       idcounters: {},
       allposts: {},
-      allcomments: {}
+      allcomments: {},
+      selectedpost: 0
     };
   },
   methods: {
@@ -189,6 +190,11 @@ export default {
       return postlist.sort(sortingmethod);
     },
 
+    updatepost: function(post){
+      console.log(post);
+      this.selectedpost = post;
+    },
+
     displaycomments: function(post) {
       console.log("under displaycomments");
       //console.log(post);
@@ -211,25 +217,33 @@ export default {
     // to fetch all the necessary data from 2 collections user info and forums
     getModules: function() {
       let mods = [];
-      let curruser = this.currentuser;
+      var curruser = firebase.auth().currentUser;
+      var emailverified = curruser.email;
+      console.log(this.currentuser);
+      var tempname="";
       database.collection("User Info").onSnapshot(allusers => {
         console.log(1);
         allusers.forEach(function(user) {
-          if (curruser != user.id) {
+          if (emailverified != user.id) {
             return;
           }
-          if (curruser == user.id) {
-            console.log(user.id);
+          if (emailverified == user.id) {
+            tempname = user.data()["Name"];
+            console.log(tempname);
             for (let mod in user.data()["Current Modules"]) {
               console.log(mod);
               if (!mods.includes(mod)) {
                 mods.push(mod);
+                console.log("Added");
               }
             }
           }
         });
+        this.username = tempname;
         this.allmodules = mods;
         console.log(this.allmodules);
+        this.currentuser = emailverified;
+        
       });
 
       let allpostsinfunction = {};
@@ -310,11 +324,13 @@ export default {
       this.inputpost = "";
     },
 
-    addcomment: function(post) {
+    addcomment: function() {
       //work for both reply button under a post and reply button under a comment because input is always the post id
       let currmod = this.selectedModule;
       let input = this.inputcomment;
       let curruser = this.currentuser;
+      let post = this.selectedpost;
+      console.log("post id here");
       console.log(post);
       if (this.selectedModule == "All Modules") {
         //will never reach here
@@ -324,6 +340,7 @@ export default {
       } else {
         this.idcounters[this.selectedModule]++;
         let count = this.idcounters[this.selectedModule];
+
         console.log(count);
         this.allcomments[this.selectedModule][post][count] = {
           content: input,
