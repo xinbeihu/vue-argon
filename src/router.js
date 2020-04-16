@@ -9,7 +9,7 @@ import Register from "./views/Register.vue";
 import Profile from "./views/Profile.vue";
 import Projects from "./views/Projects.vue";
 import ProjMates from "./views/ProjMates.vue";
-
+import ProjMatesTemp from "./views/ProjMatesTemp.vue";
 
 Vue.use(Router);
 
@@ -67,6 +67,15 @@ export default new Router({
             components: {
                 header: AppHeader,
                 default: ProjMates,
+
+            }
+        },
+        {
+            path: "/projmatestemp",
+            name: "projmatestmep",
+            components: {
+                header: AppHeader,
+                default: ProjMatesTemp,
 
             }
         },
