@@ -1038,7 +1038,7 @@ export default {
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
-            tempName = currUser.data()["Name"];
+            var tempName = currUser.data()["Name"];
           }
         });
         this.user = tempName;
