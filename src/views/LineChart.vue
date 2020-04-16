@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <h4>My Contribution</h4>
+    <h5>My Contribution</h5>
     <chart></chart>
   </div>
 </template>
