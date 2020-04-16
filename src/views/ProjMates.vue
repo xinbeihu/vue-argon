@@ -33,6 +33,18 @@
     <!-- <div style="border-width:1px; border-style:solid; height:100px; display:block; background-size: 100% 100%;">   
     Hello
     </div> -->
+    <div class="profile-page">
+    <section class="section-profile-cover section-shaped my-0">
+      <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
     Hello <a><i class="fa fa-user"></i>{{currName}}</a>
     <table>
       <tr>
