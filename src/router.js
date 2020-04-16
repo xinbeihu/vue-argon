@@ -10,6 +10,7 @@ import Profile from "./views/Profile.vue";
 import Projects from "./views/Projects.vue";
 import ProjMates from "./views/ProjMates.vue";
 import ProjMatesTemp from "./views/ProjMatesTemp.vue";
+import Dashboard from "./views/Dashboard.vue";
 
 Vue.use(Router);
 
@@ -49,6 +50,15 @@ export default new Router({
             components: {
                 header: AppHeader,
                 default: Profile,
+
+            }
+        },
+        {
+            path: "/dashboard",
+            name: "dashboard",
+            components: {
+                header: StarterHeader,
+                default: Dashboard,
 
             }
         },
