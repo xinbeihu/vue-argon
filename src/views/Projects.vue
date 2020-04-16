@@ -4,7 +4,7 @@
     <title>Projects List</title>
   </head>
   <link
-    href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
     rel="stylesheet"
   />
 
@@ -1035,10 +1035,11 @@ export default {
       let myGroups = { members: {}, groupName: {} };
       var user = firebase.auth().currentUser;
       var emailVerified = user.email;
+      var tempName = "";
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
-            var tempName = currUser.data()["Name"];
+            tempName = currUser.data()["Name"];
           }
         });
         this.user = tempName;
