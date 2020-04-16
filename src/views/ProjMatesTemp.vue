@@ -4,7 +4,7 @@
     <title>Projects List</title>
   </head>
   <link
-    href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
     rel="stylesheet"
   />
 
@@ -35,19 +35,16 @@
       <section class="section mt--300 section-components">
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col col-lg-2">
-              <base-button
-                v-for="(value, mod) in modules"
-                v-bind:key="mod"
-                block
-                type="secondary"
-                size="lg"
-              >{{mod}}</base-button>
-            </div>
+            <!-- <div class="col col-lg-2" v-for="(value, mod) in modules" v-bind:key="mod">
+              <b-button
+                v-on:click="updateGroups(mod)"
+              
+                
+              >{{mod}}</b-button>
+            </div> -->
             <div class="col">
               <div class="mt--100 col-lg-12">
                 <!-- Menu -->
-
                 <tabs fill class="flex-column flex-md-row">
                   <card shadow>
                     <tab-pane title="Students without Group">
@@ -677,8 +674,9 @@ export default {
         this.my_skills = temp1;
       });
     },
-    updateGroups: function() {
+    updateGroups: function(mod) {
       this.newGroups = {};
+      console.log(mod);
       for (let mod in this.modules) {
         if (this.module == mod) {
           this.noGroup = this.modules[mod]["NoGroup"];
