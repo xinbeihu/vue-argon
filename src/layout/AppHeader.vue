@@ -2,7 +2,7 @@
   <header class="header-global">
     <base-nav class="navbar-main" transparent type effect="light" expand>
       <router-link slot="brand" class="navbar-brand mr-lg-5" to="/profile">
-        <img src="img/bestlogo.jpg" alt="logo" style="width:150px; height: 80px" />
+        <img src="img/bestlogo.jpg" alt="logo" style="width:150px; height: 120px" />
       </router-link>
 
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      currName: "Victor Cheong"
+      currName: ""
     };
   },
   methods: {
