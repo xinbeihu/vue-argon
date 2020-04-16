@@ -11,6 +11,7 @@ import Projects from "./views/Projects.vue";
 import ProjMates from "./views/ProjMates.vue";
 import ProjMatesTemp from "./views/ProjMatesTemp.vue";
 import Dashboard from "./views/Dashboard.vue";
+import Form from "./views/Form.vue";
 
 Vue.use(Router);
 
@@ -95,6 +96,15 @@ export default new Router({
             components: {
                 header: AppHeader,
                 default: Forums,
+
+            }
+        },
+        {
+            path: "/form",
+            name: "form",
+            components: {
+                header: AppHeader,
+                default: Form,
 
             }
         }

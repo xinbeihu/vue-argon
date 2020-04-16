@@ -21,6 +21,10 @@
         <router-link to="/projects" class="nav-link nav-link-inner--text">Manage Projects</router-link>
         <router-link to="/projmates" class="nav-link nav-link-inner--text">Project Groups</router-link>
         <router-link to="/forum" class="nav-link nav-link-inner--text">Forum</router-link>
+        <router-link
+          to="/projmatestemp"
+          class="nav-link nav-link-inner--text"
+        >Project Groups Editing</router-link>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
         <li class="nav-item">
