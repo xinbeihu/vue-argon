@@ -3,7 +3,7 @@
     <head>
       <title>Project Mates</title>
     </head>
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <table>
       <tr>
         <!-- <th>
