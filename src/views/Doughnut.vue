@@ -1,12 +1,12 @@
 <template>
   <div class="chart">
-    <h3>Member Contribution</h3>
+    <h4>Member Contribution</h4>
     <chart></chart>
   </div>
 </template>
 
 <script>
-import Chart from "./PieChart.js";
+import Chart from "./Doughnut.js";
 export default {
   components: {
     Chart

@@ -28,9 +28,12 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BarChart from './views/BarChart.vue'
 import LineChart from './views/LineChart.vue'
 import PieChart from './views/PieChart.vue'
+import Doughnut from './views/Doughnut.vue'
+
 Vue.component("BarChart", BarChart)
 Vue.component("LineChart", LineChart)
 Vue.component("PieChart", PieChart)
+Vue.component("Doughnut", Doughnut)
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
