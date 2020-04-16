@@ -623,17 +623,18 @@ export default {
   methods: {
     fetchData: function() {
       let temp = {};
-      let me = this.curruser;
-      let tempid = "";
+      var user = firebase.auth().currentUser;
+      var emailVerified = user.email;
       //Get all the items from DB
       database.collection("User Info").onSnapshot(currentUser => {
         currentUser.forEach(function(user) {
           console.log(1);
-          if (user.data().Name == me) {
+          if (user.id == emailVerified) {
             temp[user.id] = user.data();
           }
         });
         this.userInfo = temp;
+        this.currID = emailVerified;
       });
     },
     getProject: function(item, value) {

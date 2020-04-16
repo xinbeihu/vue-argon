@@ -10,6 +10,8 @@ import Profile from "./views/Profile.vue";
 import Projects from "./views/Projects.vue";
 import ProjMates from "./views/ProjMates.vue";
 import ProjMatesTemp from "./views/ProjMatesTemp.vue";
+import Dashboard from "./views/Dashboard.vue";
+import Form from "./views/Form.vue";
 
 Vue.use(Router);
 
@@ -21,7 +23,6 @@ export default new Router({
             components: {
                 header: StarterHeader,
                 default: Login,
-                footer: AppFooter
             }
         },
 
@@ -52,6 +53,7 @@ export default new Router({
 
             }
         },
+
         {
             path: "/projects",
             name: "projects",
@@ -80,6 +82,15 @@ export default new Router({
             }
         },
         {
+            path: "/dashboard",
+            name: "dashboard",
+            components: {
+                header: AppHeader,
+                default: Dashboard,
+
+            }
+        },
+        {
             path: "/forum",
             name: "forum",
             components: {
@@ -87,7 +98,17 @@ export default new Router({
                 default: Forums,
 
             }
+        },
+        {
+            path: "/form",
+            name: "form",
+            components: {
+                header: AppHeader,
+                default: Form,
+
+            }
         }
+
     ],
     scrollBehavior: to => {
         if (to.hash) {

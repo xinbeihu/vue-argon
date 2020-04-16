@@ -1,8 +1,8 @@
 <template>
   <header class="header-global">
     <base-nav class="navbar-main" transparent type effect="light" expand>
-      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/profile">
-        <img src="img/bestlogo.jpg" alt="logo" style="width:150px; height: 120px" />
+      <router-link slot="brand" class="navbar-brand mr-lg-5" to="/dashboard">
+        <img src="img/bestlogo.png" alt="logo" style="width:150px; height: 120px" />
       </router-link>
 
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
@@ -17,6 +17,7 @@
       </div>
 
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
+        <router-link to="/dashboard" class="nav-link nav-link-inner--text">Dashboard</router-link>
         <router-link to="/projects" class="nav-link nav-link-inner--text">Manage Projects</router-link>
         <router-link to="/projmates" class="nav-link nav-link-inner--text">Project Groups</router-link>
         <router-link to="/forum" class="nav-link nav-link-inner--text">Forum</router-link>
