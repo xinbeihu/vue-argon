@@ -1,12 +1,28 @@
 <template>
   <div>
-    <div>
+  
       <!-- Post Details Content Area -->
-      <div>
-        <!-- Comment Area Start -->
-        <div>
+      <div >
+                  <section class="section-profile-cover section-shaped my-0">
+                    <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </section>
+
+         <section class="section section-skew">
+          <div class="container">
+            <card shadow class="card-profile mt--300" no-body>
+          <!-- Comment Area Start -->
+        
           <!-- Section Title -->
-          <h5>Forum for Module</h5>
+          <div>
+                <h4><strong>Forum for Module&nbsp;</strong></h4>
           <form ref="form">
             <b-form-group label="Module" style="width:fit-content">
               <b-form-select v-model="selectedModule" class="mb-3">
@@ -39,7 +55,7 @@
                   <button
                     class="like"
                     v-on:click="deletepost(post.id)"
-                    v-show="post.email=="swsw@u.nus.edu""
+                    v-show="post.email=='swsw@u.nus.edu'"
                   >Delete</button>
                 </div>
               </div>
@@ -50,7 +66,7 @@
                   title="Add your comment"
                   @ok="addcomment(post.id)"
                 >
-                  <b-form-input id="task-input" v-model="inputcomment"></b-form-input>
+                  <b-form-input id="post.id" v-model="inputcomment"></b-form-input>
                 </b-modal>
               </span>
             </div>
@@ -74,7 +90,7 @@
                       <button
                         class="like"
                         v-on:click="deletecomment(comment.id)"
-                        v-show="comment.email=="swsw@u.nus.edu""
+                        v-show="comment.email=='swsw@u.nus.edu'"
                       >Delete</button>
                     </div>
                   </div>
@@ -85,7 +101,7 @@
                       title="Add your comment"
                       @ok="addcomment(post.id)"
                     >
-                      <b-form-input id="task-input" v-model="inputcomment"></b-form-input>
+                      <b-form-input id="comment.id" v-model="inputcomment"></b-form-input>
                     </b-modal>
                   </span>
                 </div>
@@ -104,8 +120,8 @@
 
           <!-- Reply Form -->
           <div class="contact-form-area">
-            <form action="#" method="post">
-              <div class="row">
+             <form >
+                  <div >
                 <input
                   id="postsection"
                   class="form-control"
@@ -120,7 +136,9 @@
             </form>
           </div>
         </div>
+      </card>
       </div>
+      </section>
     </div>
   </div>
 </template>
@@ -185,7 +203,7 @@ export default {
       //function to sort by time
       let sortingmethod = function(a, b) {
         //console.log(b.date - a.date);
-        return b.date - a.date;
+        return a.date - b.date;
       };
       return commentlist.sort(sortingmethod);
     },
@@ -461,13 +479,25 @@ export default {
         "11": "Dec"
       };
       let date = timestamp.toDate();
+      // hours as 2 digits (hh)
+      var hours = ("0" + date.getHours()).slice(-2);
+
+      // minutes as 2 digits (mm)
+      var minutes = ("0" + date.getMinutes()).slice(-2);
+
+      // seconds as 2 digits (ss)
+      var seconds = ("0" + date.getSeconds()).slice(-2);
 
       return (
         date.getDate() +
         "-" +
         months[date.getMonth()] +
         "-" +
-        date.getFullYear()
+        date.getFullYear()+
+            "  "+
+            hours+":"+
+            minutes+":"+
+            seconds
       );
     }
 
