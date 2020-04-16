@@ -35,13 +35,13 @@
       <section class="section mt--300 section-components">
         <div class="container">
           <div class="row justify-content-center">
-            <!-- <div class="col col-lg-2" v-for="(value, mod) in modules" v-bind:key="mod">
-              <b-button
+            <div class="col col-lg-2" v-for="(value, mod) in modules" v-bind:key="mod">
+              <base-button
                 v-on:click="updateGroups(mod)"
               
                 
-              >{{mod}}</b-button>
-            </div> -->
+              >{{mod}}</base-button>
+            </div>
             <div class="col">
               <div class="mt--100 col-lg-12">
                 <!-- Menu -->
