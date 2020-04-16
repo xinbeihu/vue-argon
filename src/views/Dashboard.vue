@@ -1,13 +1,26 @@
 <template>
-  <div id="main">
-    <div id="chart">
-      <BarChart></BarChart>
-    </div>
-    <div id="chart">
-      <LineChart></LineChart>
-    </div>
-    <div id="chart">
-      <Doughnut></Doughnut>
+  <div class="profile-page">
+    <section class="section-profile-cover section-shaped my-0">
+      <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </section>
+    <div id="main">
+      <div id="chart">
+        <BarChart></BarChart>
+      </div>
+      <div id="chart">
+        <LineChart></LineChart>
+      </div>
+      <div id="chart">
+        <Doughnut></Doughnut>
+      </div>
     </div>
   </div>
 </template>
@@ -16,19 +29,19 @@
 </script>
 
 <style scoped>
-#main{
-    content:"";
-    display:table;
-    clear:both;
-    margin: auto;
+#main {
+  content: "";
+  display: table;
+  clear: both;
+  margin: auto;
 }
-#chart{
+#chart {
   /* height:240px;
   width:240px;  */
   border-style: solid;
-  border-color:#C9CBCF;
+  border-color: #c9cbcf;
   border-width: 1px;
-  padding:30px;
-  float:left;
+  padding: 30px;
+  float: left;
 }
 </style>

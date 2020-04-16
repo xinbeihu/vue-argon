@@ -22,7 +22,6 @@ export default new Router({
             components: {
                 header: StarterHeader,
                 default: Login,
-                footer: AppFooter
             }
         },
 
@@ -53,15 +52,7 @@ export default new Router({
 
             }
         },
-        {
-            path: "/dashboard",
-            name: "dashboard",
-            components: {
-                header: StarterHeader,
-                default: Dashboard,
 
-            }
-        },
         {
             path: "/projects",
             name: "projects",
@@ -90,6 +81,15 @@ export default new Router({
             }
         },
         {
+            path: "/dashboard",
+            name: "dashboard",
+            components: {
+                header: AppHeader,
+                default: Dashboard,
+
+            }
+        },
+        {
             path: "/forum",
             name: "forum",
             components: {
@@ -98,6 +98,7 @@ export default new Router({
 
             }
         }
+
     ],
     scrollBehavior: to => {
         if (to.hash) {
