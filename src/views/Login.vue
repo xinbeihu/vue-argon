@@ -82,10 +82,22 @@ export default {
   },
   methods:{
     login:  function () {
-        firebase.auth().signInWithEmailAndPassword(this.email,this.password).then(
-            alert("Signed in Successfully!")).then(
-            // alert("Signed in Successfully!")
-            router.push({ name: "profile" })
+        var flag=true;
+        firebase.auth().signInWithEmailAndPassword(this.email,this.password).catch(function(error) {
+  // Handle Errors here.
+  alert('Invalid account or password!');
+  flag=false;
+  // ...
+}).
+        then(function() {
+    if (flag) {
+    alert('Signed in Successfully!');}
+  })
+            .then(
+            function() {
+    if (flag) {
+    router.push({ name: "profile" });}
+  }
           )
           
         },
