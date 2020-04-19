@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-6 text-right">
                             <base-button href="#" class="text-light" @click="direct">
-                                <small>Do not have an account?</small>
+                                <small>Register</small>
                             </base-button>
                         </div>
                         <div class="col-6 text-right">
