@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <h4>Member Contribution</h4>
+    <h5>Member Contribution</h5>
     <chart></chart>
   </div>
 </template>

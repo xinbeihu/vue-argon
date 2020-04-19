@@ -54,6 +54,11 @@
                             </a>
                         </div>
                         <div class="col-6 text-right">
+                            <base-button href="#" class="text-light" @click="direct">
+                                <small>Do not have an account?</small>
+                            </base-button>
+                        </div>
+                        <div class="col-6 text-right">
                             <base-button href="#" class="text-light" @click="resetpassword">
                                 <small>Forgot password?</small>
                             </base-button>
@@ -94,6 +99,9 @@ export default {
                 alert("Email of resetting password has been sent. Please check your email!")
             )
         }
+    },
+    direct: function(){
+        router.push({ name: "register" })
     }
   }
 }

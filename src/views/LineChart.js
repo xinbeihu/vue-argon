@@ -27,8 +27,8 @@ export default {
                 }
               }]
             },
-            responsive: true,
-            maintainAspectRatio: false
+            // responsive: true,
+            // maintainAspectRatio: false
         }
     }
   },
@@ -42,6 +42,17 @@ export default {
     },
   
     fetchTasks: function() {
+      // get current user
+      // var user = firebase.auth().currentUser;
+      // var emailVerified = user.email;
+      // database.collection("User Info").onSnapshot(user => {
+      //   user.forEach(function(currUser) {
+      //     if (currUser.id == emailVerified) {
+      //       tempName = currUser.data()["Name"];
+      //     }
+      //   });
+      //   this.user = tempName;
+      // });
       let currUser = this.user;
       let tasks = {};
       let myGroups = { members: {}, groupName: {} };
