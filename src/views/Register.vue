@@ -66,11 +66,11 @@ export default {
   methods:{
     signup:  function () {
           //Save item to database
-          var flag=True;
+          var flag=true;
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function(error) {
   // Handle Errors here.
   alert('This account has already been created');
-  flag=False;
+  flag=false;
   // ...
 })
   .then(function() {
