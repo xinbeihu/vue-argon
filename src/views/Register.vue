@@ -66,13 +66,21 @@ export default {
   methods:{
     signup:  function () {
           //Save item to database
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          var flag=True;
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function(error) {
+  // Handle Errors here.
+  alert('This account has already been created');
+  flag=False;
+  // ...
+})
   .then(function() {
-    alert('You have created an account');
+    if (flag) {
+    alert('You have created an account');}
   })
 
   .then(function() {
-    router.push({ name: "form" });
+    if (flag) {
+    router.push({ name: "form" });}
   });
         }
   }
