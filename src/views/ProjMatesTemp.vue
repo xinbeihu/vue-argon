@@ -35,11 +35,11 @@
       <section class="section mt--300 section-components">
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col col-lg-2" v-for="(value, mod) in modules" v-bind:key="mod">
+            <div class="col col-lg-2">
               <base-button
+                v-for="(value, mod) in modules"
+                v-bind:key="mod"
                 v-on:click="updateGroups(mod)"
-              
-                
               >{{mod}}</base-button>
             </div>
             <div class="col">
@@ -48,284 +48,370 @@
                 <tabs fill class="flex-column flex-md-row">
                   <card shadow>
                     <tab-pane title="Students without Group">
-                      <ol>
-                        <div v-for="(value, mod) in modules" v-bind:key="mod">
-                          <div v-if="mod == module">
-                            <li v-for="person in modules.mod.noGroup" v-bind:key="person">
-                              {{person}}
-                              <a href="https://www.google.com" target="_blank">Profile</a>
-                            </li>
-                          </div>
+                      <div v-for="(value, mod) in modules" v-bind:key="mod">
+                        <div v-if="mod == module">
+                          <li v-for="person in modules[mod]['NoGroup']" v-bind:key="person">
+                            {{person}}
+                            <a href="https://www.google.com" target="_blank">Profile</a>
+                          </li>
                         </div>
-                      </ol>
+                      </div>
                     </tab-pane>
 
-                    <tab-pane title="Formed Project Groups">
-                      <div>
+                    <tab-pane title="Form a New Group">
+                      <div class="modal-content" style="width: 600px; overflow: auto; margin-bottom: 0px;">
                         <div>
-                          <label style="vertical-align: middle;">
-                            <h6>Group Name:</h6>
-                          </label>
-                          <textarea v-model="newGroup.groupName" style="resize: none;" rows="1"></textarea>
-                          <button
-                            style="vertical-align: top;"
-                            v-on:click="checkAvailable()"
-                          >Check Availability</button>
-                          <br />
-                          <div class="good" v-if="good!=''" style="color: green">{{good}}</div>
-                          <div class="bad" v-if="bad!=''" style="color: red">{{bad}}</div>
+                          <label style="vertical-align: middle;"><h6>Group Name:</h6></label>
+                          <textarea v-model='newGroup.groupName' style="resize: none;" rows="1"></textarea>
+                          <button style="vertical-align: top;" v-on:click="checkAvailable()">Check Availability</button>
+                          <br>
+                          <div class='good' v-if="good!=''" style="color: green">{{good}}</div>
+                          <div class='bad' v-if="bad!=''" style="color: red">{{bad}}</div>
                         </div>
-                        <br />
-                        <h6>Size of group:</h6>
-                        <input type="number" v-model="newGroup.size" @change="addMember()" />
-                        <br />
-                        <br />
+                        <br>
+                        <h6>Size of group:</h6><input type=number v-model='newGroup.size' @change='addMember()'>
+                        <br>
+                        <br>
                         <div style="text-align: left; font-size: 20px">
                           <h6>Add your peers who are without a group:</h6>
-                          <select v-model="friend">
+                          <select v-model = 'friend'>
                             <option disabled selected value>Select a peer</option>
-                            <option v-for="fren in noGroup" v-bind:key="fren">{{fren}}</option>
+                            <option v-for='fren in noGroup' v-bind:key=fren>{{fren}}</option>
                           </select>
-                          <button v-on:click="addFriend()">Add</button>
-                          <br />
-                          <br />
+                          <button v-on:click='addFriend()'>Add</button>
+                          <br>
+                          <br>
                           <h6>Remove your peers in your group:</h6>
-                          <select v-model="friend">
+                          <select v-model = 'friend'>
                             <option disabled selected value>Select a peer</option>
-                            <option
-                              v-for="fren in newGroup.currGroup.slice(1)"
-                              v-bind:key="fren"
-                            >{{fren}}</option>
+                            <option v-for='fren in newGroup.currGroup.slice(1)' v-bind:key=fren>{{fren}}</option>
                           </select>
-                          <button v-on:click="removeFriend()">Remove</button>
+                          <button v-on:click='removeFriend()'>Remove</button>
                         </div>
-
-                        <br />
+                
+                        <br>
                         <div>Group as of now: {{newGroup.currGroup.join(', ')}}</div>
-                        <br />
-                        <div v-if="newGroup.size - newGroup.currGroup.length > 1">
-                          You need
+                        <br>
+                        <div v-if='newGroup.size - newGroup.currGroup.length > 1'>You need
                           {{newGroup.size - newGroup.currGroup.length}}
-                          more group mates.
-                        </div>
-                        <div v-if="newGroup.size - newGroup.currGroup.length <= 1">
-                          You need
-                          {{newGroup.size - newGroup.currGroup.length}} more group mate.
-                        </div>
-                        <br />
-                        <br />
+                          more group mates.</div>
+                        <div v-if='newGroup.size - newGroup.currGroup.length <= 1'>You need
+                          {{newGroup.size - newGroup.currGroup.length}} more group mate.</div>
+                        <br>
+                        <br>
                         <div style="text-align: left; font-size: 20px">
                           <h6>I want to look for:</h6>
                         </div>
                         <div>
                           <h6>Add a new skill:</h6>
-                          <textarea rows="1" v-model.lazy="skill" style="resize: none;"></textarea>
-
-                          <button v-on:click="checkSkill()" style="vertical-align: top;">Add</button>
-                          <br />
-                          <div
-                            v-if="hasNewSkill && newGroup.newSkill.length > 0 && skill != ''"
-                            id="add"
-                          >{{skill}} has been added!</div>
-                          <div
-                            v-if="!hasNewSkill && newGroup.newSkill.length > 0 && skill != ''"
-                          >{{skill}} has already been added!</div>
+                          <textarea rows="1" v-model.lazy='skill' style="resize: none;"></textarea>
+                          
+                          <button v-on:click='checkSkill()' style="vertical-align: top;">Add</button>
+                          <br>
+                          <div v-if='hasNewSkill && newGroup.newSkill.length > 0 && skill != ""' id='add'>{{skill}} has been added!
+                          </div>
+                          <div v-if='!hasNewSkill && newGroup.newSkill.length > 0 && skill != ""'>{{skill}} has already been added!
+                          </div>
                         </div>
-                        <br />
-                        <label>
-                          <h6>Select Team Member</h6>
-                        </label>
-                        <select v-model="newGroup.currMember" v-on:change="checkCurr()">
-                          <option
-                            v-for="(value, index) in newGroup.skills"
-                            v-bind:key="index+1"
-                          >{{index + 1}}</option>
+                        <br>
+                        <label><h6>Select Team Member</h6></label>
+                        <select v-model='newGroup.currMember' v-on:change='checkCurr()'>
+                          <option v-for='(value, index) in newGroup.skills' v-bind:key=index+1>{{index + 1}}</option>
                         </select>
-
-                        <br />
+                
+                        <br>
                         <div>
-                          <div
-                            v-for="(value, index) in newGroup.memberStatus"
-                            v-show="value==true"
-                            v-bind:key="value"
-                          >
-                            <p style="text-align: left">Team Member {{index + 1}}</p>
-                            <div id="memberlist">
+                          <div v-for='(value, index) in newGroup.memberStatus' v-show='value=="true"' v-bind:key = value>
+                            <p style="text-align: left">
+                              Team Member {{index + 1}}
+                            </p>
+                            <div id='memberlist'>
                               Desired Skills:
-                              <br />
-                              <input
-                                type="checkbox"
-                                id="skill1"
-                                name="skill1"
-                                value="Java"
-                                @change="addRemoveSkills(index)"
-                                v-model="newGroup.skills[index]"
-                              />
-                              <label for="skill1">Java</label>
-                              <br />
-                              <input
-                                type="checkbox"
-                                id="skill2"
-                                name="skill2"
-                                value="Python"
-                                @change="addRemoveSkills(index)"
-                                v-model="newGroup.skills[index]"
-                              />
-                              <label for="skill2">Python</label>
-                              <br />
-                              <input
-                                type="checkbox"
-                                id="skill3"
-                                name="skill3"
-                                value="HTML"
-                                @change="addRemoveSkills(index)"
-                                v-model="newGroup.skills[index]"
-                              />
-                              <label for="skill3">HTML</label>
-                              <br />
-                              <div v-for="curr in newGroup.newSkill" v-bind:key="curr">
-                                <input
-                                  type="checkbox"
-                                  v-bind:value="curr"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
+                              <br>
+                              <input type="checkbox" id="skill1" name="skill1" value="Java" @change='addRemoveSkills(index)'
+                                v-model='newGroup.skills[index]'>
+                              <label for="skill1">Java</label><br>
+                              <input type="checkbox" id="skill2" name="skill2" value="Python" @change='addRemoveSkills(index)'
+                                v-model='newGroup.skills[index]'>
+                              <label for="skill2">Python</label><br>
+                              <input type="checkbox" id="skill3" name="skill3" value="HTML" @change='addRemoveSkills(index)'
+                                v-model='newGroup.skills[index]'>
+                              <label for="skill3">HTML</label><br>
+                              <div v-for='curr in newGroup.newSkill' v-bind:key = curr>
+                                <input type="checkbox" v-bind:value=curr @change='addRemoveSkills(index)'
+                                  v-model='newGroup.skills[index]'>
                                 <label>{{curr}}</label>
-                                <button
-                                  v-on:click="newGroup.newSkill.splice(newGroup.newSkill.indexOf(skill), 1); newGroup.skills[index].splice(newGroup.skills[index].indexOf(skill), 1); 
-                            addRemoveSkills(index)"
-                                >Remove</button>
-                                <br />
+                                <button v-on:click='newGroup.newSkill.splice(newGroup.newSkill.indexOf(skill), 1); newGroup.skills[index].splice(newGroup.skills[index].indexOf(skill), 1); 
+                                      addRemoveSkills(index)'>Remove</button><br>
                               </div>
-                              <div v-if="loadMore">
+                              <div v-if='loadMore'>
                                 Year:
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill4"
-                                  name="skill4"
-                                  value="Year 1"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill4">Year 1</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill5"
-                                  name="skill5"
-                                  value="Year 2"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill5">Year 2</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill6"
-                                  name="skill6"
-                                  value="Year 3"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill6">Year 3</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill7"
-                                  name="skill7"
-                                  value="Year 4"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill7">Year 4</label>
-                                <br />Major:
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill8"
-                                  name="skill8"
-                                  value="Business Analytics"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill8">Business Analytics</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill9"
-                                  name="skill9"
-                                  value="Computer Science"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill9">Computer Science</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill10"
-                                  name="skill10"
-                                  value="Information Systems"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill10">Information Systems</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill11"
-                                  name="skill11"
-                                  value="Information Security"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill11">Information Security</label>
-                                <br />
-                                <input
-                                  type="checkbox"
-                                  id="skill12"
-                                  name="skill12"
-                                  value="Computer Engineering"
-                                  @change="addRemoveSkills(index)"
-                                  v-model="newGroup.skills[index]"
-                                />
-                                <label for="skill12">Computer Engineering</label>
-                                <br />
+                                <br>
+                                <input type="checkbox" id="skill4" name="skill4" value="Year 1" @change='addRemoveSkills(index)'
+                                  v-model='newGroup.skills[index]'>
+                                <label for="skill4">Year 1</label><br>
+                                <input type="checkbox" id="skill5" name="skill5" value="Year 2" @change='addRemoveSkills(index)'
+                                  v-model='newGroup.skills[index]'>
+                                <label for="skill5">Year 2</label><br>
+                                <input type="checkbox" id="skill6" name="skill6" value="Year 3" @change='addRemoveSkills(index)'
+                                  v-model='newGroup.skills[index]'>
+                                <label for="skill6">Year 3</label><br>
+                                <input type="checkbox" id="skill7" name="skill7" value="Year 4" @change='addRemoveSkills(index)'
+                                  v-model='newGroup.skills[index]'>
+                                <label for="skill7">Year 4</label><br>
+                                Major:
+                                <br>
+                                <input type="checkbox" id="skill8" name="skill8" value="Business Analytics"
+                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
+                                <label for="skill8">Business Analytics</label><br>
+                                <input type="checkbox" id="skill9" name="skill9" value="Computer Science"
+                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
+                                <label for="skill9">Computer Science</label><br>
+                                <input type="checkbox" id="skill10" name="skill10" value="Information Systems"
+                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
+                                <label for="skill10">Information Systems</label><br>
+                                <input type="checkbox" id="skill11" name="skill11" value="Information Security"
+                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
+                                <label for="skill11">Information Security</label><br>
+                                <input type="checkbox" id="skill12" name="skill12" value="Computer Engineering"
+                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
+                                <label for="skill12">Computer Engineering</label><br>
                               </div>
-                              <button v-on:click="loadMore=!loadMore; changeText()">{{loadText}}</button>
-
+                              <button v-on:click='loadMore=!loadMore; changeText()'>{{loadText}}</button>
+                
                               <p>You have selected:</p>
                               <p>{{newGroup.members[index]}}</p>
-                              <h6>Any comments for your group?</h6>
-                              <textarea
-                                v-model.lazy="newGroup.comment"
-                                rows="1"
-                                style="resize: none;"
-                              ></textarea>
-                              <br />
-                              <br />
-                              <button v-on:click="addGroup()">Submit</button>
+                              <h6>Any comments for your group?</h6><textarea v-model.lazy='newGroup.comment' rows="1" style="resize: none;"></textarea>
+                              <br>
+                              <br>
+                              <button v-on:click='addGroup()'>Submit</button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </tab-pane>
+
+                    <tab-pane title="Formed Project Groups">
+                      <div v-for="(value, mod) in modules" v-bind:key="mod">
+                        <div v-if="mod == module">
+                          <div v-for="(group, groupName) in modules[mod]" v-bind:key="group">
+                            <div
+                              v-if="group['Group Members'] != null && group['MaxSize'] == group['Group Members'].length"
+                            >
+                              <li style="text-align: left; list-style: none;">
+                                <div
+                                  class="group"
+                                  style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px;"
+                                >
+                                  <h4>{{groupName}} ({{group['Group Members'].length}}/{{group['Group Members'].length}})</h4>
+                                  <ul style="list-style-type: none">
+                                    <div class="group-content">
+                                      <li
+                                        v-for="person in group['Group Members']"
+                                        v-bind:key="person"
+                                      >
+                                        {{person}}
+                                        <a
+                                          href="https://www.google.com"
+                                          target="_blank"
+                                        >Profile</a>
+                                      </li>
+                                    </div>
+                                  </ul>
+                                </div>
+                              </li>
                             </div>
                           </div>
                         </div>
                       </div>
                     </tab-pane>
-
-                    <tab-pane title="Form New Group">
-                      <p class="description">
-                        Raw denim you probably haven't heard of them jean shorts
-                        Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache
-                        cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
-                        keffiyeh dreamcatcher synth.
-                      </p>
-                    </tab-pane>
                     <tab-pane title="Existing Groups">
-                      <p class="description">
-                        Raw denim you probably haven't heard of them jean shorts
-                        Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache
-                        cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro
-                        keffiyeh dreamcatcher synth.
-                      </p>
+                      <div
+                        style="text-align: left"
+                        v-for="(team, teamName) of currGroups"
+                        v-bind:key="teamName"
+                      >
+                        <ul style="list-style-type:none">
+                          <li class="removebullet">
+                            <div class="group" style="text-align:center">
+                              <div
+                                style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px;list-style:none;"
+                              >
+                                <h4>{{teamName}} ({{team['Group Members'].length}}/{{team.MaxSize}})</h4>
+                              </div>
+                              <ul>
+                                <div class="group-content">
+                                  <li v-for="member in team['Group Members']" v-bind:key="member">
+                                    {{member}}
+                                    <a
+                                      href="https://www.google.com"
+                                      target="_blank"
+                                    >Profile</a>
+                                  </li>
+                                  <br />
+                                  Team Comment: {{team['Comment']}}
+                                  <br />
+                                  <div
+                                    style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px; text-align:center"
+                                  >Team Composition:</div>
+                                  <table>
+                                    <td
+                                      v-for="(value, mem) in team['Vacancies']"
+                                      v-bind:key="mem"
+                                      style="padding-right:10px"
+                                    >
+                                      <tr
+                                        v-for="(value, person) in team['Vacancies'][mem]"
+                                        v-bind:key="person"
+                                      >
+                                        <br />
+                                        {{person}}
+                                        <i
+                                          class="fa fa-user"
+                                          style="font-size:24px; color:green"
+                                          v-show="!team['Vacancies'][mem][person]['FilledOrNot']"
+                                        ></i>
+                                        <i
+                                          class="fa fa-user"
+                                          style="font-size:24px; color:red"
+                                          v-show="team['Vacancies'][mem][person]['FilledOrNot']"
+                                        ></i>
+                                        <br />
+                                        <div
+                                          v-show="!team['Vacancies'][mem][person]['FilledOrNot']"
+                                        >
+                                          Skills Required:
+                                          <ul>
+                                            <li
+                                              v-for="skill in team['Vacancies'][mem][person]['Skills Required']"
+                                              v-bind:key="skill"
+                                            >
+                                              {{skill}}
+                                              <i
+                                                class="fa fa-check"
+                                                style="font-size:24px;color:green"
+                                                v-show="my_skills.indexOf(skill) > -1"
+                                              ></i>
+                                              <i
+                                                class="fa fa-times"
+                                                style="font-size:24px;color:red"
+                                                v-show="my_skills.indexOf(skill) == -1"
+                                              ></i>
+                                            </li>
+                                          </ul>
+                                          <br />
+                                          <div class="mb4 f6 fw6 dark-gray">Compatibility</div>
+                                          <div
+                                            class="vue-simple-progress"
+                                            style="background: rgb(238, 238, 238);"
+                                          >
+                                            <div
+                                              class="vue-simple-progress-bar"
+                                              v-bind:style="{width: my_compatibility[teamName][person] + '%'}"
+                                              style="background: rgb(33, 150, 243); height: 3px; transition: all 0.5s ease 0s;"
+                                            ></div>
+                                          </div>
+                                          <div
+                                            class="vue-simple-progress-text"
+                                            style="color: rgb(34, 34, 34); font-size: 13px; text-align: center; padding-top: 4px;"
+                                          >{{my_compatibility[teamName][person] + '%'}}</div>
+                                          <br />
+                                          <button
+                                            v-show="my_compatibility[teamName][person] == 100"
+                                            v-on:click="join(teamName, person)"
+                                          >Click to join now</button>
+                                        </div>
+                                        <button
+                                          v-show="team['Group Members'].indexOf('You') > -1 && my_compatibility[teamName][person] == 100"
+                                          v-on:click="leave(teamName, person); updateGroups()"
+                                        >Leave</button>
+                                      </tr>
+                                    </td>
+                                  </table>
+                                </div>
+                              </ul>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div
+                        style="text-align: left"
+                        v-for="(team, teamName) of newGroups"
+                        v-bind:key="teamName"
+                      >
+                        <ul style="list-style-type:none">
+                          <li class="removebullet">
+                            <div class="group" style="text-align:center">
+                              <div
+                                style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px;list-style:none;"
+                              >
+                                <h4>{{teamName}} ({{team['Group Members'].length}}/{{team.MaxSize}})</h4>
+                              </div>
+                              <ul>
+                                <div class="group-content">
+                                  <div v-if="team['Group Members'].length > 1">
+                                    You
+                                    <a href="https://www.google.com" target="_blank">Profile</a>
+                                  </div>
+                                  <li v-for="member in team['Group Members']" v-bind:key="member">
+                                    {{member}}
+                                    <a
+                                      href="https://www.google.com"
+                                      target="_blank"
+                                    >Profile</a>
+                                  </li>
+                                  <br />
+                                  Team Comment: {{team['Comment']}}
+                                  <br />
+                                  <div
+                                    style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px; text-align:center"
+                                  >Team Composition:</div>
+                                  <table>
+                                    <td
+                                      v-for="(value, mem) in team['Vacancies']"
+                                      v-bind:key="mem"
+                                      style="padding-right:10px"
+                                    >
+                                      <tr
+                                        v-for="(value, person) in team['Vacancies'][mem]"
+                                        v-bind:key="person"
+                                      >
+                                        <br />
+                                        {{person}}
+                                        <i
+                                          class="fa fa-user"
+                                          style="font-size:24px; color:green"
+                                          v-show="!team['Vacancies'][mem][person]['FilledOrNot']"
+                                        ></i>
+                                        <i
+                                          class="fa fa-user"
+                                          style="font-size:24px; color:red"
+                                          v-show="team['Vacancies'][mem][person]['FilledOrNot']"
+                                        ></i>
+                                        <br />
+                                        <div
+                                          v-show="!team['Vacancies'][mem][person]['FilledOrNot']"
+                                        >
+                                          Skills Required:
+                                          <ul>
+                                            <li
+                                              v-for="skill in team['Vacancies'][mem][person]['Skills Required']"
+                                              v-bind:key="skill"
+                                            >{{skill}}</li>
+                                          </ul>
+                                        </div>
+                                      </tr>
+                                    </td>
+                                  </table>
+                                  <br />
+                                </div>
+                              </ul>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
                     </tab-pane>
                   </card>
                 </tabs>
@@ -369,22 +455,8 @@ export default {
       friend: "",
       noGroup: [],
       newGroupFormed: {},
-      newGroup: {
-        module: "",
-        groupName: "",
-        size: 2,
-        currGroup: ["You"],
-        newSkill: [],
-        comment: "",
-        compatibility: [],
-        memberStatus: ["true"],
-        members: ["None"],
-        skills: [[]],
-        currMember: 1,
-        skills1: [],
-        skills2: [],
-        skills3: []
-      },
+      newGroup:{module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
+      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]},
       newGroups: {},
       currGroups: {},
       my_compatibility: {},
@@ -677,6 +749,7 @@ export default {
     updateGroups: function(mod) {
       this.newGroups = {};
       console.log(mod);
+      this.module = mod;
       for (let mod in this.modules) {
         if (this.module == mod) {
           this.noGroup = this.modules[mod]["NoGroup"];
@@ -749,4 +822,130 @@ export default {
 };
 </script>
 <style>
+#header li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+#header li {
+  float: left;
+}
+
+#header li a:hover {
+  background-color: darksalmon;
+}
+
+#userinfo li {
+  padding-top: 10px;
+  background-color: #f1f1f1;
+  width: 60px;
+  padding-right: 50px;
+}
+
+#userinfo li a {
+  text-decoration: none;
+  color: black;
+}
+
+#userinfo li a:hover {
+  background-color: darkgray;
+}
+
+body {
+  height: 100%;
+}
+
+#modules {
+  width: 100px;
+  height: 30px;
+}
+
+#studentlist {
+  text-align: left;
+}
+
+#memberlist {
+  width: 500px;
+  text-align: left;
+}
+
+.button {
+  text-align: center;
+  border-radius: 25px;
+  border: 2px solid gray;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 25px;
+  border: 2px solid gray;
+  background-color: white;
+  color: black;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.group {
+  display: inline-block;
+}
+
+.group:hover .group-content {
+  display: block;
+  position: absolute;
+}
+
+.group-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: auto;
+  height: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  text-align: left;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+</style>
+
 </style>

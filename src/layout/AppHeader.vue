@@ -28,10 +28,14 @@
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
         <li class="nav-item">
-          <router-link to="/profile" class="nav-link nav-link-inner--text">
-            <i class="fa fa-user-circle"></i>
+          <base-dropdown>
+          <base-button slot="title" type="primary" class="dropdown-toggle">
+           <i class="fa fa-user-circle"></i>
             {{currName}}
-          </router-link>
+          </base-button>
+          <router-link to="/profile" class="dropdown-item"> View Profile</router-link>
+          <router-link to="/login" class="dropdown-item"> Log Out</router-link>
+        </base-dropdown>
         </li>
       </ul>
     </base-nav>
