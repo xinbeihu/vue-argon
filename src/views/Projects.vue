@@ -1024,44 +1024,48 @@ export default {
     },
 
     fetchTasks: function() {
-      let tasks = {};
-      let myGroups = { members: {}, groupName: {} };
       var user = firebase.auth().currentUser;
       var emailVerified = user.email;
       var tempName = "";
-      database.collection("User Info").onSnapshot(user => {
-        user.forEach(function(currUser) {
+
+      database.collection("User Info").onSnapshot(users => {
+        users.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
             tempName = currUser.data()["Name"];
           }
         });
-        this.user = tempName;
-      });
-      let currUser = this.user;
-      database.collection("Modules").onSnapshot(myModules => {
-        myModules.forEach(function(module) {
-          for (let groups in module.data()) {
-            if (groups == "NoGroup") {
-              //groups = group name
-              return;
-            }
-            if (!module.data()[groups]["Group Members"].includes(currUser)) {
-              //filter to show only user's groups
-              return;
-            }
-            myGroups["members"][module.id] = module.data()[groups][
-              "Group Members"
-            ];
-            myGroups["groupName"][module.id] = groups;
+        let currUser = tempName;
 
-            tasks[module.id] = module.data()[groups]["Assignments"];
-          }
+        database.collection("Modules").onSnapshot(myModules => {
+          let tasks = {};
+          let myGroups = { members: {}, groupName: {} };
+          myModules.forEach(function(module) {
+            console.log(Object.keys(module.data()));
+            for (let groups of Object.keys(module.data())) {
+              if (groups == "NoGroup") {
+                //groups = group name
+                continue;
+              }
+
+              if (!module.data()[groups]["Group Members"].includes(currUser)) {
+                //filter to show only user's groups
+                continue;
+              }
+
+              myGroups["members"][module.id] = module.data()[groups][
+                "Group Members"
+              ];
+              myGroups["groupName"][module.id] = groups;
+
+              tasks[module.id] = module.data()[groups]["Assignments"];
+            }
+          });
+
+          this.taskList = tasks;
+          this.groups = myGroups;
         });
-        this.taskList = tasks;
-        this.groups = myGroups;
       });
     },
-
     //* random id generator based on timestamp, referenced from https://gist.github.com/mikelehen/3596a30bd69384624c11*//
     generatePushID: function() {
       // Modeled after base64 web-safe chars, but ordered by ASCII.

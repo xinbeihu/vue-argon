@@ -582,7 +582,7 @@ export default {
   data() {
     return {
       userInfo: {},
-      curruser: "Victor Cheong",
+      userName: "Victor Cheong",
       inputSkill: "",
       inputInterest: "",
       currID: "vcjw97@gmail.com",
@@ -625,16 +625,20 @@ export default {
       let temp = {};
       var user = firebase.auth().currentUser;
       var emailVerified = user.email;
+      var name = "";
       //Get all the items from DB
       database.collection("User Info").onSnapshot(currentUser => {
         currentUser.forEach(function(user) {
           console.log(1);
           if (user.id == emailVerified) {
             temp[user.id] = user.data();
+            name = user.data().Name;
           }
         });
         this.userInfo = temp;
         this.currID = emailVerified;
+        this.userName = name;
+        console.log(this.userName);
       });
     },
     getProject: function(item, value) {
@@ -860,6 +864,37 @@ export default {
               .update({
                 ["Current Modules." + newCurrModCode]: newCurrModName
               });
+            let name = this.userName;
+            var docRef = database.collection("Modules").doc(newCurrModCode);
+            docRef
+              .get()
+              .then(function(doc) {
+                if (doc.exists) {
+                  database
+                    .collection("Modules")
+                    .doc(newCurrModCode)
+                    .update({
+                      ["NoGroup"]: firebase.firestore.FieldValue.arrayUnion(
+                        name
+                      )
+                    });
+                  console.log("new person added");
+                } else {
+                  database
+                    .collection("Modules")
+                    .doc(newCurrModCode)
+                    .set({
+                      ["NoGroup"]: firebase.firestore.FieldValue.arrayUnion(
+                        name
+                      )
+                    });
+                  console.log("new module added");
+                }
+              })
+              .catch(function(error) {
+                console.log("Error getting document:", error);
+              });
+
             this.inputCurrModCode = "";
           })
           .catch(error => {
