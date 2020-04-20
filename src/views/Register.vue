@@ -68,26 +68,8 @@ export default {
       password: ""
     };
   },
-<<<<<<< HEAD
-  methods: {
-    signup: function() {
-      //Save item to database
-      var flag = true;
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .catch(function(error) {
-          // Handle Errors here.
-          alert("This account has already been created");
-          flag = False;
-          // ...
-        })
-        .then(function() {
-          if (flag) {
-            alert("You have created an account");
-          }
-        })
-=======
+
+
   methods:{
     signup:  function () {
           //Save item to database
@@ -102,7 +84,6 @@ export default {
     if (flag) {
     alert('You have created an account');}
   })
->>>>>>> 685bced59f0842b8a3f49c92850b7860f6b55bb8
 
         .then(function() {
           if (flag) {
