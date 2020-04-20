@@ -404,7 +404,7 @@ export default {
   data() {
     return {
       hover: false,
-      user: "Bobby",
+      user: "",
       groups: {},
       taskList: {},
       subtaskID: "",
