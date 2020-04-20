@@ -825,15 +825,15 @@ export default {
                 newProjMod +
                 ".Team Members"]: newProjMembers
               });
+            this.inputProjMod = "";
+            this.inputProjName = "";
+            this.inputProjDesc = "";
+            this.inputProjModName = "";
+            this.teamMembers = [];
           })
           .catch(error => {
             alert("Please enter the correct module code in upper case");
           });
-        this.inputProjMod = "";
-        this.inputProjName = "";
-        this.inputProjDesc = "";
-        this.inputProjModName = "";
-        this.teamMembers = [];
       }
     },
     submitCurrMod: function() {
@@ -850,6 +850,8 @@ export default {
             console.log(response.data.title);
             this.inputCurrModName = response.data.title;
             let newCurrModCode = this.inputCurrModCode;
+            console.log("hi" + this.inputCurrModCode);
+            console.log("hii" + newCurrModCode);
             let newCurrModName = this.inputCurrModName;
             let currUser = this.currID;
             database
@@ -858,9 +860,11 @@ export default {
               .update({
                 ["Current Modules." + newCurrModCode]: newCurrModName
               });
+            this.inputCurrModCode = "";
+          })
+          .catch(error => {
+            alert("Please enter the correct module code in upper case");
           });
-
-        this.inputCurrModCode = "";
       }
     },
 
@@ -891,12 +895,12 @@ export default {
                 newPastModCode +
                 ".Module Name"]: newPastModName
               });
+            this.inputPastModCode = "";
+            this.inputPastModGrade = "";
           })
           .catch(error => {
             alert("Please enter the correct module code in upper case");
           });
-        this.inputPastModCode = "";
-        this.inputPastModGrade = "";
       }
     },
 
