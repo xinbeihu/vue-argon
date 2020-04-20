@@ -3,6 +3,7 @@ import database from '../firebase.js'
 import firebase from "firebase";
 
 export default {
+
   extends: Line,
   data: function () {
     return {
@@ -26,14 +27,11 @@ export default {
   },
 
   methods: {
-
     getColor: function () {
       let colors = ["#C9CBCF", "#9966FE", "#36A2EB", "#4BC0C0", "#FFC134", "#FF6383"];
       let randomNumber = Math.round(Math.random() * 5);
       return colors[randomNumber];
     },
-
-
 
     fetchTasks: function () {
       // get current user
