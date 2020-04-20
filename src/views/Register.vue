@@ -69,21 +69,24 @@ export default {
     };
   },
 
-
-  methods:{
-    signup:  function () {
-          //Save item to database
-          var flag=true;
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password).catch(function(error) {
-  // Handle Errors here.
-  alert('This account has already been created');
-  flag=false;
-  // ...
-})
-  .then(function() {
-    if (flag) {
-    alert('You have created an account');}
-  })
+  methods: {
+    signup: function() {
+      //Save item to database
+      var flag = true;
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .catch(function(error) {
+          // Handle Errors here.
+          alert("This account has already been created");
+          flag = false;
+          // ...
+        })
+        .then(function() {
+          if (flag) {
+            alert("You have created an account");
+          }
+        })
 
         .then(function() {
           if (flag) {
