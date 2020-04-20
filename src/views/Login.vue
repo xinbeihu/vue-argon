@@ -1,122 +1,126 @@
 <template>
-    <section class="section section-shaped section-lg my-0">
-        <div class="shape shape-style-1 bg-gradient-default">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <div class="container pt-lg-md">
-            <div class="row justify-content-center">
-                <div class="col-lg-5">
-                    <card type="secondary" shadow
-                          header-classes="bg-white pb-5"
-                          body-classes="px-lg-5 py-lg-5"
-                          class="border-0">
-                        <template>
-                            <div class="text-muted text-center mb-3">
-                                <small>Sign In to Manage Your Project Now!</small>
-                            </div>
-                      
-                        </template>
-                        <br>
+  <section class="section section-shaped section-lg my-0">
+    <div class="shape shape-style-1 bg-gradient-default">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="container pt-lg-md">
+      <div class="row justify-content-center">
+        <div class="col-lg-5">
+          <card
+            type="secondary"
+            shadow
+            header-classes="bg-white pb-5"
+            body-classes="px-lg-5 py-lg-5"
+            class="border-0"
+          >
+            <template>
+              <div class="text-muted text-center mb-3">
+                <small>Sign In to Manage Your Project Now!</small>
+              </div>
+            </template>
+            <br />
 
-                        <template>
-                            
-                            <form role="form">
-                                <base-input alternative
-                                            class="mb-3"
-                                            placeholder="Email"
-                                            addon-left-icon="ni ni-email-83"
-                                            v-model="email">
-                                </base-input>
-                                <base-input alternative
-                                            type="password"
-                                            placeholder="Password"
-                                            addon-left-icon="ni ni-lock-circle-open"
-                                            v-model="password">
-                                </base-input>
+            <template>
+              <form role="form">
+                <base-input
+                  alternative
+                  class="mb-3"
+                  placeholder="Email"
+                  addon-left-icon="ni ni-email-83"
+                  v-model="email"
+                ></base-input>
+                <base-input
+                  alternative
+                  type="password"
+                  placeholder="Password"
+                  addon-left-icon="ni ni-lock-circle-open"
+                  v-model="password"
+                ></base-input>
 
-                                <div class="text-center">
-                                    <base-button type="primary" class="my-4" @click="login">Sign In</base-button>
-                                </div>
-                            </form>
-                        </template>
-                    </card>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <a href="#" class="text-light">
-                                <small></small>
-                            </a>
-                        </div>
-                        <div class="col-6 text-right">
-                            <base-button href="#" class="text-light" @click="direct">
-                                <small>Register</small>
-                            </base-button>
-                        </div>
-                        <div class="col-6 text-right">
-                            <base-button href="#" class="text-light" @click="resetpassword">
-                                <small>Forgot password?</small>
-                            </base-button>
-                        </div>
-                    </div>
+                <div class="text-center">
+                  <base-button type="primary" class="my-4" @click="login">Sign In</base-button>
                 </div>
+              </form>
+            </template>
+          </card>
+          <div class="row mt-3">
+            <div class="col-6">
+              <base-button href="#" class="text-light" @click="direct">
+                <small>Register</small>
+              </base-button>
             </div>
+            <div class="col-6 text-right">
+              <base-button href="#" class="text-light" @click="resetpassword">
+                <small>Forgot password?</small>
+              </base-button>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 <script>
-import firebase from 'firebase';
-import router from '../router';
+import firebase from "firebase";
+import router from "../router";
 export default {
-  name:'login',
-  data(){
-    return{
-        email:"",
-        password:""
-        }
+  name: "login",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
   },
-  methods:{
-    login:  function () {
-        var flag=true;
-        firebase.auth().signInWithEmailAndPassword(this.email,this.password).catch(function(error) {
-  // Handle Errors here.
-  alert('Invalid account or password!');
-  flag=false;
-  // ...
-}).
-        then(function() {
-    if (flag) {
-    alert('Signed in Successfully!');}
-  })
-            .then(
-            function() {
-    if (flag) {
-    router.push({ name: "profile" });}
-  }
-          )
-          
-        },
-    resetpassword: function(){
-        var auth = firebase.auth();
-        var emailAddress = this.email;
-        if (this.email==""){
-            alert("Please key in your email!")
-        } else {
-            auth.sendPasswordResetEmail(emailAddress).then(
-                alert("Email of resetting password has been sent. Please check your email!")
-            )
-        }
+  methods: {
+    login: function() {
+      var flag = true;
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.password)
+        .catch(function(error) {
+          // Handle Errors here.
+          alert("Invalid account or password!");
+          flag = false;
+          // ...
+        })
+        .then(function() {
+          if (flag) {
+            alert("Signed in Successfully!");
+          }
+        })
+        .then(function() {
+          if (flag) {
+            router.push({ name: "profile" });
+          }
+        });
     },
-    direct: function(){
-        router.push({ name: "register" })
+    resetpassword: function() {
+      var auth = firebase.auth();
+      var emailAddress = this.email;
+      if (this.email == "") {
+        alert("Please key in your email!");
+      } else {
+        auth
+          .sendPasswordResetEmail(emailAddress)
+          .then(
+            alert(
+              "Email of resetting password has been sent. Please check your email!"
+            )
+          );
+      }
+    },
+    direct: function() {
+      router.push({ name: "register" });
     }
   }
-}
+};
 </script>
 <style>
 </style>
