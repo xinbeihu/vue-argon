@@ -1,19 +1,20 @@
 import { Bar } from 'vue-chartjs'
 import database from '../firebase.js'
+import firebase from "firebase";
 
 export default {
   extends: Bar,
   data: function () {
     return {
-      user: "Bobby",
+      // user: "",
       taskList: "",
       groups: "",
       datacollection: {
         labels: [],
         datasets: [{
-            label: "Number of Tasks",
-            data: [],
-            backgroundColor:["#F4F5F5","#EBE0FF", "#DAECFC", "#DDF3F2", "#FFF3DA", "#FFE1E6"] 
+          label: "Number of Tasks",
+          data: [],
+          backgroundColor: ["#F4F5F5", "#EBE0FF", "#DAECFC", "#DDF3F2", "#FFF3DA", "#FFE1E6"]
         }]
       },
       options: {
@@ -27,7 +28,7 @@ export default {
         //     }
         //   }
         // },
-        
+
         scales: {
           xAxes: [{
             barPercentage: 0.4
@@ -45,7 +46,7 @@ export default {
   },
 
   methods: {
-    getMonth: function(timestamp) {
+    getMonth: function (timestamp) {
       let monthNumber = timestamp.toDate().getMonth();
       let months = {
         "0": "Jan",
@@ -65,65 +66,67 @@ export default {
       return month;
     },
 
-    fetchTasks: function() {
+    fetchTasks: function () {
       // get current user
-      // var user1 = firebase.auth().currentUser;
-      // var emailVerified = user1.email;
-      // database.collection("User Info").onSnapshot(user2 => {
-      //   user2.forEach(function(currUser) {
-      //     if (currUser.id == emailVerified) {
-      //       tempName = currUser.data()["Name"];
-      //     }
-      //   });
-      //   this.user1 = tempName;
-      //   console.log("this.user here")
-      //   console.log(tempName)
-      // });
-      let currUser = this.user;
-      let tasks = {};
-      let myGroups = { members: {}, groupName: {} };
-      let time = {};
-
-      database.collection("Modules").onSnapshot(myModules => {
-        myModules.forEach(function(module) {
-          for (let groups in module.data()) {
-            if (groups == "NoGroup") {
-              return;
-            }
-            if (!module.data()[groups]["Group Members"].includes(currUser)) {
-              return;
-            }
-            myGroups["members"][module.id] = module.data()[groups]["Group Members"];
-            myGroups["groupName"][module.id] = groups;
-            tasks[module.id] = module.data()[groups]["Assignments"];
+      var user1 = firebase.auth().currentUser;
+      var emailVerified = user1.email;
+      let tempName = "";
+      database.collection("User Info").onSnapshot(user2 => {
+        user2.forEach(function (currUser) {
+          if (currUser.id == emailVerified) {
+            tempName = currUser.data()["Name"];
           }
         });
-        this.taskList = tasks;
-        this.groups = myGroups;
+        let currUser = tempName;
+        // console.log("currUser here")
+        // console.log(currUser)
+        let tasks = {};
+        let myGroups = { members: {}, groupName: {} };
+        let time = {};
 
-        let month = "";
-        let num = "";
-        for (let module in tasks) {
-          for (let task in tasks[module]){
-            month = this.getMonth(tasks[module][task]["deadline"]);
-            if (month in time) {
-              num = time[month];
-              time[month] = num + 1;
-            } else {
-              time[month] = 1;
+        database.collection("Modules").onSnapshot(myModules => {
+          myModules.forEach(function (module) {
+            for (let groups in module.data()) {
+              if (groups == "NoGroup") {
+                return;
+              }
+              if (!module.data()[groups]["Group Members"].includes(currUser)) {
+                return;
+              }
+              myGroups["members"][module.id] = module.data()[groups]["Group Members"];
+              myGroups["groupName"][module.id] = groups;
+              tasks[module.id] = module.data()[groups]["Assignments"];
+            }
+          });
+          this.taskList = tasks;
+          this.groups = myGroups;
+
+          let month = "";
+          let num = "";
+          for (let module in tasks) {
+            for (let task in tasks[module]) {
+              month = this.getMonth(tasks[module][task]["deadline"]);
+              if (month in time) {
+                num = time[month];
+                time[month] = num + 1;
+              } else {
+                time[month] = 1;
+              }
             }
           }
-        }
-        for (month in time){
-          this.datacollection.labels.push(month);
-          this.datacollection.datasets[0].data.push(time[month]);
-        }
-        //let length = Object.keys(time).length;
-        this.renderChart(this.datacollection, this.options)
+          for (month in time) {
+            this.datacollection.labels.push(month);
+            this.datacollection.datasets[0].data.push(time[month]);
+          }
+          //let length = Object.keys(time).length;
+          this.renderChart(this.datacollection, this.options)
+        });
+
       });
+
     }
   },
-  created () {
+  created() {
     this.fetchTasks()
   }
 }
