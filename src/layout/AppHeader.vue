@@ -7,9 +7,9 @@
 
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
-          <a href="https://demos.creative-tim.com/vue-argon-design-system/documentation/">
-            <img src="img/brand/blue.png" />
-          </a>
+          <router-link slot="brand" class="navbar-brand mr-lg-5" to="/dashboard">
+            <img src="img/bestlogo.png" alt="logo" style="width:150px; height: 120px" />
+          </router-link>
         </div>
         <div class="col-6 collapse-close">
           <close-button @click="closeMenu"></close-button>
@@ -25,7 +25,7 @@
           to="/projmatestemp"
           class="nav-link nav-link-inner--text"
         >Project Groups Editing</router-link>
-        <router-link to="/login" class="nav-link nav-link-inner--text" @click="logout">Log Out</router-link>
+      
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
         <li class="nav-item">
