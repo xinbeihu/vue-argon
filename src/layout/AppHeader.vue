@@ -19,12 +19,12 @@
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center">
         <router-link to="/dashboard" class="nav-link nav-link-inner--text">Dashboard</router-link>
         <router-link to="/projects" class="nav-link nav-link-inner--text">Manage Projects</router-link>
-        <router-link to="/projmates" class="nav-link nav-link-inner--text">Project Groups</router-link>
-        <router-link to="/forum" class="nav-link nav-link-inner--text">Forum</router-link>
         <router-link
           to="/projmatestemp"
           class="nav-link nav-link-inner--text"
-        >Project Groups Editing</router-link>
+        >Project Groups</router-link>
+        <router-link to="/forum" class="nav-link nav-link-inner--text">Forum</router-link>
+        
       
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
