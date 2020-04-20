@@ -25,6 +25,7 @@
           to="/projmatestemp"
           class="nav-link nav-link-inner--text"
         >Project Groups Editing</router-link>
+        <router-link to="/login" class="nav-link nav-link-inner--text" @click="logout">Log Out</router-link>
       </ul>
       <ul class="navbar-nav align-items-lg-center ml-lg-auto">
         <li class="nav-item">
@@ -72,6 +73,11 @@ export default {
   },
   created() {
     this.fetchData();
+  },
+  logout(){
+    firebase.auth().signOut().then(function() {
+     alert("Sign out successfully!")
+})
   }
 };
 </script>
