@@ -5,7 +5,7 @@ export default {
   extends: Bar,
   data: function () {
     return {
-      // user: "Bobby",
+      user: "Bobby",
       taskList: "",
       groups: "",
       datacollection: {
@@ -67,16 +67,18 @@ export default {
 
     fetchTasks: function() {
       // get current user
-      var user = firebase.auth().currentUser;
-      var emailVerified = user.email;
-      database.collection("User Info").onSnapshot(user => {
-        user.forEach(function(currUser) {
-          if (currUser.id == emailVerified) {
-            tempName = currUser.data()["Name"];
-          }
-        });
-        this.user = tempName;
-      });
+      // var user1 = firebase.auth().currentUser;
+      // var emailVerified = user1.email;
+      // database.collection("User Info").onSnapshot(user2 => {
+      //   user2.forEach(function(currUser) {
+      //     if (currUser.id == emailVerified) {
+      //       tempName = currUser.data()["Name"];
+      //     }
+      //   });
+      //   this.user1 = tempName;
+      //   console.log("this.user here")
+      //   console.log(tempName)
+      // });
       let currUser = this.user;
       let tasks = {};
       let myGroups = { members: {}, groupName: {} };

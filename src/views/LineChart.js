@@ -1,11 +1,13 @@
 import { Line } from 'vue-chartjs'
 import database from '../firebase.js'
+import firebase from "firebase";
+import "firebase/firestore";
 
 export default {
   extends: Line,
   data: function () {
     return {
-        // user: "Bobby",
+        user: "",
         taskList: "",
         groups:"",
         datacollection: {
@@ -40,20 +42,39 @@ export default {
       let randomNumber = Math.round(Math.random() * 5);
       return colors[randomNumber];
     },
+
+    getUser: function() {
+      let tempName = '';
+      let user1 = firebase.auth().currentUser;
+      let emailVerified = user1.email;
+      database.collection('User Info').onSnapshot(user => {
+        user.forEach(function(currUser) {
+          if(currUser.id == emailVerified) {
+            tempName = currUser.data()['Name']
+          }
+        })
+        this.user = tempName;
+        console.log("tempUser")
+        console.log(this.user)
+        return this.user;
+        
+      })
+      // this.user = firebase.auth().currentUser;
+      // var emailVerified = this.user.email;
+      // database.collection("User Info").onSnapshot(user1 => {
+      //   user1.forEach(function(currUser1) {
+      //     if (currUser1.id == emailVerified) {
+      //       let tempName = currUser1.data()["Name"];
+      //     }
+      //   });
+      //   return tempName;
+      // });
+    },
   
     fetchTasks: function() {
-      // get current user
-      var user = firebase.auth().currentUser;
-      var emailVerified = user.email;
-      database.collection("User Info").onSnapshot(user => {
-        user.forEach(function(currUser) {
-          if (currUser.id == emailVerified) {
-            tempName = currUser.data()["Name"];
-          }
-        });
-        this.user = tempName;
-      });
-      let currUser = this.user;
+      let currUser = this.getUser();
+      console.log("currUser here")
+      console.log(this.currUser) 
       let tasks = {};
       let myGroups = { members: {}, groupName: {} };
       let time = {};
