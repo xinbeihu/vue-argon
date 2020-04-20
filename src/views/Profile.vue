@@ -847,6 +847,7 @@ export default {
               ".json"
           )
           .then(response => {
+            console.log(response.data.title);
             this.inputCurrModName = response.data.title;
             let newCurrModCode = this.inputCurrModCode;
             let newCurrModName = this.inputCurrModName;
@@ -857,10 +858,8 @@ export default {
               .update({
                 ["Current Modules." + newCurrModCode]: newCurrModName
               });
-          })
-          .catch(error => {
-            alert("Please enter the correct module code in upper case");
           });
+
         this.inputCurrModCode = "";
       }
     },
