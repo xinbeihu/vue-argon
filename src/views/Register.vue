@@ -68,6 +68,7 @@ export default {
       password: ""
     };
   },
+
   methods: {
     signup: function() {
       //Save item to database
