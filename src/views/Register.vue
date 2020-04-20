@@ -78,7 +78,7 @@ export default {
         .createUserWithEmailAndPassword(this.email, this.password)
         .catch(function(error) {
           // Handle Errors here.
-          alert("This account has already been created");
+          alert("Invalid account!(empty account entered or account already registered)");
           flag = false;
           // ...
         })
