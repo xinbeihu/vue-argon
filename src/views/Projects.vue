@@ -758,7 +758,6 @@ export default {
                 if (group != "NoGroup") {
                   let assignments = doc.data()[group]["Assignments"];
                   for (let assignment in assignments) {
-                    console.log(assignments[assignment]);
                     let copy = assignments[assignment];
                     if (assignments[assignment]["TaskID"] == id) {
                       database
@@ -795,12 +794,6 @@ export default {
     editTask: function(details, task) {
       this.editText = task;
       this.editDate = details["deadline"].toDate();
-      /* let temp = new firebase.firestore.Timestamp(
-        this.editDate.getTime() / 1000,
-        0
-      );
-      console.log(this.editDate);
-      console.log(temp.toDate()); */
       this.taskID = details["TaskID"];
     },
     showDaysLeft: function(timestamp) {
