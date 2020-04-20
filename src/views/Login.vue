@@ -52,11 +52,10 @@
           </card>
           <div class="row mt-3">
             <div class="col-6">
-              <base-button href="#" class="text-light" @click="direct">
+              <base-button href="#" class="text-left" @click="direct">
                 <small>Register</small>
               </base-button>
-            </div>
-            <div class="col-6 text-right">
+            
               <base-button href="#" class="text-light" @click="resetpassword">
                 <small>Forgot password?</small>
               </base-button>
