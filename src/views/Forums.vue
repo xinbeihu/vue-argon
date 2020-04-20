@@ -42,7 +42,7 @@
 
 
       <div class="container" id="app">
-        <div class="row justify-content-left">
+        <div style="position: relative">
         <!-- <b-list-group> -->
         <b-card>
           <b-media variant="primary" class="single_comment_area" v-for="post of displayposts()" v-bind:key="post">
