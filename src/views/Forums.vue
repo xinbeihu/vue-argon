@@ -19,9 +19,12 @@
           <div class="container">
             <card shadow class="card-profile mt--300" no-body>
           <!-- Comment Area Start -->
-        
-          <!-- Section Title -->
-          <div>
+      
+
+    <section class="post-details-area">
+      
+          <!-- select module section-->
+        <div>
                 <h4><strong>Forum for Module&nbsp;</strong></h4>
           <form ref="form">
             <b-form-group label="Module" style="width:fit-content">
@@ -37,28 +40,31 @@
           </form>
         </div>
 
-        <ol>
-          <li class="single_comment_area" v-for="post of displayposts()" v-bind:key="post">
+
+      <div class="container" id="app">
+        <div class="row justify-content-left">
+        <!-- <b-list-group> -->
+        <b-card>
+          <b-media variant="primary" class="single_comment_area" v-for="post of displayposts()" v-bind:key="post">
+              <template v-slot:aside>
+                <b-img blank blank-color="#ccc" width="64" alt="placeholder"></b-img>
+              </template>
             <div class="comment-content d-flex">
-              <!-- Author profile pic -->
-              <!-- <div class="comment-author">
-                <img src="img/bg-img/53.jpg" alt="author" />
-              </div> -->
-              <!-- Comment Meta -->
+
               <div class="comment-meta">
+                
+                <h5 class="mt-0">{{post.username}}</h5>
                 <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
-                <h6>{{post.email}}</h6>
                 <p>{{post.content}}</p>
-                <div>
+                <div class="d-flex align-items-center">
                   <b-button style="font-size:15px" v-b-modal.replypostmodal v-on:click="updatepost(post.id)">Reply to this post</b-button>
-                  {{post.id}}
-                  <!-- <button class="like" type = "submit" data-toggle="modal" data-target="#myModal_reply">reply to this post</button> -->
-                  <button
+                  <b-button
                     class="like"
                     v-on:click="deletepost(post.id)"
                     v-show="post.email==currentuser"
-                  >Delete</button>
+                  >Delete</b-button>
                 </div>
+
               </div>
               <span>
                 <b-modal
@@ -71,26 +77,24 @@
                 </b-modal>
               </span>
             </div>
-            <ol>
-              <li v-for="comment of displaycomments(post.id)" v-bind:key="comment">
+
+
+            <b-card class="children">
+              <b-media variant="secondary" v-for="comment of displaycomments(post.id)" v-bind:key="comment">
                 <div class="comment-content d-flex">
-                  <!-- Comment Author -->
-                  <div class="comment-author">
-                    <img src="img/bg-img/53.jpg" alt="author" />
-                  </div>
+                  
                   <!-- Comment Meta -->
                   <div class="comment-meta">
+                    <h5 class="mt-0">{{comment.username}}</h5>
                     <a href="#" class="comment-date">{{fetchDate(comment.date)}}</a>
-                    <h6>{{comment.email}}</h6>
                     <p>{{comment.content}}</p>
-                    <div>
+                    <div class="d-flex align-items-center">
                       <b-button style="font-size:15px" v-b-modal.replycommentmodal v-on:click="updatepost(post.id)">Reply to this comment</b-button>
-                      
-                      <button
+                      <b-button
                         class="like"
                         v-on:click="deletecomment(comment.id)"
                         v-show="comment.email==currentuser"
-                      >Delete</button>
+                      >Delete</b-button>
                     </div>
                   </div>
                   <span>
@@ -104,12 +108,19 @@
                     </b-modal>
                   </span>
                 </div>
-              </li>
-            </ol>
-          </li>
-        </ol>
+              </b-media>
+            </b-card>
+          </b-media>
+        </b-card>
 
-        <!-- Post A Comment Area -->
+
+        </div>
+      </div>
+    </section>
+
+
+
+
         <!-- Post A Comment Area -->
         <div class="post-a-comment-area bg-white mb-30 p-30 box-shadow clearfix">
           <!-- Section Title -->
@@ -518,113 +529,6 @@ export default {
       );
     }
 
-    //when the app is created, these 2 methods are called to retrieve info
-
-    // addpost: function(){
-    //     if (this.inputtext == '') {
-    //         alert("Invalid entry");
-    //         return
-    //       } else if (this.selectedModule == "Select Module") {
-    //         alert("Please select your module first")
-    //         return
-    //       }else{
-    //           this.groupcounter++; //to add a new post, we start a diff groupid
-    //           for (var comment of this.comments){
-    //             if(comment.modcode == this.selectedModule){
-    //                 this.idcounter++;
-    //                 console.log(this.idcounter);
-    //                 var today = new Date(); //current date and time
-    //                   comment.allcomments.push(
-    //                   {
-    //                       commentid: this.idcounter,
-    //                       userid: "Peppa Pig",
-    //                       content: this.inputtext,
-    //                       reply: 0,
-    //                       date: today,
-    //                       group:this.groupcounter
-    //                   }
-    //               )
-    //               break;
-    //             }
-    //         }
-
-    //         this.inputtext = "";
-    //         //return false;
-    //       }
-
-    //       //document.getElementById("postsection").value = "";
-    // },
-
-    // highlightprev: function(post){
-    //     this.previouspost = post.reply;
-    //     console.log("previous post is");
-    //     console.log(this.previouspost);
-    // },
-
-    // updateprevious: function(post){
-    //     var previous = post.commentid;
-    //     console.log("reply function called")
-    //     //this.previouspost = previous;
-    //     //console.log(this.previouspost);
-    //     //var inputhere = prompt("Please enter your comment:", "Enter here");
-    //     if (this.inputhere == '' || this.inputhere=="Enter here") {
-    //         alert("Invalid entry");
-    //         return
-    //     }
-
-    //         for (var comment of this.comments){
-    //             if(comment.modcode == this.selectedModule){
-    //                 this.idcounter++;
-    //                 console.log(this.idcounter);
-    //                 var today = new Date(); //current date and time
-    //                 var newentry =  {
-    //                     commentid: this.idcounter,
-    //                     userid: "Peppa Pig",
-    //                     content: this.inputhere,
-    //                     reply: previous,
-    //                     date: today,
-    //                     group:post.group
-    //                 }
-    //                 comment.allcomments.push(
-    //                   newentry
-    //               )
-    //               break;
-    //             }
-    //         }
-    //         this.inputhere=""
-    //         // if(this.inputhere==""){
-    //         //     this.deletecomment(newentry);
-    //         // }
-
-    // },
-
-    // deletecomment: function(post){
-    //     var postID = post.commentid;
-    //     var groupID = post.group;
-    //     console.log("clearing postid is ");
-    //     console.log(postID);
-    //     for(var comment of this.comments){
-    //         if(comment.modcode== this.selectedModule){
-    //             if(post.reply==0){
-    //                 for(var i=0; i<comment.allcomments.length; i++){
-    //                     if(comment.allcomments[i].group==groupID){
-    //                         comment.allcomments.splice(i, 1);
-    //                     }
-    //                 }
-    //             }
-    //             else{
-    //                 for(var j=0; j<comment.allcomments.length; j++){
-    //                     if(comment.allcomments[j].commentid==postID || comment.allcomments[j].reply==postID){
-    //                         postID = comment.allcomments[j].commentid; //update to new postid to find subsequent replies
-    //                         comment.allcomments.splice(j,1);
-
-    //                     }
-    //                 }
-    //             }
-
-    //         }
-    //     }
-    // },
   },
   created() {
     console.log("created ");
@@ -634,5 +538,126 @@ export default {
 </script>
 
 <style scoped>
+.post-details-content {
+  position: relative;
+  z-index: 1; }
+  .post-details-content .post-meta {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 15px; }
+    .post-details-content .post-meta a {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ed3974; }
+      .post-details-content .post-meta a:last-child {
+        margin-left: 20px; }
+        .post-details-content .post-meta a:last-child::after {
+          content: '/';
+          position: absolute;
+          top: 0;
+          left: -15px;
+          z-index: 1; }
+      .post-details-content .post-meta a:hover, .post-details-content .post-meta a:focus {
+        color: #404040; }
+  .post-details-content .post-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    display: block; }
+    @media only screen and (max-width: 767px) {
+      .post-details-content .post-title {
+        font-size: 20px; } }
+  .post-details-content .post-meta-2 {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 15px; }
+    .post-details-content .post-meta-2 a {
+      font-size: 14px;
+      color: #777777;
+      margin-right: 20px; }
+      .post-details-content .post-meta-2 a:last-child {
+        margin-right: 0; }
+      .post-details-content .post-meta-2 a:hover, .post-details-content .post-meta-2 a:focus {
+        color: #ed3974; }
+  .post-details-content ul {
+    position: relative;
+    z-index: 1; }
+    .post-details-content ul li {
+      color: #777777;
+      margin-bottom: 10px; }
+      .post-details-content ul li i {
+        margin-right: 5px; }
+
+.comment_area {
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 50px; }
+  .comment_area .comment-content .comment-author {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 70px;
+    flex: 0 0 70px;
+    min-width: 70px;
+    margin-right: 20px;
+    height: 70px;
+    border-radius: 50%; }
+    .comment_area .comment-content .comment-author img {
+      border-radius: 50%; }
+    @media only screen and (max-width: 767px) {
+      .comment_area .comment-content .comment-author {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 40px;
+        flex: 0 0 40px;
+        min-width: 40px;
+        margin-right: 10px;
+        height: 40px; } }
+  .comment_area .comment-content .comment-meta {
+    margin-bottom: 30px; }
+    .comment_area .comment-content .comment-meta .comment-date {
+      font-size: 12px;
+      color: #777777;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px; }
+    .comment_area .comment-content .comment-meta h6 {
+      margin-bottom: 10px; }
+    .comment_area .comment-content .comment-meta p {
+      margin-bottom: 10px;
+      font-size: 14px;
+      line-height: 2; }
+    .comment_area .comment-content .comment-meta .like,
+    .comment_area .comment-content .comment-meta .reply {
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      height: 30px;
+      padding: 0 20px;
+      border: 2px solid #ebebeb;
+      border-radius: 15px;
+      line-height: 26px;
+      text-align: center;
+      margin-right: 15px; }
+      .comment_area .comment-content .comment-meta .like:last-child,
+      .comment_area .comment-content .comment-meta .reply:last-child {
+        margin-right: 0; }
+      .comment_area .comment-content .comment-meta .like:hover,
+      .comment_area .comment-content .comment-meta .reply:hover {
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15); }
+      @media only screen and (max-width: 767px) {
+        .comment_area .comment-content .comment-meta .like,
+        .comment_area .comment-content .comment-meta .reply {
+          margin-right: 5px; } }
+  .comment_area .single_comment_area {
+    margin-bottom: 30px; }
+    .comment_area .single_comment_area:last-of-type {
+      margin-bottom: 0; }
+  .comment_area .children .single_comment_area {
+    margin-left: 50px;
+    margin-top: 30px; }
+    @media only screen and (max-width: 767px) {
+      .comment_area .children .single_comment_area {
+        margin-left: 15px; } }
 </style>
 
