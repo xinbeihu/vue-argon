@@ -53,7 +53,7 @@
           <div class="row mt-3">
             <div class="col-6">
               <base-button href="#" class="text-left" @click="direct">
-                <small>Register</small>
+                <small>Have no account?</small>
               </base-button>
             
               <base-button href="#" class="text-light" @click="resetpassword">
