@@ -23,21 +23,42 @@
               <section class="post-details-area">
                 <!-- select module section-->
                 <div style="text-align: center;">
-                  <h4>
-                    <strong>Forum for Module&nbsp;</strong>
-                  </h4>
-                  <form ref="form">
-                    <b-form-group label="Module" style="width:fit-content">
-                      <b-form-select v-model="selectedModule" class="mb-3">
-                        <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
-                        <b-form-select-option
-                          v-for="module in displaymodules()"
-                          v-bind:key="module"
-                          :value="module"
-                        >{{module}}</b-form-select-option>
-                      </b-form-select>
-                    </b-form-group>
-                  </form>
+                  <br />
+                  <base-alert type="primary">
+                    <h3 class="text-secondary">
+                      Welcome to Forum
+                      <br />
+                      <h5>
+                        <small>You can post anything here regarding the modules!</small>
+                      </h5>
+                    </h3>
+
+                    <b-form-select v-model="selectedModule" class="mb-3">
+                      <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
+                      <b-form-select-option
+                        v-for="module in displaymodules()"
+                        v-bind:key="module"
+                        :value="module"
+                      >{{module}}</b-form-select-option>
+                    </b-form-select>
+
+                    <base-button type="secondary" v-b-modal.newpostmodal>Make a new post</base-button>
+                    <b-modal id="newpostmodal" ref="modal" title="Add a new post" @ok="addpost">
+                      <form>
+                        <div>
+                          <textarea
+                            id="postsection"
+                            class="form-control"
+                            type="text"
+                            v-model="inputpost"
+                            placeholder="post here!"
+                            cols="20"
+                            rows="10"
+                          />
+                        </div>
+                      </form>
+                    </b-modal>
+                  </base-alert>
                 </div>
 
                 <div class="container" id="app">
@@ -58,19 +79,24 @@
                             <h5 class="mt-0">{{post.username}}</h5>
                             <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
                             <p>{{post.content}}</p>
-                            <div class="d-flex align-items-center">
-                              <b-button
-                                style="font-size:15px"
-                                v-b-modal.replypostmodal
-                                v-on:click="updatepost(post.id)"
-                              >Reply to this post</b-button>
-                              <b-button
-                                class="like"
-                                v-on:click="deletepost(post.id)"
-                                v-show="post.email==currentuser"
-                              >Delete</b-button>
-                            </div>
+
+                            <base-button
+                              size="sm"
+                              outline
+                              type="primary"
+                              v-b-modal.replypostmodal
+                              v-on:click="updatepost(post.id)"
+                            >Reply to this post</base-button>
+                            <base-button
+                              size="sm"
+                              outline
+                              type="warning"
+                              class="like"
+                              v-on:click="deletepost(post.id)"
+                              v-show="post.email==currentuser"
+                            >Delete</base-button>
                           </div>
+
                           <span>
                             <b-modal
                               id="replypostmodal"
@@ -82,30 +108,34 @@
                             </b-modal>
                           </span>
                         </div>
-
-                        <b-card class="children">
+                        <br />
+                        <b-card v-show="displaycomments(post.id).length > 0" class="children">
                           <b-media
                             variant="secondary"
                             v-for="comment of displaycomments(post.id)"
                             v-bind:key="comment"
                           >
-                            <div class="comment-content d-flex">
+                            <div class="comment-content border-bottom my-2">
                               <!-- Comment Meta -->
-                              <div class="comment-meta">
-                                <h5 class="mt-0">{{comment.username}}</h5>
+                              <div class="comment-meta my-3">
+                                <h5>{{comment.username}}</h5>
                                 <a href="#" class="comment-date">{{fetchDate(comment.date)}}</a>
                                 <p>{{comment.content}}</p>
                                 <div class="d-flex align-items-center">
-                                  <b-button
-                                    style="font-size:15px"
+                                  <base-button
+                                    size="sm"
+                                    outline
+                                    type="primary"
                                     v-b-modal.replycommentmodal
                                     v-on:click="updatepost(post.id)"
-                                  >Reply to this comment</b-button>
-                                  <b-button
-                                    class="like"
+                                  >Reply to this comment</base-button>
+                                  <base-button
+                                    size="sm"
+                                    outline
+                                    type="warning"
                                     v-on:click="deletecomment(comment.id)"
                                     v-show="comment.email==currentuser"
-                                  >Delete</b-button>
+                                  >Delete</base-button>
                                 </div>
                               </div>
                               <span>
@@ -121,41 +151,12 @@
                             </div>
                           </b-media>
                         </b-card>
+                        <br />
                       </b-media>
                     </b-card>
                   </div>
                 </div>
               </section>
-
-              <!-- Post A Comment Area -->
-              <div class="post-a-comment-area bg-white mb-30 p-30 box-shadow clearfix">
-                <!-- Section Title -->
-                <div class="section-heading">
-                  <h5>POST SOMETHING HERE</h5>
-                </div>
-
-                <!-- Reply Form -->
-                <div class="contact-form-area">
-                  <form>
-                    <div>
-                      <input
-                        id="postsection"
-                        class="form-control"
-                        type="text"
-                        v-model="inputpost"
-                        placeholder="post here!"
-                        cols="30"
-                        rows="10"
-                      />
-                      <button
-                        class="btn mag-btn mt-30"
-                        v-on:click="addpost"
-                        type="button"
-                      >Submit Post</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
             </div>
           </card>
         </div>
