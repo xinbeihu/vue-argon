@@ -36,19 +36,12 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col col-lg-2">
-<<<<<<< HEAD
               <base-button
                 type="primary"
                 v-bind:key="value"
-=======
-              <base-button 
-                type="primary"
-                v-bind:key="value" 
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
                 v-bind:class="{active: showactive(mod)}"
                 v-for="(mod, value) in currentmods"
                 v-on:click="updateGroups(mod)"
-
               >{{mod}}</base-button>
             </div>
             <div class="col">
@@ -116,19 +109,7 @@
                         <div v-if="newGroup.size - newGroup.currGroup.length > 1">
                           You need
                           {{newGroup.size - newGroup.currGroup.length}}
-<<<<<<< HEAD
                           more group mates.
-=======
-                          more group mates.</div>
-                        <div v-if='newGroup.size - newGroup.currGroup.length <= 1'>You need
-                          {{newGroup.size - newGroup.currGroup.length}} more group mate.</div>
-                        <br>
-                        <br>
-                        
-                        <div v-show ='newGroup.size - newGroup.currGroup.length >= 1'>
-                          <div style="text-align: left; font-size: 20px">
-                          <h6>I want to look for:</h6>
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
                         </div>
                         <div v-if="newGroup.size - newGroup.currGroup.length <= 1">
                           You need
@@ -155,7 +136,6 @@
                               v-if="!hasNewSkill && newGroup.newSkill.length > 0 && skill != """
                             >{{skill}} has already been added!</div>
                           </div>
-<<<<<<< HEAD
                           <br />
                           <label>
                             <h6>Select Team Member</h6>
@@ -175,22 +155,6 @@
                           >
                             <p style="text-align: left">Team Member {{index + 1}}</p>
                             <div id="memberlist">
-=======
-                        </div>
-                        <br>
-                        <label><h6>Select Team Member</h6></label>
-                        <select v-model='newGroup.currMember' v-on:change='checkCurr()'>
-                          <option v-for='(value, index) in newGroup.skills' v-bind:key=index+1>{{index + 1}}</option>
-                        </select>
-                
-                        <br>
-                          <div v-for='(value, index) in newGroup.memberStatus' v-show='value=="true"' v-bind:key = value>
-                            
-                        <p style="text-align: left">
-                              Team Member {{index + 1}}
-                            </p>
-                            <div id='memberlist'>
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
                               Desired Skills:
                               <br />
                               <input
@@ -338,7 +302,6 @@
                               <p>{{newGroup.members[index]}}</p>
                             </div>
                           </div>
-<<<<<<< HEAD
                           <div></div>
                         </div>
 
@@ -347,21 +310,6 @@
                         <br />
                         <br />
                         <button v-on:click="addGroup()">Submit</button>
-=======
-                            <div>
-
-                             
-                
-                          </div>
-                        
-                        </div>
-
-                         <h6>Any comments for your group?</h6><textarea v-model.lazy='newGroup.comment' rows="1" style="resize: none;"></textarea>
-                              <br>
-                              <br>
-                              <button v-on:click='addGroup()'>Submit</button>
-                        
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
                       </div>
                     </tab-pane>
 
@@ -648,15 +596,9 @@ export default {
       currGroups: {},
       my_compatibility: {},
       currPage: "Students not in any group",
-<<<<<<< HEAD
       currentmods: [],
       myToggle: false,
       isActive: {}
-=======
-      currentmods:[],
-      myToggle: false,
-      isActive:{}
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
     };
   },
   methods: {
@@ -932,17 +874,12 @@ export default {
       let tempName = "";
       var user = firebase.auth().currentUser;
       var emailVerified = user.email; //user.email;
-<<<<<<< HEAD
       var userMods = [];
-=======
-      var userMods=[];
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
             temp1 = currUser.data()["Skills"];
             tempName = currUser.data()["Name"];
-<<<<<<< HEAD
             for (var mod in currUser.data()["Current Modules"]) {
               userMods.push(mod);
             }
@@ -950,20 +887,10 @@ export default {
           }
         });
         var temp3 = {};
-=======
-            for(var mod in currUser.data()['Current Modules']) {
-            userMods.push(mod);
-          }
-          console.log(userMods);
-          }
-          });
-          var temp3 = {};
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
         this.currName = tempName;
         this.my_skills = temp1;
         this.currentmods = userMods;
         database.collection("Modules").onSnapshot(myModules => {
-<<<<<<< HEAD
           myModules.forEach(function(mod) {
             if (userMods.includes(mod.id)) {
               var tempdictionary = mod.data();
@@ -974,23 +901,7 @@ export default {
           });
           this.modules = temp3;
         });
-=======
-        myModules.forEach(function(mod) {
-          if(userMods.includes(mod.id)) {
-            var tempdictionary = mod.data();
-            console.log(temp3);
-            temp3[mod.id] = tempdictionary;
-            console.log(temp3);
-          }
-        })
-        this.modules = temp3;
       });
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
-      });
-      
-    },
-    showactive: function(mod){
-      return this.isActive[mod];
     },
     showactive: function(mod) {
       return this.isActive[mod];
@@ -999,13 +910,8 @@ export default {
       this.isActive[mod] = true;
       var indexrange = this.currentmods.length;
       var i;
-<<<<<<< HEAD
       for (i = 0; i < indexrange; i++) {
         if (this.currentmods[i] != mod) {
-=======
-      for(i = 0; i < indexrange; i++){
-        if(this.currentmods[i]!=mod){
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
           this.isActive[this.currentmods[i]] = false;
         }
       }
@@ -1015,7 +921,6 @@ export default {
         if (this.module == mod) {
           //this.noGroup = this.modules[mod]["NoGroup"];
           this.noGroup = [];
-<<<<<<< HEAD
           for (var ppl in this.modules[mod]["NoGroup"]) {
             if (this.modules[mod]["NoGroup"][ppl] != this.currName) {
               this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
@@ -1025,14 +930,6 @@ export default {
             this.newGroupFormed[mod] == true &&
             this.modules[mod]["NoGroup"].index(this.currName) > -1
           ) {
-=======
-          for(var ppl in this.modules[mod]["NoGroup"]) {
-            if(this.modules[mod]["NoGroup"][ppl] != this.currName) {
-              this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
-            }
-          }
-          if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].index(this.currName) > -1) {
->>>>>>> ee966b9f980e791254ca15409cf9c530c800a110
             delete this.noGroup[this.noGroup.index(this.currName)];
           }
           console.log(this.noGroup);
