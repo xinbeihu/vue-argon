@@ -36,10 +36,13 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col col-lg-2">
-              <base-button :pressed.sync="myToggle" variant="primary"
-                v-for="(value, mod) in modules"
-                v-bind:key="mod"
+              <base-button 
+                type="primary"
+                v-bind:key="value" 
+                v-bind:class="{active: showactive(mod)}"
+                v-for="(mod, value) in currentmods"
                 v-on:click="updateGroups(mod)"
+
               >{{mod}}</base-button>
             </div>
             <div class="col">
@@ -99,7 +102,9 @@
                           {{newGroup.size - newGroup.currGroup.length}} more group mate.</div>
                         <br>
                         <br>
-                        <div style="text-align: left; font-size: 20px">
+                        
+                        <div v-show ='newGroup.size - newGroup.currGroup.length >= 1'>
+                          <div style="text-align: left; font-size: 20px">
                           <h6>I want to look for:</h6>
                         </div>
                         <div>
@@ -120,9 +125,9 @@
                         </select>
                 
                         <br>
-                        <div>
                           <div v-for='(value, index) in newGroup.memberStatus' v-show='value=="true"' v-bind:key = value>
-                            <p style="text-align: left">
+                            
+                        <p style="text-align: left">
                               Team Member {{index + 1}}
                             </p>
                             <div id='memberlist'>
@@ -181,13 +186,20 @@
                 
                               <p>You have selected:</p>
                               <p>{{newGroup.members[index]}}</p>
-                              <h6>Any comments for your group?</h6><textarea v-model.lazy='newGroup.comment' rows="1" style="resize: none;"></textarea>
+                            </div>
+                          </div>
+                            <div>
+
+                             
+                
+                          </div>
+                        
+                        </div>
+
+                         <h6>Any comments for your group?</h6><textarea v-model.lazy='newGroup.comment' rows="1" style="resize: none;"></textarea>
                               <br>
                               <br>
                               <button v-on:click='addGroup()'>Submit</button>
-                            </div>
-                          </div>
-                        </div>
                         
                       </div>
                     </tab-pane>
@@ -462,7 +474,8 @@ export default {
       my_compatibility: {},
       currPage: "Students not in any group",
       currentmods:[],
-      myToggle: false
+      myToggle: false,
+      isActive:{}
     };
   },
   methods: {
@@ -768,9 +781,19 @@ export default {
       });
       
     },
+    showactive: function(mod){
+      return this.isActive[mod];
+    },
     updateGroups: function(mod) {
+      this.isActive[mod] = true;
+      var indexrange = this.currentmods.length;
+      var i;
+      for(i = 0; i < indexrange; i++){
+        if(this.currentmods[i]!=mod){
+          this.isActive[this.currentmods[i]] = false;
+        }
+      }
       this.newGroups = {};
-      console.log(mod);
       this.module = mod;
       for (let mod in this.modules) {
         if (this.module == mod) {
