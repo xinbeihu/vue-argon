@@ -37,8 +37,10 @@
           <div class="row justify-content-center">
             <div class="col col-lg-2">
               <base-button
-                v-for="(value, mod) in modules"
-                v-bind:key="mod"
+                type="primary"
+                v-bind:key="value"
+                v-bind:class="{active: showactive(mod)}"
+                v-for="(mod, value) in currentmods"
                 v-on:click="updateGroups(mod)"
               >{{mod}}</base-button>
             </div>
@@ -50,7 +52,7 @@
                     <tab-pane title="Students without Group">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
-                          <li v-for="person in modules[mod]['NoGroup']" v-bind:key="person">
+                          <li v-for="person in noGroup" v-bind:key="person">
                             {{person}}
                             <a href="https://www.google.com" target="_blank">Profile</a>
                           </li>
@@ -59,136 +61,255 @@
                     </tab-pane>
 
                     <tab-pane title="Form a New Group">
-                      <div class="modal-content" style="width: 600px; overflow: auto; margin-bottom: 0px;">
+                      <div
+                        class="modal-content"
+                        style="width: 600px; overflow: auto; margin-bottom: 0px;"
+                      >
                         <div>
-                          <label style="vertical-align: middle;"><h6>Group Name:</h6></label>
-                          <textarea v-model='newGroup.groupName' style="resize: none;" rows="1"></textarea>
-                          <button style="vertical-align: top;" v-on:click="checkAvailable()">Check Availability</button>
-                          <br>
-                          <div class='good' v-if="good!=''" style="color: green">{{good}}</div>
-                          <div class='bad' v-if="bad!=''" style="color: red">{{bad}}</div>
+                          <label style="vertical-align: middle;">
+                            <h6>Group Name:</h6>
+                          </label>
+                          <textarea v-model="newGroup.groupName" style="resize: none;" rows="1"></textarea>
+                          <button
+                            style="vertical-align: top;"
+                            v-on:click="checkAvailable()"
+                          >Check Availability</button>
+                          <br />
+                          <div class="good" v-if="good!=''" style="color: green">{{good}}</div>
+                          <div class="bad" v-if="bad!=''" style="color: red">{{bad}}</div>
                         </div>
-                        <br>
-                        <h6>Size of group:</h6><input type=number v-model='newGroup.size' @change='addMember()'>
-                        <br>
-                        <br>
+                        <br />
+                        <h6>Size of group:</h6>
+                        <input type="number" v-model="newGroup.size" @change="addMember()" />
+                        <br />
+                        <br />
                         <div style="text-align: left; font-size: 20px">
                           <h6>Add your peers who are without a group:</h6>
-                          <select v-model = 'friend'>
+                          <select v-model="friend">
                             <option disabled selected value>Select a peer</option>
-                            <option v-for='fren in noGroup' v-bind:key=fren>{{fren}}</option>
+                            <option v-for="fren in noGroup" v-bind:key="fren">{{fren}}</option>
                           </select>
-                          <button v-on:click='addFriend()'>Add</button>
-                          <br>
-                          <br>
+                          <button v-on:click="addFriend()">Add</button>
+                          <br />
+                          <br />
                           <h6>Remove your peers in your group:</h6>
-                          <select v-model = 'friend'>
+                          <select v-model="friend">
                             <option disabled selected value>Select a peer</option>
-                            <option v-for='fren in newGroup.currGroup.slice(1)' v-bind:key=fren>{{fren}}</option>
+                            <option
+                              v-for="fren in newGroup.currGroup.slice(1)"
+                              v-bind:key="fren"
+                            >{{fren}}</option>
                           </select>
-                          <button v-on:click='removeFriend()'>Remove</button>
+                          <button v-on:click="removeFriend()">Remove</button>
                         </div>
-                
-                        <br>
+
+                        <br />
                         <div>Group as of now: {{newGroup.currGroup.join(', ')}}</div>
-                        <br>
-                        <div v-if='newGroup.size - newGroup.currGroup.length > 1'>You need
+                        <br />
+                        <div v-if="newGroup.size - newGroup.currGroup.length > 1">
+                          You need
                           {{newGroup.size - newGroup.currGroup.length}}
-                          more group mates.</div>
-                        <div v-if='newGroup.size - newGroup.currGroup.length <= 1'>You need
-                          {{newGroup.size - newGroup.currGroup.length}} more group mate.</div>
-                        <br>
-                        <br>
-                        <div style="text-align: left; font-size: 20px">
-                          <h6>I want to look for:</h6>
+                          more group mates.
                         </div>
-                        <div>
-                          <h6>Add a new skill:</h6>
-                          <textarea rows="1" v-model.lazy='skill' style="resize: none;"></textarea>
-                          
-                          <button v-on:click='checkSkill()' style="vertical-align: top;">Add</button>
-                          <br>
-                          <div v-if='hasNewSkill && newGroup.newSkill.length > 0 && skill != ""' id='add'>{{skill}} has been added!
-                          </div>
-                          <div v-if='!hasNewSkill && newGroup.newSkill.length > 0 && skill != ""'>{{skill}} has already been added!
-                          </div>
+                        <div v-if="newGroup.size - newGroup.currGroup.length <= 1">
+                          You need
+                          {{newGroup.size - newGroup.currGroup.length}} more group mate.
                         </div>
-                        <br>
-                        <label><h6>Select Team Member</h6></label>
-                        <select v-model='newGroup.currMember' v-on:change='checkCurr()'>
-                          <option v-for='(value, index) in newGroup.skills' v-bind:key=index+1>{{index + 1}}</option>
-                        </select>
-                
-                        <br>
-                        <div>
-                          <div v-for='(value, index) in newGroup.memberStatus' v-show='value=="true"' v-bind:key = value>
-                            <p style="text-align: left">
-                              Team Member {{index + 1}}
-                            </p>
-                            <div id='memberlist'>
+                        <br />
+                        <br />
+
+                        <div v-show="newGroup.size - newGroup.currGroup.length >= 1">
+                          <div style="text-align: left; font-size: 20px">
+                            <h6>I want to look for:</h6>
+                          </div>
+                          <div>
+                            <h6>Add a new skill:</h6>
+                            <textarea rows="1" v-model.lazy="skill" style="resize: none;"></textarea>
+
+                            <button v-on:click="checkSkill()" style="vertical-align: top;">Add</button>
+                            <br />
+                            <div
+                              v-if="hasNewSkill && newGroup.newSkill.length > 0 && skill != """
+                              id="add"
+                            >{{skill}} has been added!</div>
+                            <div
+                              v-if="!hasNewSkill && newGroup.newSkill.length > 0 && skill != """
+                            >{{skill}} has already been added!</div>
+                          </div>
+                          <br />
+                          <label>
+                            <h6>Select Team Member</h6>
+                          </label>
+                          <select v-model="newGroup.currMember" v-on:change="checkCurr()">
+                            <option
+                              v-for="(value, index) in newGroup.skills"
+                              v-bind:key="index+1"
+                            >{{index + 1}}</option>
+                          </select>
+
+                          <br />
+                          <div
+                            v-for="(value, index) in newGroup.memberStatus"
+                            v-show="value=="true""
+                            v-bind:key="value"
+                          >
+                            <p style="text-align: left">Team Member {{index + 1}}</p>
+                            <div id="memberlist">
                               Desired Skills:
-                              <br>
-                              <input type="checkbox" id="skill1" name="skill1" value="Java" @change='addRemoveSkills(index)'
-                                v-model='newGroup.skills[index]'>
-                              <label for="skill1">Java</label><br>
-                              <input type="checkbox" id="skill2" name="skill2" value="Python" @change='addRemoveSkills(index)'
-                                v-model='newGroup.skills[index]'>
-                              <label for="skill2">Python</label><br>
-                              <input type="checkbox" id="skill3" name="skill3" value="HTML" @change='addRemoveSkills(index)'
-                                v-model='newGroup.skills[index]'>
-                              <label for="skill3">HTML</label><br>
-                              <div v-for='curr in newGroup.newSkill' v-bind:key = curr>
-                                <input type="checkbox" v-bind:value=curr @change='addRemoveSkills(index)'
-                                  v-model='newGroup.skills[index]'>
+                              <br />
+                              <input
+                                type="checkbox"
+                                id="skill1"
+                                name="skill1"
+                                value="Java"
+                                @change="addRemoveSkills(index)"
+                                v-model="newGroup.skills[index]"
+                              />
+                              <label for="skill1">Java</label>
+                              <br />
+                              <input
+                                type="checkbox"
+                                id="skill2"
+                                name="skill2"
+                                value="Python"
+                                @change="addRemoveSkills(index)"
+                                v-model="newGroup.skills[index]"
+                              />
+                              <label for="skill2">Python</label>
+                              <br />
+                              <input
+                                type="checkbox"
+                                id="skill3"
+                                name="skill3"
+                                value="HTML"
+                                @change="addRemoveSkills(index)"
+                                v-model="newGroup.skills[index]"
+                              />
+                              <label for="skill3">HTML</label>
+                              <br />
+                              <div v-for="curr in newGroup.newSkill" v-bind:key="curr">
+                                <input
+                                  type="checkbox"
+                                  v-bind:value="curr"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
                                 <label>{{curr}}</label>
-                                <button v-on:click='newGroup.newSkill.splice(newGroup.newSkill.indexOf(skill), 1); newGroup.skills[index].splice(newGroup.skills[index].indexOf(skill), 1); 
-                                      addRemoveSkills(index)'>Remove</button><br>
+                                <button
+                                  v-on:click="newGroup.newSkill.splice(newGroup.newSkill.indexOf(skill), 1); newGroup.skills[index].splice(newGroup.skills[index].indexOf(skill), 1); 
+                                      addRemoveSkills(index)"
+                                >Remove</button>
+                                <br />
                               </div>
-                              <div v-if='loadMore'>
+                              <div v-if="loadMore">
                                 Year:
-                                <br>
-                                <input type="checkbox" id="skill4" name="skill4" value="Year 1" @change='addRemoveSkills(index)'
-                                  v-model='newGroup.skills[index]'>
-                                <label for="skill4">Year 1</label><br>
-                                <input type="checkbox" id="skill5" name="skill5" value="Year 2" @change='addRemoveSkills(index)'
-                                  v-model='newGroup.skills[index]'>
-                                <label for="skill5">Year 2</label><br>
-                                <input type="checkbox" id="skill6" name="skill6" value="Year 3" @change='addRemoveSkills(index)'
-                                  v-model='newGroup.skills[index]'>
-                                <label for="skill6">Year 3</label><br>
-                                <input type="checkbox" id="skill7" name="skill7" value="Year 4" @change='addRemoveSkills(index)'
-                                  v-model='newGroup.skills[index]'>
-                                <label for="skill7">Year 4</label><br>
-                                Major:
-                                <br>
-                                <input type="checkbox" id="skill8" name="skill8" value="Business Analytics"
-                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
-                                <label for="skill8">Business Analytics</label><br>
-                                <input type="checkbox" id="skill9" name="skill9" value="Computer Science"
-                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
-                                <label for="skill9">Computer Science</label><br>
-                                <input type="checkbox" id="skill10" name="skill10" value="Information Systems"
-                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
-                                <label for="skill10">Information Systems</label><br>
-                                <input type="checkbox" id="skill11" name="skill11" value="Information Security"
-                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
-                                <label for="skill11">Information Security</label><br>
-                                <input type="checkbox" id="skill12" name="skill12" value="Computer Engineering"
-                                  @change='addRemoveSkills(index)' v-model='newGroup.skills[index]'>
-                                <label for="skill12">Computer Engineering</label><br>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill4"
+                                  name="skill4"
+                                  value="Year 1"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill4">Year 1</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill5"
+                                  name="skill5"
+                                  value="Year 2"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill5">Year 2</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill6"
+                                  name="skill6"
+                                  value="Year 3"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill6">Year 3</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill7"
+                                  name="skill7"
+                                  value="Year 4"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill7">Year 4</label>
+                                <br />Major:
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill8"
+                                  name="skill8"
+                                  value="Business Analytics"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill8">Business Analytics</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill9"
+                                  name="skill9"
+                                  value="Computer Science"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill9">Computer Science</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill10"
+                                  name="skill10"
+                                  value="Information Systems"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill10">Information Systems</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill11"
+                                  name="skill11"
+                                  value="Information Security"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill11">Information Security</label>
+                                <br />
+                                <input
+                                  type="checkbox"
+                                  id="skill12"
+                                  name="skill12"
+                                  value="Computer Engineering"
+                                  @change="addRemoveSkills(index)"
+                                  v-model="newGroup.skills[index]"
+                                />
+                                <label for="skill12">Computer Engineering</label>
+                                <br />
                               </div>
-                              <button v-on:click='loadMore=!loadMore; changeText()'>{{loadText}}</button>
-                
+                              <button v-on:click="loadMore=!loadMore; changeText()">{{loadText}}</button>
+
                               <p>You have selected:</p>
                               <p>{{newGroup.members[index]}}</p>
-                              <h6>Any comments for your group?</h6><textarea v-model.lazy='newGroup.comment' rows="1" style="resize: none;"></textarea>
-                              <br>
-                              <br>
-                              <button v-on:click='addGroup()'>Submit</button>
                             </div>
                           </div>
+                          <div></div>
                         </div>
-                        
+
+                        <h6>Any comments for your group?</h6>
+                        <textarea v-model.lazy="newGroup.comment" rows="1" style="resize: none;"></textarea>
+                        <br />
+                        <br />
+                        <button v-on:click="addGroup()">Submit</button>
                       </div>
                     </tab-pane>
 
@@ -455,12 +576,29 @@ export default {
       friend: "",
       noGroup: [],
       newGroupFormed: {},
-      newGroup:{module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
-      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]},
+      newGroup: {
+        module: "",
+        groupName: "",
+        size: 2,
+        currGroup: ["You"],
+        newSkill: [],
+        comment: "",
+        compatibility: [],
+        memberStatus: ["true"],
+        members: ["None"],
+        skills: [[]],
+        currMember: 1,
+        skills1: [],
+        skills2: [],
+        skills3: []
+      },
       newGroups: {},
       currGroups: {},
       my_compatibility: {},
-      currPage: "Students not in any group"
+      currPage: "Students not in any group",
+      currentmods: [],
+      myToggle: false,
+      isActive: {}
     };
   },
   methods: {
@@ -574,7 +712,7 @@ export default {
         );
         var newGroupFormat = {};
         console.log(this.currName);
-        this.newGroup['currGroup'][0] = this.currName;
+        this.newGroup["currGroup"][0] = this.currName;
         newGroupFormat[this.newGroup.groupName] = {
           "Group Members": this.newGroup["currGroup"],
           MaxSize: this.newGroup["size"],
@@ -724,7 +862,6 @@ export default {
         .set(temp, { merge: true });
     },
     fetchData: function() {
-      let temp = {};
       //Get all the items from DB
       database.collection("Modules").onSnapshot(myModules => {
         myModules.forEach(function(module) {
@@ -737,24 +874,65 @@ export default {
       let tempName = "";
       var user = firebase.auth().currentUser;
       var emailVerified = user.email; //user.email;
+      var userMods = [];
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
             temp1 = currUser.data()["Skills"];
             tempName = currUser.data()["Name"];
+            for (var mod in currUser.data()["Current Modules"]) {
+              userMods.push(mod);
+            }
+            console.log(userMods);
           }
         });
+        var temp3 = {};
         this.currName = tempName;
         this.my_skills = temp1;
+        this.currentmods = userMods;
+        database.collection("Modules").onSnapshot(myModules => {
+          myModules.forEach(function(mod) {
+            if (userMods.includes(mod.id)) {
+              var tempdictionary = mod.data();
+              console.log(temp3);
+              temp3[mod.id] = tempdictionary;
+              console.log(temp3);
+            }
+          });
+          this.modules = temp3;
+        });
       });
     },
+    showactive: function(mod) {
+      return this.isActive[mod];
+    },
     updateGroups: function(mod) {
+      this.isActive[mod] = true;
+      var indexrange = this.currentmods.length;
+      var i;
+      for (i = 0; i < indexrange; i++) {
+        if (this.currentmods[i] != mod) {
+          this.isActive[this.currentmods[i]] = false;
+        }
+      }
       this.newGroups = {};
-      console.log(mod);
       this.module = mod;
       for (let mod in this.modules) {
         if (this.module == mod) {
-          this.noGroup = this.modules[mod]["NoGroup"];
+          //this.noGroup = this.modules[mod]["NoGroup"];
+          this.noGroup = [];
+          for (var ppl in this.modules[mod]["NoGroup"]) {
+            if (this.modules[mod]["NoGroup"][ppl] != this.currName) {
+              this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
+            }
+          }
+          if (
+            this.newGroupFormed[mod] == true &&
+            this.modules[mod]["NoGroup"].index(this.currName) > -1
+          ) {
+            delete this.noGroup[this.noGroup.index(this.currName)];
+          }
+          console.log(this.noGroup);
           for (var group in this.modules[mod]) {
             if (
               "Group Members" in this.modules[mod][group] &&
