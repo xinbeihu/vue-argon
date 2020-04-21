@@ -51,15 +51,15 @@
             </template>
           </card>
           <div class="row mt-3">
-            <div class="col-6">
-              <base-button href="#" class="text-left" @click="direct">
+            <!-- <div class="col-6" style="padding-left:50px;"> -->
+              <base-button style="margin-left:20px;" href="#" class="text-left" @click="direct">
                 <small>Register</small>
               </base-button>
             
-              <base-button href="#" class="text-light" @click="resetpassword">
+              <base-button style="margin-left:130px;" href="#" class="text-light" @click="resetpassword">
                 <small>Forgot password?</small>
               </base-button>
-            </div>
+            <!-- </div>  -->
           </div>
         </div>
       </div>
