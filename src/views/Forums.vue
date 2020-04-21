@@ -24,7 +24,7 @@
     <section class="post-details-area">
       
           <!-- select module section-->
-        <div>
+        <div style="text-align: center;">
                 <h4><strong>Forum for Module&nbsp;</strong></h4>
           <form ref="form">
             <b-form-group label="Module" style="width:fit-content">

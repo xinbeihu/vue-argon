@@ -80,11 +80,17 @@ export default {
   methods: {
     login: function() {
       var flag = true;
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      var email = this.email;
+      var password = this.password;
+      console.log(email);
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(function() {
-          return firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+          console.log(email);
+          firebase.auth().signInWithEmailAndPassword(email, password)
+          
         })
         .catch(function(error) {
+          console.log(error);
           alert("Invalid account or password!");
           flag = false;
         })

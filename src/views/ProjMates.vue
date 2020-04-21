@@ -565,9 +565,10 @@ export default {
           counter += 1
         }
         this.newGroupFormed[this.module] = true;
+        this.newGroup.currGroup[0] = this.currName;
         this.newGroups[this.newGroup.groupName] = this.newGroup;
         database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
-        this.newGroup = {module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
+        this.newGroup = {module: '', groupName:'', size:2, currGroup:[this.currName], newSkill: [], comment:'', compatibility:[], 
         memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[], Assignments: {}};
       }
     },

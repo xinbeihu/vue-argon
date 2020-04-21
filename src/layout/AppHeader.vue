@@ -63,6 +63,8 @@ export default {
   methods: {
     fetchData: function() {
       var user = firebase.auth().currentUser;
+      console.log(user);
+      //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
       var emailVerified = user.email;
       var tempName;
       database.collection("User Info").onSnapshot(user => {
@@ -76,6 +78,9 @@ export default {
     }
   },
   created() {
+    this.fetchData();
+  },
+  watch(){
     this.fetchData();
   },
   logout(){
