@@ -36,7 +36,7 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col col-lg-2">
-              <base-button
+              <base-button :pressed.sync="myToggle" variant="primary"
                 v-for="(value, mod) in modules"
                 v-bind:key="mod"
                 v-on:click="updateGroups(mod)"
@@ -50,7 +50,7 @@
                     <tab-pane title="Students without Group">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
-                          <li v-for="person in modules[mod]['NoGroup']" v-bind:key="person">
+                          <li v-for="person in noGroup" v-bind:key="person">
                             {{person}}
                             <a href="https://www.google.com" target="_blank">Profile</a>
                           </li>
@@ -460,7 +460,9 @@ export default {
       newGroups: {},
       currGroups: {},
       my_compatibility: {},
-      currPage: "Students not in any group"
+      currPage: "Students not in any group",
+      currentmods:[],
+      myToggle: false
     };
   },
   methods: {
@@ -724,7 +726,6 @@ export default {
         .set(temp, { merge: true });
     },
     fetchData: function() {
-      let temp = {};
       //Get all the items from DB
       database.collection("Modules").onSnapshot(myModules => {
         myModules.forEach(function(module) {
@@ -737,16 +738,35 @@ export default {
       let tempName = "";
       var user = firebase.auth().currentUser;
       var emailVerified = user.email; //user.email;
+      var userMods=[];
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
             temp1 = currUser.data()["Skills"];
             tempName = currUser.data()["Name"];
+            for(var mod in currUser.data()['Current Modules']) {
+            userMods.push(mod);
           }
-        });
+          console.log(userMods);
+          }
+          });
+          var temp3 = {};
         this.currName = tempName;
         this.my_skills = temp1;
+        this.currentmods = userMods;
+        database.collection("Modules").onSnapshot(myModules => {
+        myModules.forEach(function(mod) {
+          if(userMods.includes(mod.id)) {
+            var tempdictionary = mod.data();
+            console.log(temp3);
+            temp3[mod.id] = tempdictionary;
+            console.log(temp3);
+          }
+        })
+        this.modules = temp3;
       });
+      });
+      
     },
     updateGroups: function(mod) {
       this.newGroups = {};
@@ -754,7 +774,17 @@ export default {
       this.module = mod;
       for (let mod in this.modules) {
         if (this.module == mod) {
-          this.noGroup = this.modules[mod]["NoGroup"];
+          //this.noGroup = this.modules[mod]["NoGroup"];
+          this.noGroup = [];
+          for(var ppl in this.modules[mod]["NoGroup"]) {
+            if(this.modules[mod]["NoGroup"][ppl] != this.currName) {
+              this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
+            }
+          }
+          if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].index(this.currName) > -1) {
+            delete this.noGroup[this.noGroup.index(this.currName)];
+          }
+          console.log(this.noGroup);
           for (var group in this.modules[mod]) {
             if (
               "Group Members" in this.modules[mod][group] &&
