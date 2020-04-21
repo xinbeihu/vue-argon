@@ -895,6 +895,25 @@ export default {
                 console.log("Error getting document:", error);
               });
 
+            var docRef2 = database.collection("Forums").doc(newCurrModCode);
+            docRef2
+              .get()
+              .then(function(doc) {
+                if (!doc.exists) {
+                  database
+                    .collection("Forums")
+                    .doc(newCurrModCode)
+                    .set({
+                      ["idcounter"]: 0,
+                      ["comments"]: {},
+                      ["posts"]: {}
+                    });
+                }
+              })
+              .catch(function(error) {
+                console.log("Error getting document:", error);
+              });
+
             this.inputCurrModCode = "";
           })
           .catch(error => {
