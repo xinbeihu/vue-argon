@@ -573,6 +573,8 @@ export default {
           "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
         );
         var newGroupFormat = {};
+        console.log(this.currName);
+        this.newGroup['currGroup'][0] = this.currName;
         newGroupFormat[this.newGroup.groupName] = {
           "Group Members": this.newGroup["currGroup"],
           MaxSize: this.newGroup["size"],
@@ -631,7 +633,7 @@ export default {
           module: "",
           groupName: "",
           size: 2,
-          currGroup: ["You"],
+          currGroup: [this.currName],
           newSkill: [],
           comment: "",
           compatibility: [],
@@ -734,7 +736,7 @@ export default {
       let temp1 = [];
       let tempName = "";
       var user = firebase.auth().currentUser;
-      var emailVerified = "vcjw97@gmail.com"; //user.email;
+      var emailVerified = user.email; //user.email;
       database.collection("User Info").onSnapshot(user => {
         user.forEach(function(currUser) {
           if (currUser.id == emailVerified) {
@@ -948,4 +950,3 @@ body {
 }
 </style>
 
-</style>
