@@ -83,12 +83,13 @@ export default {
       var email = this.email;
       var password = this.password;
       console.log(email);
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        .then(function() {
-          console.log(email);
-          firebase.auth().signInWithEmailAndPassword(email, password)
+      firebase.auth().signInWithEmailAndPassword(email, password)
+      //firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        // .then(function() {
+        //   console.log(email);
+        //   firebase.auth().signInWithEmailAndPassword(email, password)
           
-        })
+        // })
         .catch(function(error) {
           console.log(error);
           alert("Invalid account or password!");

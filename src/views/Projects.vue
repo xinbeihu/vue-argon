@@ -1040,7 +1040,7 @@ export default {
           let tasks = {};
           let myGroups = { members: {}, groupName: {} };
           myModules.forEach(function(module) {
-            console.log(Object.keys(module.data()));
+            //console.log(Object.keys(module.data()));
             for (let groups of Object.keys(module.data())) {
               if (groups == "NoGroup") {
                 //groups = group name
