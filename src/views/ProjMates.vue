@@ -430,7 +430,7 @@ export default {
       noGroup: [],
       newGroupFormed:{},
       newGroup:{module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
-      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]},
+      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[], Assignments: {}},
       newGroups:{},
       currGroups:{},
       my_compatibility:{},
@@ -568,7 +568,7 @@ export default {
         this.newGroups[this.newGroup.groupName] = this.newGroup;
         database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
         this.newGroup = {module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
-        memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]};
+        memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[], Assignments: {}};
       }
     },
     addMember: function() {
