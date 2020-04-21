@@ -28,7 +28,7 @@
                 <h4><strong>Forum for Module&nbsp;</strong></h4>
           <form ref="form">
             <b-form-group label="Module" style="width:fit-content">
-              <b-form-select v-model="selectedModule" class="mb-3">
+              <b-form-select  v-model="selectedModule" class="mb-3">
                 <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
                 <b-form-select-option
                   v-for="module in displaymodules()"
