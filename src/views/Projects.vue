@@ -59,7 +59,7 @@
 
                   <div class="container">
                     <div class="row justify-content-center">
-                      <div style="background-color:lightpink;padding:10px;width:800px">
+                      <div style="background-color:#9870D6;padding:10px;width:800px">
                         <select v-model="selectedModule">
                           <option>All Modules</option>
                           <option v-for="(items,module) in taskList" v-bind:key="module">{{module}}</option>
