@@ -1,301 +1,169 @@
 <template>
   <div>
-  
-      <!-- Post Details Content Area -->
-      <div >
-                  <section class="section-profile-cover section-shaped my-0">
-                    <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </section>
+    <!-- Post Details Content Area -->
+    <div>
+      <section class="section-profile-cover section-shaped my-0">
+        <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </section>
 
-         <section class="section section-skew">
+      <section class="post-details-area">
+        <!-- select module section-->
+
+        <section class="section section-skew">
           <div class="container">
             <card shadow class="card-profile mt--300" no-body>
-          <!-- Comment Area Start -->
-      
+              <div class="px-4">
+                <!-- Comment Area Start -->
 
-    <section class="post-details-area">
-      
-          <!-- select module section-->
-        <div style="text-align: center;">
-                <h4><strong>Forum for Module&nbsp;</strong></h4>
-          <form ref="form">
-            <b-form-group label="Module" style="width:fit-content">
-              <b-form-select  v-model="selectedModule" class="mb-3">
-                <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
-                <b-form-select-option
-                  v-for="module in displaymodules()"
-                  v-bind:key="module"
-                  :value="module"
-                >{{module}}</b-form-select-option>
-              </b-form-select>
-            </b-form-group>
-          </form>
-        </div>
+                <section class="post-details-area">
+                  <!-- select module section-->
+                  <div style="text-align: center;">
+                    <br />
+                    <base-alert type="primary">
+                      <h3 class="text-secondary">
+                        Welcome to Forum
+                        <br />
+                        <h5>
+                          <small>You can post anything here regarding the modules!</small>
+                        </h5>
+                      </h3>
 
-<<<<<<< HEAD
-      <section class="section section-skew">
-        <div class="container">
-          <card shadow class="card-profile mt--300" no-body>
-            <div class="px-4">
-              <!-- Comment Area Start -->
+                      <b-form-select v-model="selectedModule" class="mb-3">
+                        <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
+                        <b-form-select-option
+                          v-for="module in displaymodules()"
+                          v-bind:key="module"
+                          :value="module"
+                        >{{module}}</b-form-select-option>
+                      </b-form-select>
 
-              <section class="post-details-area">
-                <!-- select module section-->
-                <div style="text-align: center;">
-                  <br />
-                  <base-alert type="primary">
-                    <h3 class="text-secondary">
-                      Welcome to Forum
-                      <br />
-                      <h5>
-                        <small>You can post anything here regarding the modules!</small>
-                      </h5>
-                    </h3>
-
-                    <b-form-select v-model="selectedModule" class="mb-3">
-                      <b-form-select-option value="All Modules">Select a Module</b-form-select-option>
-                      <b-form-select-option
-                        v-for="module in displaymodules()"
-                        v-bind:key="module"
-                        :value="module"
-                      >{{module}}</b-form-select-option>
-                    </b-form-select>
-
-                    <base-button type="secondary" v-b-modal.newpostmodal>Make a new post</base-button>
-                    <b-modal id="newpostmodal" ref="modal" title="Add a new post" @ok="addpost">
-                      <form>
-                        <div>
-                          <textarea
-                            id="postsection"
-                            class="form-control"
-                            type="text"
-                            v-model="inputpost"
-                            placeholder="post here!"
-                            cols="20"
-                            rows="10"
-                          />
-                        </div>
-                      </form>
-                    </b-modal>
-                  </base-alert>
-                </div>
-
-                <div class="container" id="app">
-                  <div style="position: relative">
-                    <!-- <b-list-group> -->
-                    <b-card>
-                      <b-media
-                        variant="primary"
-                        class="single_comment_area"
-                        v-for="post of displayposts()"
-                        v-bind:key="post"
-                      >
-                        <template v-slot:aside>
-                          <b-img blank blank-color="#ccc" width="64" alt="placeholder"></b-img>
-                        </template>
-                        <div class="comment-content d-flex">
-                          <div class="comment-meta">
-                            <h5 class="mt-0">{{post.username}}</h5>
-                            <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
-                            <p>{{post.content}}</p>
-
-                            <base-button
-                              size="sm"
-                              outline
-                              type="primary"
-                              v-b-modal.replypostmodal
-                              v-on:click="updatepost(post.id)"
-                            >Reply to this post</base-button>
-                            <base-button
-                              size="sm"
-                              outline
-                              type="warning"
-                              class="like"
-                              v-on:click="deletepost(post.id)"
-                              v-show="post.email==currentuser"
-                            >Delete</base-button>
+                      <base-button type="secondary" v-b-modal.newpostmodal>Make a new post</base-button>
+                      <b-modal id="newpostmodal" ref="modal" title="Add a new post" @ok="addpost">
+                        <form>
+                          <div>
+                            <textarea
+                              id="postsection"
+                              class="form-control"
+                              type="text"
+                              v-model="inputpost"
+                              placeholder="post here!"
+                              cols="20"
+                              rows="10"
+                            />
                           </div>
-
-                          <span>
-                            <b-modal
-                              id="replypostmodal"
-                              ref="modal"
-                              title="Add your comment"
-                              @ok="addcomment(post.id)"
-                            >
-                              <b-form-input id="post.id" v-model="inputcomment"></b-form-input>
-                            </b-modal>
-                          </span>
-                        </div>
-                        <br />
-                        <b-card v-show="displaycomments(post.id).length > 0" class="children">
-                          <b-media
-                            variant="secondary"
-                            v-for="comment of displaycomments(post.id)"
-                            v-bind:key="comment"
-                          >
-                            <div class="comment-content border-bottom my-2">
-                              <!-- Comment Meta -->
-                              <div class="comment-meta my-3">
-                                <h5>{{comment.username}}</h5>
-                                <a href="#" class="comment-date">{{fetchDate(comment.date)}}</a>
-                                <p>{{comment.content}}</p>
-                                <div class="d-flex align-items-center">
-                                  <base-button
-                                    size="sm"
-                                    outline
-                                    type="primary"
-                                    v-b-modal.replycommentmodal
-                                    v-on:click="updatepost(post.id)"
-                                  >Reply to this comment</base-button>
-                                  <base-button
-                                    size="sm"
-                                    outline
-                                    type="warning"
-                                    v-on:click="deletecomment(comment.id)"
-                                    v-show="comment.email==currentuser"
-                                  >Delete</base-button>
-                                </div>
-                              </div>
-                              <span>
-                                <b-modal
-                                  id="replycommentmodal"
-                                  ref="modal"
-                                  title="Add your comment"
-                                  @ok="addcomment(post.id)"
-                                >
-                                  <b-form-input id="comment.id" v-model="inputcomment"></b-form-input>
-                                </b-modal>
-                              </span>
-                            </div>
-                          </b-media>
-                        </b-card>
-                        <br />
-                      </b-media>
-                    </b-card>
+                        </form>
+                      </b-modal>
+                    </base-alert>
                   </div>
-                </div>
-              </section>
-            </div>
-          </card>
-=======
 
-      <div class="container" id="app">
-        <div style="position: relative">
-        <!-- <b-list-group> -->
-        <b-card>
-          <b-media variant="primary" class="single_comment_area" v-for="post of displayposts()" v-bind:key="post">
-              <template v-slot:aside>
-                <b-img blank blank-color="#ccc" width="64" alt="placeholder"></b-img>
-              </template>
-            <div class="comment-content d-flex">
+                  <div class="container" id="app">
+                    <div style="position: relative">
+                      <!-- <b-list-group> -->
+                      <b-card>
+                        <b-media
+                          variant="primary"
+                          class="single_comment_area"
+                          v-for="post of displayposts()"
+                          v-bind:key="post"
+                        >
+                          <template v-slot:aside>
+                            <b-img blank blank-color="#ccc" width="64" alt="placeholder"></b-img>
+                          </template>
+                          <div class="comment-content d-flex">
+                            <div class="comment-meta">
+                              <h5 class="mt-0">{{post.username}}</h5>
+                              <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
+                              <p>{{post.content}}</p>
 
-              <div class="comment-meta">
-                
-                <h5 class="mt-0">{{post.username}}</h5>
-                <a href="#" class="comment-date">{{fetchDate(post.date)}}</a>
-                <p>{{post.content}}</p>
-                <div class="d-flex align-items-center">
-                  <b-button style="font-size:15px" v-b-modal.replypostmodal v-on:click="updatepost(post.id)">Reply to this post</b-button>
-                  <b-button
-                    class="like"
-                    v-on:click="deletepost(post.id)"
-                    v-show="post.email==currentuser"
-                  >Delete</b-button>
-                </div>
+                              <base-button
+                                size="sm"
+                                outline
+                                type="primary"
+                                v-b-modal.replypostmodal
+                                v-on:click="updatepost(post.id)"
+                              >Reply to this post</base-button>
+                              <base-button
+                                size="sm"
+                                outline
+                                type="warning"
+                                class="like"
+                                v-on:click="deletepost(post.id)"
+                                v-show="post.email==currentuser"
+                              >Delete</base-button>
+                            </div>
 
-              </div>
-              <span>
-                <b-modal
-                  id="replypostmodal"
-                  ref="modal"
-                  title="Add your comment"
-                  @ok="addcomment(post.id)"
-                >
-                  <b-form-input id=post.id v-model="inputcomment"></b-form-input>
-                </b-modal>
-              </span>
-            </div>
-
-
-            <b-card class="children">
-              <b-media variant="secondary" v-for="comment of displaycomments(post.id)" v-bind:key="comment">
-                <div class="comment-content d-flex">
-                  
-                  <!-- Comment Meta -->
-                  <div class="comment-meta">
-                    <h5 class="mt-0">{{comment.username}}</h5>
-                    <a href="#" class="comment-date">{{fetchDate(comment.date)}}</a>
-                    <p>{{comment.content}}</p>
-                    <div class="d-flex align-items-center">
-                      <b-button style="font-size:15px" v-b-modal.replycommentmodal v-on:click="updatepost(post.id)">Reply to this comment</b-button>
-                      <b-button
-                        class="like"
-                        v-on:click="deletecomment(comment.id)"
-                        v-show="comment.email==currentuser"
-                      >Delete</b-button>
+                            <span>
+                              <b-modal
+                                id="replypostmodal"
+                                ref="modal"
+                                title="Add your comment"
+                                @ok="addcomment(post.id)"
+                              >
+                                <b-form-input id="post.id" v-model="inputcomment"></b-form-input>
+                              </b-modal>
+                            </span>
+                          </div>
+                          <br />
+                          <b-card v-show="displaycomments(post.id).length > 0" class="children">
+                            <b-media
+                              variant="secondary"
+                              v-for="comment of displaycomments(post.id)"
+                              v-bind:key="comment"
+                            >
+                              <div class="comment-content border-bottom my-2">
+                                <!-- Comment Meta -->
+                                <div class="comment-meta my-3">
+                                  <h5>{{comment.username}}</h5>
+                                  <a href="#" class="comment-date">{{fetchDate(comment.date)}}</a>
+                                  <p>{{comment.content}}</p>
+                                  <div class="d-flex align-items-center">
+                                    <base-button
+                                      size="sm"
+                                      outline
+                                      type="primary"
+                                      v-b-modal.replycommentmodal
+                                      v-on:click="updatepost(post.id)"
+                                    >Reply to this comment</base-button>
+                                    <base-button
+                                      size="sm"
+                                      outline
+                                      type="warning"
+                                      v-on:click="deletecomment(comment.id)"
+                                      v-show="comment.email==currentuser"
+                                    >Delete</base-button>
+                                  </div>
+                                </div>
+                                <span>
+                                  <b-modal
+                                    id="replycommentmodal"
+                                    ref="modal"
+                                    title="Add your comment"
+                                    @ok="addcomment(post.id)"
+                                  >
+                                    <b-form-input id="comment.id" v-model="inputcomment"></b-form-input>
+                                  </b-modal>
+                                </span>
+                              </div>
+                            </b-media>
+                          </b-card>
+                          <br />
+                        </b-media>
+                      </b-card>
                     </div>
                   </div>
-                  <span>
-                    <b-modal
-                      id="replycommentmodal"
-                      ref="modal"
-                      title="Add your comment"
-                      @ok="addcomment(post.id)"
-                    >
-                      <b-form-input id=comment.id v-model="inputcomment"></b-form-input>
-                    </b-modal>
-                  </span>
-                </div>
-              </b-media>
-            </b-card>
-          </b-media>
-        </b-card>
-
-
-        </div>
-      </div>
-    </section>
-
-
-
-
-        <!-- Post A Comment Area -->
-        <div class="post-a-comment-area bg-white mb-30 p-30 box-shadow clearfix">
-          <!-- Section Title -->
-          <div class="section-heading">
-            <h5>POST SOMETHING HERE</h5>
-          </div>
-
-          <!-- Reply Form -->
-          <div class="contact-form-area">
-             <form >
-                  <div >
-                <input
-                  id="postsection"
-                  class="form-control"
-                  type="text"
-                  v-model="inputpost"
-                  placeholder="post here!"
-                  cols="30"
-                  rows="10"
-                />
-                <button class="btn mag-btn mt-30" v-on:click="addpost" type="button">Submit Post</button>
+                </section>
               </div>
-            </form>
+            </card>
           </div>
->>>>>>> 7b68f8c1298a211d0f1b4573b2de9d064a856924
-        </div>
-      </card>
-      </div>
+        </section>
       </section>
     </div>
   </div>
@@ -349,7 +217,7 @@ export default {
       return postlist.sort(sortingmethod);
     },
 
-    updatepost: function(post){
+    updatepost: function(post) {
       console.log(post);
       this.selectedpost = post;
     },
@@ -379,7 +247,7 @@ export default {
       var curruser = firebase.auth().currentUser;
       var emailverified = curruser.email;
       console.log(this.currentuser);
-      var tempname="";
+      var tempname = "";
       database.collection("User Info").onSnapshot(allusers => {
         console.log(1);
         allusers.forEach(function(user) {
@@ -402,7 +270,6 @@ export default {
         this.allmodules = mods;
         console.log(this.allmodules);
         this.currentuser = emailverified;
-        
       });
 
       let allpostsinfunction = {};
@@ -671,14 +538,15 @@ export default {
         "-" +
         months[date.getMonth()] +
         "-" +
-        date.getFullYear()+
-            "  "+
-            hours+":"+
-            minutes+":"+
-            seconds
+        date.getFullYear() +
+        "  " +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds
       );
     }
-
   },
   created() {
     console.log("created ");
@@ -690,124 +558,161 @@ export default {
 <style scoped>
 .post-details-content {
   position: relative;
-  z-index: 1; }
-  .post-details-content .post-meta {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 15px; }
-    .post-details-content .post-meta a {
-      position: relative;
-      z-index: 1;
-      display: inline-block;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #ed3974; }
-      .post-details-content .post-meta a:last-child {
-        margin-left: 20px; }
-        .post-details-content .post-meta a:last-child::after {
-          content: '/';
-          position: absolute;
-          top: 0;
-          left: -15px;
-          z-index: 1; }
-      .post-details-content .post-meta a:hover, .post-details-content .post-meta a:focus {
-        color: #404040; }
+  z-index: 1;
+}
+.post-details-content .post-meta {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 15px;
+}
+.post-details-content .post-meta a {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ed3974;
+}
+.post-details-content .post-meta a:last-child {
+  margin-left: 20px;
+}
+.post-details-content .post-meta a:last-child::after {
+  content: "/";
+  position: absolute;
+  top: 0;
+  left: -15px;
+  z-index: 1;
+}
+.post-details-content .post-meta a:hover,
+.post-details-content .post-meta a:focus {
+  color: #404040;
+}
+.post-details-content .post-title {
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: block;
+}
+@media only screen and (max-width: 767px) {
   .post-details-content .post-title {
-    font-size: 24px;
-    margin-bottom: 15px;
-    display: block; }
-    @media only screen and (max-width: 767px) {
-      .post-details-content .post-title {
-        font-size: 20px; } }
-  .post-details-content .post-meta-2 {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 15px; }
-    .post-details-content .post-meta-2 a {
-      font-size: 14px;
-      color: #777777;
-      margin-right: 20px; }
-      .post-details-content .post-meta-2 a:last-child {
-        margin-right: 0; }
-      .post-details-content .post-meta-2 a:hover, .post-details-content .post-meta-2 a:focus {
-        color: #ed3974; }
-  .post-details-content ul {
-    position: relative;
-    z-index: 1; }
-    .post-details-content ul li {
-      color: #777777;
-      margin-bottom: 10px; }
-      .post-details-content ul li i {
-        margin-right: 5px; }
+    font-size: 20px;
+  }
+}
+.post-details-content .post-meta-2 {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 15px;
+}
+.post-details-content .post-meta-2 a {
+  font-size: 14px;
+  color: #777777;
+  margin-right: 20px;
+}
+.post-details-content .post-meta-2 a:last-child {
+  margin-right: 0;
+}
+.post-details-content .post-meta-2 a:hover,
+.post-details-content .post-meta-2 a:focus {
+  color: #ed3974;
+}
+.post-details-content ul {
+  position: relative;
+  z-index: 1;
+}
+.post-details-content ul li {
+  color: #777777;
+  margin-bottom: 10px;
+}
+.post-details-content ul li i {
+  margin-right: 5px;
+}
 
 .comment_area {
   border-bottom: 1px solid #ebebeb;
-  padding-bottom: 50px; }
+  padding-bottom: 50px;
+}
+.comment_area .comment-content .comment-author {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 70px;
+  flex: 0 0 70px;
+  min-width: 70px;
+  margin-right: 20px;
+  height: 70px;
+  border-radius: 50%;
+}
+.comment_area .comment-content .comment-author img {
+  border-radius: 50%;
+}
+@media only screen and (max-width: 767px) {
   .comment_area .comment-content .comment-author {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 70px;
-    flex: 0 0 70px;
-    min-width: 70px;
-    margin-right: 20px;
-    height: 70px;
-    border-radius: 50%; }
-    .comment_area .comment-content .comment-author img {
-      border-radius: 50%; }
-    @media only screen and (max-width: 767px) {
-      .comment_area .comment-content .comment-author {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 40px;
-        flex: 0 0 40px;
-        min-width: 40px;
-        margin-right: 10px;
-        height: 40px; } }
-  .comment_area .comment-content .comment-meta {
-    margin-bottom: 30px; }
-    .comment_area .comment-content .comment-meta .comment-date {
-      font-size: 12px;
-      color: #777777;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 10px; }
-    .comment_area .comment-content .comment-meta h6 {
-      margin-bottom: 10px; }
-    .comment_area .comment-content .comment-meta p {
-      margin-bottom: 10px;
-      font-size: 14px;
-      line-height: 2; }
-    .comment_area .comment-content .comment-meta .like,
-    .comment_area .comment-content .comment-meta .reply {
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: uppercase;
-      height: 30px;
-      padding: 0 20px;
-      border: 2px solid #ebebeb;
-      border-radius: 15px;
-      line-height: 26px;
-      text-align: center;
-      margin-right: 15px; }
-      .comment_area .comment-content .comment-meta .like:last-child,
-      .comment_area .comment-content .comment-meta .reply:last-child {
-        margin-right: 0; }
-      .comment_area .comment-content .comment-meta .like:hover,
-      .comment_area .comment-content .comment-meta .reply:hover {
-        box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15); }
-      @media only screen and (max-width: 767px) {
-        .comment_area .comment-content .comment-meta .like,
-        .comment_area .comment-content .comment-meta .reply {
-          margin-right: 5px; } }
-  .comment_area .single_comment_area {
-    margin-bottom: 30px; }
-    .comment_area .single_comment_area:last-of-type {
-      margin-bottom: 0; }
+    -ms-flex: 0 0 40px;
+    flex: 0 0 40px;
+    min-width: 40px;
+    margin-right: 10px;
+    height: 40px;
+  }
+}
+.comment_area .comment-content .comment-meta {
+  margin-bottom: 30px;
+}
+.comment_area .comment-content .comment-meta .comment-date {
+  font-size: 12px;
+  color: #777777;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.comment_area .comment-content .comment-meta h6 {
+  margin-bottom: 10px;
+}
+.comment_area .comment-content .comment-meta p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 2;
+}
+.comment_area .comment-content .comment-meta .like,
+.comment_area .comment-content .comment-meta .reply {
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+  height: 30px;
+  padding: 0 20px;
+  border: 2px solid #ebebeb;
+  border-radius: 15px;
+  line-height: 26px;
+  text-align: center;
+  margin-right: 15px;
+}
+.comment_area .comment-content .comment-meta .like:last-child,
+.comment_area .comment-content .comment-meta .reply:last-child {
+  margin-right: 0;
+}
+.comment_area .comment-content .comment-meta .like:hover,
+.comment_area .comment-content .comment-meta .reply:hover {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
+}
+@media only screen and (max-width: 767px) {
+  .comment_area .comment-content .comment-meta .like,
+  .comment_area .comment-content .comment-meta .reply {
+    margin-right: 5px;
+  }
+}
+.comment_area .single_comment_area {
+  margin-bottom: 30px;
+}
+.comment_area .single_comment_area:last-of-type {
+  margin-bottom: 0;
+}
+.comment_area .children .single_comment_area {
+  margin-left: 50px;
+  margin-top: 30px;
+}
+@media only screen and (max-width: 767px) {
   .comment_area .children .single_comment_area {
-    margin-left: 50px;
-    margin-top: 30px; }
-    @media only screen and (max-width: 767px) {
-      .comment_area .children .single_comment_area {
-        margin-left: 15px; } }
+    margin-left: 15px;
+  }
+}
 </style>
 
