@@ -315,6 +315,7 @@ export default {
       let currmod = this.selectedModule;
       let input = this.inputpost;
       let curruser = this.currentuser;
+      let usern = this.username;
       if (this.selectedModule == "All Modules") {
         alert("Please choose the relevant module");
       } else if (this.inputpost == "") {
@@ -326,7 +327,7 @@ export default {
           content: input,
           date: new Date(),
           email: curruser,
-          username: "Shi Wen",
+          username: usern,
           id: count
         };
         let posts = this.allposts[this.selectedModule];
@@ -351,6 +352,7 @@ export default {
       let input = this.inputcomment;
       let curruser = this.currentuser;
       let post = this.selectedpost;
+      let usern = this.username;
       console.log("post id here");
       console.log(post);
       if (this.selectedModule == "All Modules") {
@@ -367,7 +369,7 @@ export default {
           content: input,
           date: new Date(),
           email: curruser,
-          username: "Shi Wen",
+          username: usern,
           replyto: post,
           id: count
         };

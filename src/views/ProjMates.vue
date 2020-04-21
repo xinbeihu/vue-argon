@@ -340,7 +340,7 @@
                                         <br>
                                         <button v-show='my_compatibility[teamName][person] == 100' v-on:click = 'join(teamName, person)'>Click to join now</button>
                                       </div>
-                                      <button v-show='team["Group Members"].indexOf("You") > -1 && my_compatibility[teamName][person] == 100' v-on:click = 'leave(teamName, person); updateGroups()'>Leave</button>
+                                      <button v-show='team["Group Members"].indexOf(currName) > -1 && my_compatibility[teamName][person] == 100' v-on:click = 'leave(teamName, person); updateGroups()'>Leave</button>
                                   </tr>
                                 </td>
                               </table>
@@ -522,56 +522,115 @@ export default {
     },
 
     addGroup: function() {  
-      if(this.newGroup.groupName == '') {
-        alert("Please fill in a group name.");
-      } else if(this.newGroup.comment.length == 0) {
-        alert("Please write a comment for your group.");
-      } else if(this.newGroup.size < 1) {
-        alert("Please enter a valid group size.");
-      } else if(this.newGroup.size == 1) {
-        alert("Group size should be at least 2");
-      } else if (this.newGroupFormed[this.module]) {
-        alert("You have already created a group for this module.");
-      }else {
-        for(var i = 0; i < this.newGroup.skills.length; i++) {
-          if(this.newGroup.skills[i].length == 0) {
-            alert("Please choose at least 1 option for team mate " + (i + 1));
-            return;
-          }
+    if(this.newGroup.groupName == '') {
+      alert("Please fill in a group name.");
+    } else if(this.newGroup.comment.length == 0) {
+      alert("Please write a comment for your group.");
+    } else if(this.newGroup.size < 1) {
+      alert("Please enter a valid group size.");
+    } else if(this.newGroup.size == 1) {
+      alert("Group size should be at least 2");
+    } else if (this.newGroupFormed[this.module]) {
+      alert("You have already created a group for this module.");
+    }else {
+      for(var i = 0; i < this.newGroup.skills.length; i++) {
+        if(this.newGroup.skills[i].length == 0) {
+          alert("Please choose at least 1 option for team mate " + (i + 1));
+          return;
         }
-        alert("Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."); 
-        var newGroupFormat = {};
-        newGroupFormat[this.newGroup.groupName] = {'Group Members':this.newGroup['currGroup'], 'MaxSize': this.newGroup['size'], 'Vacancies':{}, 'Comment':this.newGroup.comment};
-        var counter = 1;
-        for(i = 0; i < this.newGroup['members'].length; i++) {
-          if(Number.isInteger((counter - 1) / 2)) {
-            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
-          }
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = false;
-          if(this.newGroup['members'][i].indexOf(',') > -1) {
-            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = this.newGroup['members'][i].split(",");
-          } else {
-            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = [this.newGroup['members'][i]];
-          }
-          counter += 1;
-        }
-        for(i = 0; i < this.newGroup['currGroup'].length; i++) {
-          if(Number.isInteger((counter - 1) / 2)) {
-            newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
-          }
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
-          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = true;
-          counter += 1
-        }
-        this.newGroupFormed[this.module] = true;
-        this.newGroup.currGroup[0] = this.currName;
-        this.newGroups[this.newGroup.groupName] = this.newGroup;
-        database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
-        this.newGroup = {module: '', groupName:'', size:2, currGroup:[this.currName], newSkill: [], comment:'', compatibility:[], 
-        memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[], Assignments: {}};
       }
-    },
+      alert("Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."); 
+      var newGroupFormat = {};
+      this.newGroup['currGroup'][0] = this.currName
+      newGroupFormat[this.newGroup.groupName] = {'Group Members':this.newGroup['currGroup'], 'MaxSize': this.newGroup['size'], 'Vacancies':{}, 'Comment':this.newGroup.comment};
+      var counter = 1;
+      for(i = 0; i < this.newGroup['members'].length; i++) {
+        if(Number.isInteger((counter - 1) / 2)) {
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+        }
+        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = false;
+        if(this.newGroup['members'][i].indexOf(',') > -1) {
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = this.newGroup['members'][i].split(",");
+        } else {
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = [this.newGroup['members'][i]];
+        }
+        counter += 1;
+      }
+      for(i = 0; i < this.newGroup['currGroup'].length; i++) {
+        if(Number.isInteger((counter - 1) / 2)) {
+          newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+        }
+        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+        newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = true;
+        counter += 1
+      }
+      this.newGroupFormed[this.module] = true;
+      this.newGroups[this.newGroup.groupName] = this.newGroup;
+      // newGroupFormat['Group Members'][0] = this.currName;
+      // console.log(newGroupFormat)
+      database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
+      this.newGroup = {module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
+      memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]};
+    }
+  },
+
+    // addGroup: function() {  
+    //   if(this.newGroup.groupName == '') {
+    //     alert("Please fill in a group name.");
+    //   } else if(this.newGroup.comment.length == 0) {
+    //     alert("Please write a comment for your group.");
+    //   } else if(this.newGroup.size < 1) {
+    //     alert("Please enter a valid group size.");
+    //   } else if(this.newGroup.size == 1) {
+    //     alert("Group size should be at least 2");
+    //   } else if (this.newGroupFormed[this.module]) {
+    //     alert("You have already created a group for this module.");
+    //   }else {
+    //     for(var i = 0; i < this.newGroup.skills.length; i++) {
+    //       if(this.newGroup.skills[i].length == 0) {
+    //         alert("Please choose at least 1 option for team mate " + (i + 1));
+    //         return;
+    //       }
+    //     }
+    //     alert("Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."); 
+    //     var newGroupFormat = {};
+    //     this.newGroup['currGroup'][0] = this.currName;
+    //     console.log(this.newGroup['currGroup']);
+    //     newGroupFormat[this.newGroup.groupName] = {'Group Members':this.newGroup['currGroup'], 'MaxSize': this.newGroup['size'], 'Vacancies':{}, 'Comment':this.newGroup.comment};
+    //     var counter = 1;
+    //     for(i = 0; i < this.newGroup['members'].length; i++) {
+    //       if(Number.isInteger((counter - 1) / 2)) {
+    //         newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+    //       }
+    //       newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+    //       newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = false;
+    //       if(this.newGroup['members'][i].indexOf(',') > -1) {
+    //         newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = this.newGroup['members'][i].split(",");
+    //       } else {
+    //         newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['Skills Required'] = [this.newGroup['members'][i]];
+    //       }
+    //       counter += 1;
+    //     }
+    //     for(i = 0; i < this.newGroup['currGroup'].length; i++) {
+    //       if(Number.isInteger((counter - 1) / 2)) {
+    //         newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)] = {};
+    //       }
+    //       newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter] = {};
+    //       newGroupFormat[this.newGroup.groupName]['Vacancies']['Vacancies ' + Math.floor((counter - 1) / 2)]['Group Member ' + counter]['FilledOrNot'] = true;
+    //       counter += 1
+    //     }
+    //     this.newGroupFormed[this.module] = true;
+    //     //this.newGroup.currGroup[0] = this.currName;
+    //     //console.log(this.newGroup.currGroup);
+    //     //newGroupFormat['Group Members'][0] = this.currName;
+    //     this.newGroupFormed[this.module] = true;
+    //     this.newGroups[this.newGroup.groupName] = this.newGroup;
+    //     database.collection('Modules').doc(this.module).set(newGroupFormat, {merge: true});
+    //     this.newGroup = {module: '', groupName:'', size:2, currGroup:[this.currName], newSkill: [], comment:'', compatibility:[], 
+    //     memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[], Assignments: {}};
+    //   }
+    // },
     addMember: function() {
       var add = this.newGroup.size - this.newGroup.currGroup.length;
       this.newGroup.memberStatus = ['true'];
@@ -602,7 +661,7 @@ export default {
           }
         }
       }
-      temp[teamName]['Group Members'].push('You');
+      temp[teamName]['Group Members'].push(this.currName);
       for(var index in temp[teamName]['Vacancies']) {
         for(var mem in temp[teamName]['Vacancies'][index]) {
           if('FilledOrNot' in temp[teamName]['Vacancies'][index][mem] && mem == person) {
