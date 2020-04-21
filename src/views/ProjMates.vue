@@ -638,12 +638,8 @@ export default {
     fetchData: function() {
       let temp = {}
         //Get all the items from DB
-        database.collection('Modules').onSnapshot(myModules => {
-          myModules.forEach(function(module) {
-            temp[module.id] = module.data()
-          })
-          this.modules = temp;
-        })
+      let userMods = []
+
 
       let temp1 = []
       let tempName = ''
@@ -654,11 +650,23 @@ export default {
           if(currUser.id == emailVerified) {
             temp1 = currUser.data()['Skills']
             tempName = currUser.data()['Name']
+            for(var mod in currUser.data()) {
+              userMods.push(mod)
+            }
           }
         })
         this.currName = tempName
         this.my_skills = temp1;
       })
+
+      database.collection('Modules').onSnapshot(myModules => {
+          myModules.forEach(function(module) {
+            if(userMods.index(module.id) > -1) {
+              temp[module.id] = module.data()
+            }
+          })
+          this.modules = temp;
+        })
 
     },
     updateGroups: function() {
@@ -667,7 +675,7 @@ export default {
         if(this.module == mod) {
           this.noGroup = this.modules[mod]['NoGroup']
           for(var group in this.modules[mod]) {
-            if('Group Members' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') > -1) {
+            if('Group Members' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf(this.currName) > -1) {
               this.newGroups[group] = this.modules[mod][group];  
             }
           }
@@ -677,7 +685,7 @@ export default {
       for(let mod in this.modules) {
         if(this.module == mod) {
           for(group in this.modules[mod]) {
-            if('Vacancies' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf('You') == -1) {
+            if('Vacancies' in this.modules[mod][group] && this.modules[mod][group]['Group Members'].indexOf(this.currName) == -1) {
               this.currGroups[group] = this.modules[mod][group];  
               this.my_compatibility[group] = {};
               for(var vacancy in this.modules[mod][group]['Vacancies']) {
