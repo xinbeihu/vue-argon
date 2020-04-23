@@ -50,7 +50,7 @@
                 <!-- Menu -->
                 <tabs fill class="flex-column flex-md-row">
                   <card shadow>
-                    <tab-pane title="Students without Group">
+                    <tab-pane title="Students without Group" v-on:click = "updateGroups">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <li v-for="person in noGroup" v-bind:key="person">
@@ -61,7 +61,7 @@
                       </div>
                     </tab-pane>
 
-                    <tab-pane title="Form a New Group">
+                    <tab-pane title="Form a New Group" v-on:click = "updateGroups">
                       <div class="modal-content" style="width: 600px; overflow: auto; margin-bottom: 0px;">
                         <div>
                           <label style="vertical-align: middle;"><h6>Group Name:</h6></label>
@@ -204,7 +204,7 @@
                       </div>
                     </tab-pane>
 
-                    <tab-pane title="Formed Project Groups">
+                    <tab-pane title="Formed Project Groups" v-on:click = "updateGroups">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <div v-for="(group, groupName) in modules[mod]" v-bind:key="group">
@@ -238,7 +238,7 @@
                         </div>
                       </div>
                     </tab-pane>
-                    <tab-pane title="Existing Groups">
+                    <tab-pane title="Existing Groups" v-on:click = "updateGroups">
                       <div
                         style="text-align: left"
                         v-for="(team, teamName) of currGroups"
@@ -246,6 +246,8 @@
                       >
                         <ul style="list-style-type:none">
                           <li class="removebullet">
+
+                            <div v-if="team['Group Members'] != null && team['MaxSize'] > team['Group Members'].length">
                             <div class="group" style="text-align:center">
                               <div
                                 style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px;list-style:none;"
@@ -336,13 +338,14 @@
                                         </div>
                                         <button
                                           v-show="team['Group Members'].indexOf('You') > -1 && my_compatibility[teamName][person] == 100"
-                                          v-on:click="leave(teamName, person); updateGroups()"
+                                          v-on:click="leave(teamName, person); updateGroups(module)"
                                         >Leave</button>
                                       </tr>
                                     </td>
                                   </table>
                                 </div>
                               </ul>
+                            </div>
                             </div>
                           </li>
                         </ul>
@@ -355,6 +358,7 @@
                       >
                         <ul style="list-style-type:none">
                           <li class="removebullet">
+                            <div v-if="team['Group Members'] != null && team['MaxSize'] > team['Group Members'].length">
                             <div class="group" style="text-align:center">
                               <div
                                 style="border-radius: 25px;border: 2px solid #73AD21; padding: 10px;list-style:none;"
@@ -363,10 +367,7 @@
                               </div>
                               <ul>
                                 <div class="group-content">
-                                  <div v-if="team['Group Members'].length > 1">
-                                    You
-                                    <a href="https://www.google.com" target="_blank">Profile</a>
-                                  </div>
+        
                                   <li v-for="member in team['Group Members']" v-bind:key="member">
                                     {{member}}
                                     <a
@@ -420,6 +421,7 @@
                                   <br />
                                 </div>
                               </ul>
+                            </div>
                             </div>
                           </li>
                         </ul>
@@ -693,7 +695,7 @@ export default {
           }
         }
       }
-      temp[teamName]["Group Members"].push("You");
+      temp[teamName]["Group Members"].push(this.currName);
       for (var index in temp[teamName]["Vacancies"]) {
         for (var mem in temp[teamName]["Vacancies"][index]) {
           if (
@@ -763,7 +765,7 @@ export default {
             for(var mod in currUser.data()['Current Modules']) {
             userMods.push(mod);
           }
-          console.log(userMods);
+          // console.log(userMods);
           }
           });
           var temp3 = {};
@@ -774,9 +776,9 @@ export default {
         myModules.forEach(function(mod) {
           if(userMods.includes(mod.id)) {
             var tempdictionary = mod.data();
-            console.log(temp3);
+            // console.log(temp3);
             temp3[mod.id] = tempdictionary;
-            console.log(temp3);
+            // console.log(temp3);
           }
         })
         this.modules = temp3;
@@ -807,27 +809,10 @@ export default {
               this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
             }
           }
-          if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].index(this.currName) > -1) {
-            delete this.noGroup[this.noGroup.index(this.currName)];
+          if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].indexOf(this.currName) > -1) {
+            this.noGroup.splice([this.noGroup.indexOf(this.currName)], 1);
           }
-          for(var group in this.newGroups) {
-            for(var i = 0; i < this.newGroups[group]["Group Members"].length; i++) {
-              if(this.noGroup.index(this.newGroups[group]["Group Members"][i]) > -1) {
-                delete this.noGroup[this.noGroup.index(this.newGroups[group]["Group Members"][i])];
-                delete this.modules[mod]["NoGroup"].index(this.newGroups[group]["Group Members"][i]);
-              }
-            }
-          }
-          // for(var group in this.newGroups) {
-          //   for(var ppl in this.newGroups[group]["Group Members"]) {
-          //     if(this.noGroup.index(ppl) > -1) {
-          //       delete this.noGroup[this.noGroup.index(ppl)];
-          //       delete this.modules[mod]["NoGroup"].index(ppl);
-          //     }
-          //   }
-          // }
-          console.log("this.noGroup!!!!!!!!!")
-          console.log(this.noGroup);
+
           for (var group in this.modules[mod]) {
             if (
               "Group Members" in this.modules[mod][group] &&
@@ -836,8 +821,19 @@ export default {
               this.newGroups[group] = this.modules[mod][group];
             }
           }
+          for(var group in this.newGroups) {
+            // console.log(group)
+            for(var ppl of this.newGroups[group]["Group Members"]) {
+              if(this.noGroup.indexOf(ppl) > -1) {
+                // console.log("come here !")
+                this.noGroup.splice(this.noGroup.indexOf(ppl), 1);
+                this.modules[mod]["NoGroup"].splice(this.modules[mod]["NoGroup"].indexOf(ppl), 1);
+              }
+            }
+          }
         }
       }
+
       this.currGroups = {};
       for (let mod in this.modules) {
         if (this.module == mod) {
@@ -990,6 +986,7 @@ body {
 .group-content {
   display: none;
   position: absolute;
+  bottom: 50%;
   background-color: #f9f9f9;
   width: auto;
   height: auto;
