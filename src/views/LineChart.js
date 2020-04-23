@@ -72,8 +72,8 @@ export default {
 
           this.taskList = tasks;
           this.groups = myGroups;
-          console.log("this.groups")
-          console.log(this.groups)
+          // console.log("this.groups")
+          // console.log(this.groups)
 
           let selectedModule = "";
           let month = "";

@@ -590,8 +590,8 @@ export default {
           "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
         );
         var newGroupFormat = {};
-        console.log("currGroup");
-        console.log(this.newGroup["currGroup"]);
+        //console.log("currGroup");
+        //console.log(this.newGroup["currGroup"]);
         this.newGroup['currGroup'][0] = this.currName;
         newGroupFormat[this.newGroup.groupName] = {
           "Group Members": this.newGroup["currGroup"],
@@ -642,7 +642,7 @@ export default {
           counter += 1;
         }
         this.newGroupFormed[this.module] = true;
-        this.newGroups[this.newGroup.groupName] = this.newGroup;
+        this.newGroups[this.newGroup.groupName] = newGroupFormat;
         database
           .collection("Modules")
           .doc(this.module)
@@ -821,12 +821,23 @@ export default {
               this.newGroups[group] = this.modules[mod][group];
             }
           }
+          console.log(this.newGroups);
           for(var group in this.newGroups) {
-            // console.log(group)
+            console.log(group);
             for(var ppl of this.newGroups[group]["Group Members"]) {
-              if(this.noGroup.indexOf(ppl) > -1) {
-                // console.log("come here !")
-                this.noGroup.splice(this.noGroup.indexOf(ppl), 1);
+              if(this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]) > -1) {
+    
+                this.noGroup.splice(this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]), 1);
+                console.log(this.newGroups[group]["Group Members"][ppl]);
+                console.log(this.noGroup);
+                let NoGroup = this.noGroup;
+                database
+                  .collection("Modules")
+                  .doc(mod)
+                  .update({
+                    NoGroup
+                  });
+            
                 this.modules[mod]["NoGroup"].splice(this.modules[mod]["NoGroup"].indexOf(ppl), 1);
               }
             }
