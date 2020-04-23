@@ -821,15 +821,17 @@ export default {
               this.newGroups[group] = this.modules[mod][group];
             }
           }
-          console.log(this.newGroups);
+          // console.log(this.newGroups);
           for(var group in this.newGroups) {
-            console.log(group);
-            for(var ppl of this.newGroups[group]["Group Members"]) {
+            // console.log("no group")
+            // console.log(group);
+            for(var ppl in this.newGroups[group]["Group Members"]) {
               let idx = this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]); 
+              // console.log(ppl + " " + idx);
               if(idx > -1) {
                 this.noGroup.splice(idx, 1);
-                console.log(this.newGroups[group]["Group Members"][ppl]);
-                console.log(this.noGroup);
+                // console.log(this.newGroups[group]["Group Members"][ppl]);
+                // console.log(this.noGroup);
                 let NoGroup = this.noGroup;
                 database
                   .collection("Modules")
