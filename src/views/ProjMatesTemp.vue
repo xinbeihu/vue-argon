@@ -330,7 +330,7 @@
                                           >Click to join now</button>
                                         </div>
                                         <button
-                                          v-show="team['Group Members'].indexOf('You') > -1 && my_compatibility[teamName][person] == 100"
+                                          v-show="team['Group Members'].indexOf(currName) > -1 && my_compatibility[teamName][person] == 100"
                                           v-on:click="leave(teamName, person); updateGroups(module)"
                                         >Leave</button>
                                       </tr>
@@ -893,7 +893,9 @@ export default {
                     var compat = parseFloat((match / tot) * 100 + "").toFixed(
                       2
                     );
-                    if(tot == 0) {
+                    if(this.modules[mod][group]["Vacancies"][vacancy][
+                            member
+                          ]["Skills Required"][0] == "None") {
                       compat = 100;
                     }
                     this.my_compatibility[group][member] = compat;

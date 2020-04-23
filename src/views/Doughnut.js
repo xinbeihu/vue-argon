@@ -66,6 +66,7 @@ export default {
                     let member = "";
                     let num = "";
                     let length = 0;
+                    let previous = 0;
                     for (let module in tasks) {
                         selectedModule = module;
                         let taskArray = [];
@@ -88,15 +89,11 @@ export default {
                         for (member in membercontribution) {
                             this.datacollection.labels.push(member);
                         }
-                        // console.log(this.datacollection.labels)
                         for (var i = length; i < (Object.keys(membercontribution).length + length); i++) {
                             taskArray[i] = membercontribution[member];
                         }
-                        length = length + taskArray.length;
-                        console.log(selectedModule)
-                        console.log("taskArray here")
-                        console.log(taskArray)
-
+                        previous = Object.keys(taskArray).length;
+                        length = length + previous;
                         this.datacollection.datasets.push({ data: taskArray, label: selectedModule, backgroundColor: ["#DAECFC", "#DDF3F2", "#F4F5F5", "#EBE0FF", "#FFF3DA", "#FFE1E6"] });
                     }
                     this.renderChart(this.datacollection, this.options)
