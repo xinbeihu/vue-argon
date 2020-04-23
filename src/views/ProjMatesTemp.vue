@@ -893,6 +893,9 @@ export default {
                     var compat = parseFloat((match / tot) * 100 + "").toFixed(
                       2
                     );
+                    if(tot == 0) {
+                      compat = 100;
+                    }
                     this.my_compatibility[group][member] = compat;
                   }
                 }
