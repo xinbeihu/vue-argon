@@ -203,7 +203,7 @@
                       </div>
                     </tab-pane>
 
-                    <tab-pane title="Formed Project Groups" v-on:click = "updateGroups">
+                    <tab-pane title="Formed Project Groups" >
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <div v-for="(group, groupName) in modules[mod]" v-bind:key="group">
@@ -234,7 +234,7 @@
                         </div>
                       </div>
                     </tab-pane>
-                    <tab-pane title="Existing Groups" v-on:click = "updateGroups">
+                    <tab-pane title="Existing Groups" >
                       <div
                         style="text-align: left"
                         v-for="(team, teamName) of currGroups"
@@ -632,7 +632,9 @@ export default {
           counter += 1;
         }
         this.newGroupFormed[this.module] = true;
-        this.newGroups[this.newGroup.groupName] = newGroupFormat;
+        this.newGroups[this.newGroup.groupName] = newGroupFormat[this.newGroup.groupName];
+        // console.log(newGroupFormat);
+        // console.log(this.newGroups);
         database
           .collection("Modules")
           .doc(this.module)
@@ -654,6 +656,8 @@ export default {
           skills3: []
         };
       }
+      this.fetchData();
+      this.updateGroups(this.module);
     },
     addMember: function() {
       var add = this.newGroup.size - this.newGroup.currGroup.length;
@@ -754,7 +758,7 @@ export default {
             tempName = currUser.data()["Name"];
             for(var mod in currUser.data()['Current Modules']) {
               if(!userMods.includes(mod)){
-                console.log(mod);
+                //console.log(mod);
                 userMods.push(mod);
               }
           }
@@ -783,6 +787,8 @@ export default {
       return this.isActive[mod];
     },
     updateGroups: function(mod) {
+      // console.log(this.module);
+      // console.log(this.modules);
       this.isActive[mod] = true;
       var indexrange = this.currentmods.length;
       var i;
@@ -793,6 +799,7 @@ export default {
       }
       this.newGroups = {};
       this.module = mod;
+
       for (let mod in this.modules) {
         if (this.module == mod) {
           //this.noGroup = this.modules[mod]["NoGroup"];
@@ -802,41 +809,45 @@ export default {
               this.noGroup.push(this.modules[mod]["NoGroup"][ppl]);
             }
           }
-          if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].indexOf(this.currName) > -1) {
-            this.noGroup.splice([this.noGroup.indexOf(this.currName)], 1);
-          }
+          console.log(this.noGroup); //correct
 
           for (var group in this.modules[mod]) {
+            console.log(group);
+            //console.log(this.modules[mod][group]);
             if (
-              "Group Members" in this.modules[mod][group] &&
+              "Group Members" in this.modules[mod][group] && //nogroup will not go in here
               this.modules[mod][group]["Group Members"].indexOf(this.currName) > -1
             ) {
+              console.log(this.modules[mod][group]);
               this.newGroups[group] = this.modules[mod][group];
             }
           }
-          // console.log(this.newGroups);
+          console.log(this.newGroups); //newGroups is a dictionary which contains new groups formed 
+          //problem: code does not go into the for loop below
           for(var group in this.newGroups) {
-            // console.log("no group")
-            // console.log(group);
-            for(var ppl in this.newGroups[group]["Group Members"]) {
+            console.log(group);
+            console.log("second for loop");
+            for(var ppl of this.newGroups[group]["Group Members"]) {
               let idx = this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]); 
+              console.log(this.newGroups[group]["Group Members"]);
               // console.log(ppl + " " + idx);
               if(idx > -1) {
                 this.noGroup.splice(idx, 1);
                 // console.log(this.newGroups[group]["Group Members"][ppl]);
                 // console.log(this.noGroup);
-                let NoGroup = this.noGroup;
+                this.modules[mod]["NoGroup"].splice(this.modules[mod]["NoGroup"].indexOf(ppl), 1);
+              }
+            }
+          }
+          let NoGroup = this.noGroup;
+          //console.log(this.modules[mod]["NoGroup"]);
+          console.log(this.noGroup);
                 database
                   .collection("Modules")
                   .doc(mod)
                   .update({
                     NoGroup
                   });
-            
-                this.modules[mod]["NoGroup"].splice(this.modules[mod]["NoGroup"].indexOf(ppl), 1);
-              }
-            }
-          }
         }
       }
 
