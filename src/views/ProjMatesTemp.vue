@@ -588,7 +588,8 @@ export default {
           "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
         );
         var newGroupFormat = {};
-        console.log(this.currName);
+        console.log("currGroup");
+        console.log(this.newGroup["currGroup"]);
         this.newGroup['currGroup'][0] = this.currName;
         newGroupFormat[this.newGroup.groupName] = {
           "Group Members": this.newGroup["currGroup"],
@@ -740,6 +741,8 @@ export default {
     },
     fetchData: function() {
       //Get all the items from DB
+      this.modules = {};
+      let temp = {};
       database.collection("Modules").onSnapshot(myModules => {
         myModules.forEach(function(module) {
           temp[module.id] = module.data();
@@ -806,6 +809,13 @@ export default {
           }
           if(this.newGroupFormed[mod] == true && this.modules[mod]["NoGroup"].index(this.currName) > -1) {
             delete this.noGroup[this.noGroup.index(this.currName)];
+          }
+          for(var group in this.newGroups) {
+            for(var ppl in this.newGroups[group]) {
+              if(this.modules[mod]["NoGroup"].index(ppl) > -1) {
+                delete this.noGroup[this.noGroup.index(ppl)];
+              }
+            }
           }
           console.log(this.noGroup);
           for (var group in this.modules[mod]) {
