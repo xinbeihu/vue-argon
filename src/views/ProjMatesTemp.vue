@@ -811,17 +811,27 @@ export default {
             delete this.noGroup[this.noGroup.index(this.currName)];
           }
           for(var group in this.newGroups) {
-            for(var ppl in this.newGroups[group]) {
-              if(this.modules[mod]["NoGroup"].index(ppl) > -1) {
-                delete this.noGroup[this.noGroup.index(ppl)];
+            for(var i = 0; i < this.newGroups[group]["Group Members"].length; i++) {
+              if(this.noGroup.index(this.newGroups[group]["Group Members"][i]) > -1) {
+                delete this.noGroup[this.noGroup.index(this.newGroups[group]["Group Members"][i])];
+                delete this.modules[mod]["NoGroup"].index(this.newGroups[group]["Group Members"][i]);
               }
             }
           }
+          // for(var group in this.newGroups) {
+          //   for(var ppl in this.newGroups[group]["Group Members"]) {
+          //     if(this.noGroup.index(ppl) > -1) {
+          //       delete this.noGroup[this.noGroup.index(ppl)];
+          //       delete this.modules[mod]["NoGroup"].index(ppl);
+          //     }
+          //   }
+          // }
+          console.log("this.noGroup!!!!!!!!!")
           console.log(this.noGroup);
           for (var group in this.modules[mod]) {
             if (
               "Group Members" in this.modules[mod][group] &&
-              this.modules[mod][group]["Group Members"].indexOf("You") > -1
+              this.modules[mod][group]["Group Members"].indexOf(this.currName) > -1
             ) {
               this.newGroups[group] = this.modules[mod][group];
             }
@@ -834,7 +844,7 @@ export default {
           for (group in this.modules[mod]) {
             if (
               "Vacancies" in this.modules[mod][group] &&
-              this.modules[mod][group]["Group Members"].indexOf("You") == -1
+              this.modules[mod][group]["Group Members"].indexOf(this.currName) == -1
             ) {
               this.currGroups[group] = this.modules[mod][group];
               this.my_compatibility[group] = {};
