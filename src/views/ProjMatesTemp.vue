@@ -825,9 +825,9 @@ export default {
           for(var group in this.newGroups) {
             console.log(group);
             for(var ppl of this.newGroups[group]["Group Members"]) {
-              if(this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]) > -1) {
-    
-                this.noGroup.splice(this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]), 1);
+              let idx = this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]); 
+              if(idx > -1) {
+                this.noGroup.splice(idx, 1);
                 console.log(this.newGroups[group]["Group Members"][ppl]);
                 console.log(this.noGroup);
                 let NoGroup = this.noGroup;
