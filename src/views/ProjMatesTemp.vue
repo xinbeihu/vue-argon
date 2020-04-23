@@ -55,7 +55,6 @@
                         <div v-if="mod == module">
                           <li v-for="person in noGroup" v-bind:key="person">
                             {{person}}
-                            <a href="https://www.google.com" target="_blank">Profile</a>
                           </li>
                         </div>
                       </div>
@@ -224,10 +223,7 @@
                                         v-bind:key="person"
                                       >
                                         {{person}}
-                                        <a
-                                          href="https://www.google.com"
-                                          target="_blank"
-                                        >Profile</a>
+                                        
                                       </li>
                                     </div>
                                   </ul>
@@ -258,10 +254,7 @@
                                 <div class="group-content">
                                   <li v-for="member in team['Group Members']" v-bind:key="member">
                                     {{member}}
-                                    <a
-                                      href="https://www.google.com"
-                                      target="_blank"
-                                    >Profile</a>
+                                    
                                   </li>
                                   <br />
                                   Team Comment: {{team['Comment']}}
@@ -370,10 +363,7 @@
         
                                   <li v-for="member in team['Group Members']" v-bind:key="member">
                                     {{member}}
-                                    <a
-                                      href="https://www.google.com"
-                                      target="_blank"
-                                    >Profile</a>
+                                    
                                   </li>
                                   <br />
                                   Team Comment: {{team['Comment']}}
