@@ -92,6 +92,8 @@ export default {
                             taskArray[i] = membercontribution[member];
                         }
                         length = length + taskArray.length;
+                        // console.log("taskArray here")
+                        // console.log(taskArray)
 
                         this.datacollection.datasets.push({ data: taskArray, label: selectedModule, backgroundColor: ["#DAECFC", "#DDF3F2", "#F4F5F5", "#EBE0FF", "#FFF3DA", "#FFE1E6"] });
                     }

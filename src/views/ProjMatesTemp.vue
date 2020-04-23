@@ -753,7 +753,10 @@ export default {
             temp1 = currUser.data()["Skills"];
             tempName = currUser.data()["Name"];
             for(var mod in currUser.data()['Current Modules']) {
-            userMods.push(mod);
+              if(!userMods.includes(mod)){
+                console.log(mod);
+                userMods.push(mod);
+              }
           }
           // console.log(userMods);
           }
