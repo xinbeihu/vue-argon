@@ -581,6 +581,7 @@ export default {
   components: Modal,
   data() {
     return {
+      allMods: {},
       userInfo: {},
       userName: "Victor Cheong",
       inputSkill: "",
@@ -623,22 +624,33 @@ export default {
   methods: {
     fetchData: function() {
       let temp = {};
+      let mods = {};
       var user = firebase.auth().currentUser;
       var emailVerified = user.email;
       var name = "";
       //Get all the items from DB
       database.collection("User Info").onSnapshot(currentUser => {
         currentUser.forEach(function(user) {
-          console.log(1);
+         
           if (user.id == emailVerified) {
             temp[user.id] = user.data();
             name = user.data().Name;
           }
         });
         this.userInfo = temp;
+      
         this.currID = emailVerified;
         this.userName = name;
-        console.log(this.userName);
+  
+      });
+
+      database.collection("Modules").onSnapshot(modu => {
+        modu.forEach(function(mod) {
+          mods[mod.id] = mod.data()
+        });
+        this.allMods = mods;
+     
+  
       });
     },
     getProject: function(item, value) {
@@ -851,11 +863,10 @@ export default {
               ".json"
           )
           .then(response => {
-            console.log(response.data.title);
+       
             this.inputCurrModName = response.data.title;
             let newCurrModCode = this.inputCurrModCode;
-            console.log("hi" + this.inputCurrModCode);
-            console.log("hii" + newCurrModCode);
+    
             let newCurrModName = this.inputCurrModName;
             let currUser = this.currID;
             database
@@ -960,13 +971,47 @@ export default {
 
     deleteCurrModule: function(ModCode) {
       let currUser = this.currID;
+      let allmods = this.allMods;
+      let name = this.userName;
+      let newgrp = [];
+      let grpname = "";
+     
       database
         .collection("User Info")
         .doc(currUser)
         .update({
           ["Current Modules." + ModCode]: firebase.firestore.FieldValue.delete()
         });
+    
+      let allm = allmods[ModCode];
+     
+      Object.keys(allm).forEach(function(k) {
+        if (k != "NoGroup") {
+          if (allm[k]["Group Members"].includes(name)) {
+    
+            grpname = k;
+            for (var na in allm[k]["Group Members"]) {
+              if (allm[k]["Group Members"][na] != name) {
+                newgrp.push(allm[k]["Group Members"][na]);
+                
+              }
+            }
+        
+          }
+
+        }
+      
+      });
+      database
+        .collection("Modules")
+        .doc(ModCode)
+        .update({
+          [grpname + ".Group Members"]: newgrp
+          
+        });
+      
     },
+
     deletePastModule: function(ModCode) {
       let currUser = this.currID;
       database
