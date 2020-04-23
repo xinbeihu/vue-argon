@@ -50,7 +50,7 @@
                 <!-- Menu -->
                 <tabs fill class="flex-column flex-md-row">
                   <card shadow>
-                    <tab-pane title="Students without Group" v-on:click = "updateGroups">
+                    <tab-pane title="Students without Group" v-on:click = "updateGroups(module)">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <li v-for="person in noGroup" v-bind:key="person">
@@ -60,7 +60,7 @@
                       </div>
                     </tab-pane>
 
-                    <tab-pane title="Form a New Group" v-on:click = "updateGroups">
+                    <tab-pane title="Form a New Group" v-on:click = "updateGroups(module)">
                       <div class="modal-content" style="width: 600px; overflow: auto; margin-bottom: 0px;">
                         <div>
                           <label style="vertical-align: middle;"><h6>Group Name:</h6></label>
@@ -203,7 +203,7 @@
                       </div>
                     </tab-pane>
 
-                    <tab-pane title="Formed Project Groups" >
+                    <tab-pane title="Formed Project Groups" v-on:click = "updateGroups(module)">
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <div v-for="(group, groupName) in modules[mod]" v-bind:key="group">
@@ -234,7 +234,7 @@
                         </div>
                       </div>
                     </tab-pane>
-                    <tab-pane title="Existing Groups" >
+                    <tab-pane title="Existing Groups" v-on:click = "updateGroups(module)">
                       <div
                         style="text-align: left"
                         v-for="(team, teamName) of currGroups"
@@ -823,13 +823,12 @@ export default {
             }
           }
           console.log(this.newGroups); //newGroups is a dictionary which contains new groups formed 
-          //problem: code does not go into the for loop below
           for(var group in this.newGroups) {
             console.log(group);
             console.log("second for loop");
-            for(var ppl of this.newGroups[group]["Group Members"]) {
+            for(var ppl in this.newGroups[group]["Group Members"]) {
               let idx = this.noGroup.indexOf(this.newGroups[group]["Group Members"][ppl]); 
-              console.log(this.newGroups[group]["Group Members"]);
+              console.log(this.newGroups[group]["Group Members"][ppl]);
               // console.log(ppl + " " + idx);
               if(idx > -1) {
                 this.noGroup.splice(idx, 1);

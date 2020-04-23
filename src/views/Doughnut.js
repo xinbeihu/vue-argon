@@ -88,12 +88,14 @@ export default {
                         for (member in membercontribution) {
                             this.datacollection.labels.push(member);
                         }
+                        // console.log(this.datacollection.labels)
                         for (var i = length; i < (Object.keys(membercontribution).length + length); i++) {
                             taskArray[i] = membercontribution[member];
                         }
                         length = length + taskArray.length;
-                        // console.log("taskArray here")
-                        // console.log(taskArray)
+                        console.log(selectedModule)
+                        console.log("taskArray here")
+                        console.log(taskArray)
 
                         this.datacollection.datasets.push({ data: taskArray, label: selectedModule, backgroundColor: ["#DAECFC", "#DDF3F2", "#F4F5F5", "#EBE0FF", "#FFF3DA", "#FFE1E6"] });
                     }

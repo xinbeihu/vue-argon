@@ -115,13 +115,11 @@ export default {
           }
 
           for (let item of monthsArray) {
-            if (item[0] in this.datacollection.labels) {
-
-            } else {
+            if (!this.datacollection.labels.includes(item[0])) {
               this.datacollection.labels.push(this.getMonth(item[0]));
+              console.log(this.datacollection.labels)
               this.datacollection.datasets[0].data.push(item[1]);
             }
-            
           }
           this.renderChart(this.datacollection, this.options)
         });
