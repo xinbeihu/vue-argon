@@ -27,7 +27,8 @@ export default {
 
   methods: {
     getColor: function () {
-      let colors = ["#C9CBCF", "#9966FE", "#36A2EB", "#4BC0C0", "#FFC134", "#FF6383"];
+      // let colors = ["#C9CBCF", "#9966FE", "#36A2EB", "#4BC0C0", "#FFC134", "#FF6383"];
+      let colors = ["#fc1c03", "#fcba03", "#fcd303", "#2dfc03", "#0380fc", "#ce03fc", "#fc039d", "#fc0341"]
       let randomNumber = Math.round(Math.random() * 5);
       return colors[randomNumber];
     },
@@ -72,8 +73,6 @@ export default {
 
           this.taskList = tasks;
           this.groups = myGroups;
-          // console.log("this.groups")
-          // console.log(this.groups)
 
           let selectedModule = "";
           let month = "";
