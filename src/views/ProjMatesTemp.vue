@@ -51,6 +51,8 @@
                 <tabs fill class="flex-column flex-md-row">
                   <card shadow>
                     <tab-pane title="Students without Group" v-on:click = "updateGroups(module)">
+                      <base-button type="secondary" v-on:click="updateGroups(module)">Refresh</base-button>
+
                       <div v-for="(value, mod) in modules" v-bind:key="mod">
                         <div v-if="mod == module">
                           <li v-for="person in noGroup" v-bind:key="person">
@@ -459,7 +461,7 @@ export default {
       friend: "",
       noGroup: [],
       newGroupFormed: {},
-      newGroup:{module: '', groupName:'', size:2, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
+      newGroup:{module: '', groupName:'', size:0, currGroup:['You'], newSkill: [], comment:'', compatibility:[], 
       memberStatus:['true'], members:['None'], skills:[[]], currMember:1, skills1:[], skills2:[], skills3:[]},
       newGroups: {},
       currGroups: {},
@@ -576,19 +578,20 @@ export default {
             return;
           }
         }
-        alert(
-          "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
-        );
+        
         var newGroupFormat = {};
         //console.log("currGroup");
         //console.log(this.newGroup["currGroup"]);
         this.newGroup['currGroup'][0] = this.currName;
+        var size = parseInt(this.newGroup.size);
+        console.log(this.newGroup.size);
         newGroupFormat[this.newGroup.groupName] = {
           "Group Members": this.newGroup["currGroup"],
-          MaxSize: this.newGroup["size"],
+          MaxSize: size,
           Vacancies: {},
           Comment: this.newGroup.comment
         };
+        // console.log(newGroupFormat.MaxSize);
         var counter = 1;
         for (i = 0; i < this.newGroup["members"].length; i++) {
           if (Number.isInteger((counter - 1) / 2)) {
@@ -633,8 +636,20 @@ export default {
         }
         this.newGroupFormed[this.module] = true;
         this.newGroups[this.newGroup.groupName] = newGroupFormat[this.newGroup.groupName];
+        var noofpplleft = this.newGroup.size - newGroupFormat[this.newGroup.groupName]['Group Members'].length;
+        console.log(this.newGroup.size);
+        console.log(newGroupFormat[this.newGroup.groupName]['Group Members']);
+        console.log(noofpplleft);
+        if(noofpplleft==0){
+          alert("Your group has been successfully created! Check Formed Project Group!");
+        }
+        else{
+        alert(
+            "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
+          );
+        }
         // console.log(newGroupFormat);
-        // console.log(this.newGroups);
+        console.log(this.newGroups);
         database
           .collection("Modules")
           .doc(this.module)
@@ -655,6 +670,16 @@ export default {
           skills2: [],
           skills3: []
         };
+      //   var noofpplleft = newGroupFormat.MaxSize - newGroupFormat['Group Members'].length;
+      // console.log(noofpplleft);
+      // if(noofpplleft==0){
+      //   alert("Your group has been successfully created! Check Formed Project Group!");
+      // }
+      // else{
+      // alert(
+      //     "Your group has been sucessfully created! Click the Join Existing Groups tab to see your group."
+      //   );
+      // }
       }
       this.fetchData();
       this.updateGroups(this.module);
